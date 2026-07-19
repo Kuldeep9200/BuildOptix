@@ -49,17 +49,15 @@ export default function MainLayout() {
       className={`app-container ${isNightMode ? 'dark-theme' : 'light-theme'}`}
       style={{
         display: 'flex',
-        flexDirection: 'column', // सबसे पहले ऊपर से नीचे का फ्लो (TopBar फिर Bottom Area)
+        flexDirection: 'column', 
         height: '100vh',
         width: '100vw',
         overflow: 'hidden',
         background: isNightMode ? '#03070c' : '#f8fafc'
       }}
     >
-      {/* 1. TOPBAR: अब यह सबसे ऊपर है और पूरी 100% चौड़ाई लेगा */}
       <TopBar isNightMode={isNightMode} setIsNightMode={setIsNightMode} />
 
-      {/* 2. BOTTOM BODY AREA: टॉपबार के नीचे का हिस्सा जो साइडबार और कंटेंट को अगल-बगल रखेगा */}
       <div style={{ display: 'flex', flex: 1, height: 'calc(100vh - 60px)', width: '100%', overflow: 'hidden' }}>
 
         {/* बाएं तरफ साइडबार (अब इसकी ऊंचाई टॉपबार के नीचे से शुरू होगी) */}

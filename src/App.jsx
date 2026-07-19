@@ -16,13 +16,10 @@ function App() {
     <>
      
       <Routes>
-        {/* 1. Landing Page Route (Sabse pahle LoginGate dikhega) */}
         <Route path="/" element={<LoginGate />} />
 
-        {/* 2. Main Layout / Dashboard Route */}
         <Route path="/dashboard" element={<MainLayout />} />
 
-        {/* 3. Wildcard Route: Agar koi galat path daale to wapas landing page par bhej de */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
    
