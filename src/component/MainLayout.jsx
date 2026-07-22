@@ -8,6 +8,11 @@ import SiteDashboard from '../features/Dashboard/SiteDashboard';
 import Predictive_Risk from '../features/Ai_Intelligence/Predictive_Risk';
 import AssetsHealth from '../features/Operations/AssetsHealth';
 import SpaceUtilisation from '../features/Operations/SpaceUtilisation';
+import ComplaintsDashboard from '../features/Maintenance/ComplaintsDashboard';
+import SlaDashboard from '../features/Maintenance/SlaDashboard';
+import VendorDashboard from '../features/Maintenance/VendorDashboard';
+import AlertsDashboard from '../features/Monitoring/AlertsDashboard';
+import AnomaliesDashboard from '../features/Monitoring/AnomaliesDashboard';
 // डमी कंपोनेंट्स (यहाँ आपके पेजेस आएंगे)
 const CentralDashboard = () => <> <CentralDashboardMain /></>;
 const CommandCentre = () => <> <CommandDashboard /> </>;
@@ -15,6 +20,13 @@ const SideCenter = () => <> <SiteDashboard /> </>;
 const Predictive = () => <> <Predictive_Risk /></>
 const AssetsHealt = () => <>  <AssetsHealth /></>
 const Space = () => <> <SpaceUtilisation /></>
+const Complaints = () => <> <ComplaintsDashboard /></>
+const Sla = () => <> <SlaDashboard /></>
+const Vendor = () => <> <VendorDashboard /></>
+const Alert = () => <> <AlertsDashboard /></>
+const Anomalies = () => <> <AnomaliesDashboard /></>
+
+
 const EnergyUtilities = () => <div style={{ color: '#fff', padding: '20px' }}><h2>🔋 Energy & Utilities Analytics</h2><p>पावर कंजम्पशन और रिसोर्स MANAGEMENT ग्रिड।</p></div>;
 
 export default function MainLayout() {
@@ -39,7 +51,12 @@ export default function MainLayout() {
       case 'Site': return <SideCenter />
       case 'predictive-risk': return <Predictive />
       case 'assets': return <AssetsHealt />
-      case 'space':return <Space/>
+      case 'space': return <Space />
+      case 'complaints': return <Complaints />
+      case 'sla': return <Sla />
+      case 'vendor': return <Vendor />
+      case 'alerts': return <Alert />
+      case 'anomalies': return <Anomalies />
       default: return <CentralDashboard />;
     }
   };
@@ -49,7 +66,7 @@ export default function MainLayout() {
       className={`app-container ${isNightMode ? 'dark-theme' : 'light-theme'}`}
       style={{
         display: 'flex',
-        flexDirection: 'column', 
+        flexDirection: 'column',
         height: '100vh',
         width: '100vw',
         overflow: 'hidden',
