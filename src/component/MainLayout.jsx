@@ -13,6 +13,13 @@ import SlaDashboard from '../features/Maintenance/SlaDashboard';
 import VendorDashboard from '../features/Maintenance/VendorDashboard';
 import AlertsDashboard from '../features/Monitoring/AlertsDashboard';
 import AnomaliesDashboard from '../features/Monitoring/AnomaliesDashboard';
+import FddDashboard from '../features/Monitoring/FddDashboard';
+import SystemHealthDashboard from '../features/Monitoring/SystemHealthDashboard';
+import AccessControlDashboard from '../features/SafetyCompliance/AccessControlDashboard';
+import HealthSafetyDashboard from '../features/SafetyCompliance/HealthSafetyDashboard';
+import IaqDashboard from '../features/SafetyCompliance/IaqDashboard';
+import PermitToWorkDashboard from '../features/SafetyCompliance/PermitToWorkDashboard';
+import PowerQualityDashboard from '../features/SafetyCompliance/PowerQualityDashboard';
 // डमी कंपोनेंट्स (यहाँ आपके पेजेस आएंगे)
 const CentralDashboard = () => <> <CentralDashboardMain /></>;
 const CommandCentre = () => <> <CommandDashboard /> </>;
@@ -25,6 +32,17 @@ const Sla = () => <> <SlaDashboard /></>
 const Vendor = () => <> <VendorDashboard /></>
 const Alert = () => <> <AlertsDashboard /></>
 const Anomalies = () => <> <AnomaliesDashboard /></>
+const Fdd = () => <> <FddDashboard /></>
+const System = () => <> <SystemHealthDashboard /></>
+const Access = () => <> <AccessControlDashboard /></>
+const Health = () => <> <HealthSafetyDashboard /></>
+const Iaq = () => <> <IaqDashboard /></>
+const Permit = () => <> <PermitToWorkDashboard /></>
+const PowerQuality = () => <> <PowerQualityDashboard /></>
+
+
+
+
 
 
 const EnergyUtilities = () => <div style={{ color: '#fff', padding: '20px' }}><h2>🔋 Energy & Utilities Analytics</h2><p>पावर कंजम्पशन और रिसोर्स MANAGEMENT ग्रिड।</p></div>;
@@ -57,6 +75,13 @@ export default function MainLayout() {
       case 'vendor': return <Vendor />
       case 'alerts': return <Alert />
       case 'anomalies': return <Anomalies />
+      case 'fdd': return <Fdd />
+      case 'syshealth': return <System />
+      case 'health_safety': return <Health />
+      case 'iaq': return <Iaq />
+      case 'powerquality': return <PowerQuality />
+      case 'access_control': return <Access />
+      case 'ptw': return <Permit />
       default: return <CentralDashboard />;
     }
   };

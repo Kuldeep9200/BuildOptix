@@ -4,7 +4,8 @@ export default function PowerQualityDashboard() {
   // Incomer Sub-tab State Management (0: Incomer 1, 1: Incomer 2, 2: Solar Feed-in)
   // Initialized to 2 as per the explicit "active" class marker in your source markup
   const [selectedIncomer, setSelectedIncomer] = useState(2);
-
+  const [showDownloadMenu, setShowDownloadMenu] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
   // Safe callback execution handler for global actions to prevent execution crashes
   const handleToastAction = (message, type) => {
     if (typeof window !== 'undefined' && typeof window.toast === 'function') {
@@ -16,8 +17,326 @@ export default function PowerQualityDashboard() {
 
   return (
     <div className="page active" id="pg-powerquality">
+
+
+      <div className="page-header" id="dash-page-header" style={{ marginBottom: "10px" }}>
+        <div className="ph-left">
+          <div className="live-dot"></div>
+
+          <div>
+            <div className="ph-title" id="dash-page-title">
+              Power Quality
+            </div>
+
+            <div
+              id="dash-page-sub"
+              style={{ fontSize: "10px", color: "var(--ink-3)" }}
+            >
+              IEEE 519 · IS 12360 · APFC · Harmonics — Live
+            </div>
+          </div>
+        </div>
+
+        <div className="ph-tabs" id="dash-tab-bar">
+          <div
+            onClick={() => setActiveTab(0)}
+            className={`ph-tab ${activeTab === 0 ? "active" : ""}`}
+          >
+            Parameters & Harmonics
+          </div>
+        </div>
+
+        {/* Range Picker */}
+        <div className="range-picker" id="boRangePicker">
+          <span className="rp-label">Range</span>
+
+          <div className="rp-seg">
+            <button data-range="today" className="active">
+              Today
+            </button>
+
+            <button data-range="7d">7D</button>
+
+            <button data-range="30d">30D</button>
+
+            <button data-range="custom">
+              <i className="ti ti-calendar" style={{ fontSize: "12px" }}></i>
+              Custom
+            </button>
+          </div>
+
+          <div className="rp-pop" id="rpPop">
+            <label>From</label>
+            <input type="date" id="rpFrom" />
+
+            <label>To</label>
+            <input type="date" id="rpTo" />
+
+            <button className="rp-apply" id="rpApply">
+              Apply range
+            </button>
+          </div>
+        </div>
+
+        {/* Download */}
+        <div className="dash-dl" id="dashDl">
+          <button
+            className="dash-dl-btn"
+            id="dashDlBtn"
+            onClick={() => setShowDownloadMenu(!showDownloadMenu)}
+          >
+            <i className="ti ti-download"></i>
+            Download Reports
+            <i
+              className="ti ti-chevron-down"
+              style={{ fontSize: "12px", opacity: 0.8 }}
+            ></i>
+          </button>
+          {showDownloadMenu && (
+            <div className="dash-dl-menu" style={{ display: showDownloadMenu ? "block" : "none" }}>
+
+              {/* Energy */}
+
+              <div className="dash-dl-h">Quick report downloads</div>
+
+              <div className="dash-dl-opt" data-i="0">
+                <div
+                  className="di"
+                  style={{ background: "var(--info)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-bolt"
+                    style={{ color: "var(--info)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">Energy &amp; Utilities</div>
+                  <div className="ds">Floor-wise · cost · EPI</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* CO2 */}
+              <div className="dash-dl-opt" data-i="1">
+                <div
+                  className="di"
+                  style={{ background: "var(--ok)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-leaf"
+                    style={{ color: "var(--ok)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">CO₂ &amp; ESG Summary</div>
+                  <div className="ds">Scope 1/2/3 · offsets</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* SLA */}
+              <div className="dash-dl-opt" data-i="2">
+                <div
+                  className="di"
+                  style={{ background: "var(--warn)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-clipboard-check"
+                    style={{ color: "var(--warn)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">SLA &amp; Tickets</div>
+                  <div className="ds">Live ticket + SLA export</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* Asset */}
+              <div className="dash-dl-opt" data-i="3">
+                <div
+                  className="di"
+                  style={{ background: "var(--violet)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-tool"
+                    style={{ color: "var(--violet)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">Asset PM</div>
+                  <div className="ds">PM status · health</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* Solar */}
+              <div className="dash-dl-opt" data-i="4">
+                <div
+                  className="di"
+                  style={{ background: "var(--solar)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-solar-panel"
+                    style={{ color: "var(--solar)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">Solar &amp; ROI</div>
+                  <div className="ds">Generation · savings</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* Device */}
+              <div className="dash-dl-opt" data-i="5">
+                <div
+                  className="di"
+                  style={{ background: "var(--cool)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-router"
+                    style={{ color: "var(--cool)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">Device Fleet</div>
+                  <div className="ds">IoT health · connectivity</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              <div
+                style={{
+                  borderTop: "1px solid var(--line-1)",
+                  marginTop: "5px",
+                  paddingTop: "6px",
+                }}
+              >
+                <div className="dash-dl-opt" id="dashDlAll">
+                  <div
+                    className="di"
+                    style={{ background: "var(--info)", opacity: 0.16 }}
+                  ></div>
+
+                  <div
+                    style={{
+                      marginLeft: "-38px",
+                      width: "28px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <i
+                      className="ti ti-package"
+                      style={{ color: "var(--info)", fontSize: "14px" }}
+                    ></i>
+                  </div>
+
+                  <div>
+                    <div className="dt2">All reports</div>
+                    <div className="ds">Download every report (CSV)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ padding: "7px 9px 3px" }}>
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navTo("reports");
+                  }}
+                  style={{
+                    fontSize: "10.5px",
+                    color: "var(--info)",
+                    cursor: "pointer",
+                  }}
+                >
+                  Open full Reports &amp; Bills library →
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+
       <div className="tab-panel active" data-page="powerquality" data-tab="0">
-        
+
         {/* 5-Column Power Quality KPI Metrics Bar */}
         <div className="kpi-strip mb-14" style={{ gridTemplateColumns: 'repeat(5,1fr)' }}>
           <div className="kpi glow-warn">
@@ -49,20 +368,20 @@ export default function PowerQualityDashboard() {
 
         {/* Dynamic Incomer Source Selection Header Bar */}
         <div className="pq-incomer-tabs card" style={{ padding: 0, borderRadius: '10px 10px 0 0', marginBottom: 0 }}>
-          <div 
-            className={`pq-incomer-tab ${selectedIncomer === 0 ? 'active' : ''}`} 
+          <div
+            className={`pq-incomer-tab ${selectedIncomer === 0 ? 'active' : ''}`}
             onClick={() => setSelectedIncomer(0)}
           >
             Incomer 1 — Main LT (1000 kVA)
           </div>
-          <div 
-            className={`pq-incomer-tab ${selectedIncomer === 1 ? 'active' : ''}`} 
+          <div
+            className={`pq-incomer-tab ${selectedIncomer === 1 ? 'active' : ''}`}
             onClick={() => setSelectedIncomer(1)}
           >
             Incomer 2 — Emergency (500 kVA)
           </div>
-          <div 
-            className={`pq-incomer-tab ${selectedIncomer === 2 ? 'active' : ''}`} 
+          <div
+            className={`pq-incomer-tab ${selectedIncomer === 2 ? 'active' : ''}`}
             onClick={() => setSelectedIncomer(2)}
           >
             Solar Feed-in (200 kWp)
@@ -71,7 +390,7 @@ export default function PowerQualityDashboard() {
 
         {/* Main Parameters Split Grid Frame */}
         <div className="g21 mb-14" style={{ borderRadius: '0 0 10px 10px', overflow: 'hidden' }}>
-          
+
           {/* Section A: Live 3-Phase Voltage & PF Vector Parameters */}
           <div className="card" style={{ borderRadius: '0 0 0 10px' }}>
             <div className="ch">
@@ -82,19 +401,19 @@ export default function PowerQualityDashboard() {
             </div>
             <div className="cb" style={{ padding: 0 }}>
               <div style={{ display: 'flex', gap: '16px', padding: '14px', alignItems: 'center' }}>
-                
+
                 {/* Embedded SVG Power Factor Circular Progress Gauge */}
                 <div className="pq-gauge-ring">
                   <svg width="120" height="120" viewBox="0 0 120 120">
                     <circle cx="60" cy="60" r="48" fill="none" stroke="var(--surface-3)" strokeWidth="10"></circle>
-                    <circle 
-                      cx="60" 
-                      cy="60" 
-                      r="48" 
-                      fill="none" 
-                      stroke="var(--warn)" 
-                      strokeWidth="10" 
-                      strokeDasharray="246 55" 
+                    <circle
+                      cx="60"
+                      cy="60"
+                      r="48"
+                      fill="none"
+                      stroke="var(--warn)"
+                      strokeWidth="10"
+                      strokeDasharray="246 55"
                       strokeLinecap="round"
                     ></circle>
                   </svg>
@@ -107,7 +426,7 @@ export default function PowerQualityDashboard() {
                 {/* Phase-wise Structural Realtime Vector Readings */}
                 <div style={{ flex: 1 }}>
                   <div className="pq-phase-grid" style={{ border: '1px solid var(--line-2)', borderRadius: '8px', overflow: 'hidden' }}>
-                    
+
                     {/* Red Phase Vector Column */}
                     <div className="pq-phase-col">
                       <div className="pq-phase-hd" style={{ color: 'var(--bad)' }}>R Phase</div>
@@ -223,14 +542,14 @@ export default function PowerQualityDashboard() {
               <line x1="0" y1="45" x2="480" y2="45" stroke="var(--line-1)" strokeWidth="0.5"></line>
               <line x1="0" y1="75" x2="480" y2="75" stroke="var(--line-1)" strokeWidth="0.5"></line>
               <line x1="0" y1="52" x2="480" y2="52" stroke="var(--warn)" strokeWidth="1" strokeDasharray="5 3"></line>
-              
+
               <text x="2" y="14" fontSize="8" fill="var(--ink-3)">0.95</text>
               <text x="2" y="44" fontSize="8" fill="var(--ink-3)">0.90</text>
               <text x="2" y="74" fontSize="8" fill="var(--ink-3)">0.85</text>
               <text x="380" y="50" fontSize="8" fill="var(--warn)">0.85 target</text>
-              
+
               <path d="M40,68 L100,62 L160,55 L220,60 L280,72 L340,78 L400,72 L440,68" fill="none" stroke="var(--info)" strokeWidth="2.5"></path>
-              
+
               <circle cx="40" cy="68" r="3.5" fill="var(--info)"></circle>
               <circle cx="100" cy="62" r="3.5" fill="var(--info)"></circle>
               <circle cx="160" cy="55" r="3.5" fill="var(--ok)"></circle>
@@ -239,7 +558,7 @@ export default function PowerQualityDashboard() {
               <circle cx="340" cy="78" r="3.5" fill="var(--bad)"></circle>
               <circle cx="400" cy="72" r="3.5" fill="var(--warn)"></circle>
               <circle cx="440" cy="68" r="3.5" fill="var(--warn)"></circle>
-              
+
               <text x="40" y="108" fontSize="8.5" fill="var(--ink-3)" textAnchor="middle">Mon</text>
               <text x="100" y="108" fontSize="8.5" fill="var(--ink-3)" textAnchor="middle">Tue</text>
               <text x="160" y="108" fontSize="8.5" fill="var(--ink-3)" textAnchor="middle">Wed</text>
