@@ -1,31 +1,36 @@
 @import "tailwindcss";
 
-.sb-group-items .nav-item{
-    padding-left: 40px;
+.sb-group-items .nav-item {
+  padding-left: 40px;
 }
 
 .nav-item.active {
-    background: linear-gradient(90deg, var(--brand-soft), transparent 92%);
-    color: var(--brand-bright);
-    border-left: 2px solid var(--brand);
-    box-shadow: none;
+  background: linear-gradient(90deg, var(--brand-soft), transparent 92%);
+  color: var(--brand-bright);
+  border-left: 2px solid var(--brand);
+  box-shadow: none;
 }
+
 sb-group-h {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 12px;
-    cursor: pointer;
-    border-radius: 8px;
-    color: var(--ink-1);
-    font-size: 12px;
-    font-weight: 600;
-    user-select: none;
-    transition: background .12s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  color: var(--ink-1);
+  font-size: 12px;
+  font-weight: 600;
+  user-select: none;
+  transition: background .12s;
 }
-.nav-tx, .nav-badge, .sb-section-l{
-    font-size: 12px;
+
+.nav-tx,
+.nav-badge,
+.sb-section-l {
+  font-size: 12px;
 }
+
 /* 1. Nav text ko wrap hone se roke aur ... (ellipsis) dikhaye */
 .nav-tx {
   white-space: nowrap !important;
@@ -36,16 +41,28 @@ sb-group-h {
 }
 
 /* 2. Flex items ko text truncate hone ki jagah dene ke liye min-width set karein */
-.sb-group-h, .nav-item {
+.sb-group-h,
+.nav-item {
   display: flex;
   align-items: center;
-  min-width: 0; /* Flexbox me truncation ke liye zaroori hai */
+  min-width: 0;
+  /* Flexbox me truncation ke liye zaroori hai */
 }
 
 /* 3. Icons aur Badges ko squish (chhota) hone se bachaye */
-.sb-group-h > i:first-child,
-.nav-item > i:first-child,
+.sb-group-h>i:first-child,
+.nav-item>i:first-child,
 .chev,
 .nav-badge {
   flex-shrink: 0;
+}
+
+.rep-hero-card {
+  background: linear-gradient(145deg, var(--surface-1), var(--bg-1));
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+
 }

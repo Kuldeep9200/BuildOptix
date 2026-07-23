@@ -20,6 +20,13 @@ import HealthSafetyDashboard from '../features/SafetyCompliance/HealthSafetyDash
 import IaqDashboard from '../features/SafetyCompliance/IaqDashboard';
 import PermitToWorkDashboard from '../features/SafetyCompliance/PermitToWorkDashboard';
 import PowerQualityDashboard from '../features/SafetyCompliance/PowerQualityDashboard';
+import ReportsDashboard from '../features/ReportsRecords/ReportsDashboard';
+import LogbooksPage from '../features/ReportsRecords/LogbooksPage';
+import DigitalTwinBuilding from '../features/Digital_Twin/DigitalTwinBuilding';
+import DigitalTwinEquipment from '../features/Digital_Twin/DigitalTwinEquipment';
+import DigitalTwinFloorHeatmap from '../features/Digital_Twin/DigitalTwinFloorHeatmap';
+import DigitalTwinSensorOverlay from '../features/Digital_Twin/DigitalTwinSensorOverlay';
+import DigitalTwinWorkflow from '../features/Digital_Twin/DigitalTwinWorkflow';
 // डमी कंपोनेंट्स (यहाँ आपके पेजेस आएंगे)
 const CentralDashboard = () => <> <CentralDashboardMain /></>;
 const CommandCentre = () => <> <CommandDashboard /> </>;
@@ -39,6 +46,19 @@ const Health = () => <> <HealthSafetyDashboard /></>
 const Iaq = () => <> <IaqDashboard /></>
 const Permit = () => <> <PermitToWorkDashboard /></>
 const PowerQuality = () => <> <PowerQualityDashboard /></>
+const Reports = () => <> <ReportsDashboard /></>
+const Logbook = () => <> <LogbooksPage /></>
+const Building = () => <> <DigitalTwinBuilding /></>
+const Equipment = () => <> <DigitalTwinEquipment /></>
+const Heatmap = () => <> <DigitalTwinFloorHeatmap /></>
+const Overlay = () => <> <DigitalTwinSensorOverlay /></>
+const Workflow = () => <> <DigitalTwinWorkflow /></>
+
+
+
+
+
+
 
 
 
@@ -82,6 +102,25 @@ export default function MainLayout() {
       case 'powerquality': return <PowerQuality />
       case 'access_control': return <Access />
       case 'ptw': return <Permit />
+      case 'reports': return <Reports />
+      case 'logbooks': return <Logbook />
+      // --- Digital Twin Navigation Routes ---
+      case 'dtbuilding':
+        return <DigitalTwinBuilding />;
+
+      case 'dtfloors':
+        return <DigitalTwinFloorHeatmap />;
+
+      case 'dtequip':
+        return <DigitalTwinEquipment />;
+
+      case 'dtsensors':
+        return <DigitalTwinSensorOverlay />;
+
+      case 'dttwinworkflow':
+        return <DigitalTwinWorkflow />;
+
+
       default: return <CentralDashboard />;
     }
   };

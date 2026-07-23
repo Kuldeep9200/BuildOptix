@@ -1,13 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import logo from "../assets/logo.png";
-import '../App.css'
+import '../App.css';
 import { useNavigate } from 'react-router-dom';
 
 export default function TopBar({ isNightMode, setIsNightMode }) {
   const [activeModule, setActiveModule] = useState('dashboard');
   const [showAdminMenu, setShowAdminMenu] = useState(false);
   const [timeStr, setTimeStr] = useState('05:38 pm · 11 Jul 2026');
-const navigate= useNavigate()
+  const navigate = useNavigate();
+
+  // Theme toggle Handler
+  const toggleNight = () => {
+    const nextMode = !isNightMode;
+    setIsNightMode(nextMode);
+
+    // Body tag par 'light' class add/remove karein (Agar isNightMode false h to light mode active h)
+    if (!nextMode) {
+      document.body.classList.add('light');
+    } else {
+      document.body.classList.remove('light');
+    }
+  };
+
+  // Sync initial body class with isNightMode prop
+  useEffect(() => {
+    if (!isNightMode) {
+      document.body.classList.add('light');
+    } else {
+      document.body.classList.remove('light');
+    }
+  }, [isNightMode]);
+
   // लाइव टाइम अपडेट (जैसा इमेज में 12-hour फॉर्मेट और डेट के साथ है)
   useEffect(() => {
     const updateTime = () => {
@@ -49,25 +72,10 @@ const navigate= useNavigate()
       <div className="tb-brand" style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingRight: '16px', borderRight: '1px solid #14223a', height: '100%' }}>
         <img
           src={logo}
-          alt=""
+          alt="Logo"
           style={{ height: "28px", objectFit: "contain" }}
         />
       </div>
-
-      {/* 2. LOCATION & TOWER SELECTORS */}
-      {/* <div style={{ display: 'flex', gap: '8px', paddingLeft: '16px', alignItems: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#0f172a', border: '1px solid #1e293b', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', color: '#22c55e', fontWeight: '6px' }}>
-          <span style={{ width: '6px', height: '6px', background: '#22c55e', borderRadius: '50%', display: 'inline-block' }}></span>
-          <span style={{ color: '#22c55e', fontWeight: '600' }}>Vikhroli — Godrej One</span>
-          <i className="ti ti-chevron-down" style={{ color: '#64748b', fontSize: '12px' }}></i>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#0f172a', border: '1px solid #1e293b', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', color: '#cbd5e1' }}>
-          <i className="ti ti-map-pin" style={{ color: '#38bdf8', fontSize: '14px' }}></i>
-          <span style={{ fontWeight: '500' }}>All Towers</span>
-          <i className="ti ti-chevron-down" style={{ color: '#64748b', fontSize: '12px' }}></i>
-        </div>
-      </div> */}
 
       {/* 3. NAVIGATION MODULES */}
       <div className="tb-nav" style={{ display: 'flex', gap: '6px', marginLeft: '20px', alignItems: 'center' }}>
@@ -152,27 +160,69 @@ const navigate= useNavigate()
               <div
                 style={{ padding: '6px 12px', cursor: 'pointer', color: '#ef4444' }}
                 onClick={() => {
-                  localStorage.removeItem('bo_session_v1'); // Session clear kiya
-                  setShowAdminMenu(false);                 // Menu close kiya
-                  navigate('/');                           // Home page bhej diya
-                  window.location.reload();                // App state fresh karne ke liye refresh (optional)
+                  localStorage.removeItem('bo_session_v1');
+                  setShowAdminMenu(false);
+                  navigate('/');
+                  window.location.reload();
                 }}
               >
                 Logout
-              </div>           </div>
+              </div>
+            </div>
           )}
         </div>
 
-        {/* 6. THEME SWITCHER */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <i className="ti ti-moon" style={{ color: isNightMode ? '#38bdf8' : '#64748b', fontSize: '14px' }}></i>
-          <div
-            onClick={() => setIsNightMode(!isNightMode)}
-            style={{ cursor: 'pointer', width: '28px', height: '15px', background: isNightMode ? '#38bdf8' : '#334155', borderRadius: '10px', position: 'relative' }}
+        {/* 6. THEME SWITCHER BAR */}
+        <div 
+          className="theme-toggle-bar" 
+          style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#94a3b8' }}
+        >
+          {/* Dynamic Sun/Moon Icon */}
+          <i 
+            id="theme-icon" 
+            className={`ti ${isNightMode ? 'ti-moon' : 'ti-sun'}`} 
+            style={{ fontSize: '14px', color: isNightMode ? '#38bdf8' : '#eab308' }} 
+            aria-hidden="true"
+          ></i>
+
+          {/* Toggle Switch Button */}
+          <div 
+            id="nightToggle" 
+            className={`toggle ${!isNightMode ? 'off' : ''}`} 
+            onClick={toggleNight} 
+            title="Toggle light/dark theme" 
+            tabIndex={0} 
+            role="switch" 
+            aria-checked={isNightMode} 
+            aria-label="Toggle light/dark theme" 
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleNight();
+              }
+            }}
+            style={{
+              cursor: 'pointer', 
+              width: '28px', 
+              height: '15px', 
+              background: isNightMode ? '#38bdf8' : '#334155', 
+              borderRadius: '10px', 
+              position: 'relative'
+            }}
           >
-            <div style={{ width: '11px', height: '11px', background: '#fff', borderRadius: '50%', position: 'absolute', top: '2px', left: isNightMode ? '15px' : '2px', transition: '0.2s' }} />
+            <div 
+              style={{ 
+                width: '11px', 
+                height: '11px', 
+                background: '#fff', 
+                borderRadius: '50%', 
+                position: 'absolute', 
+                top: '2px', 
+                left: isNightMode ? '15px' : '2px', 
+                transition: '0.2s' 
+              }} 
+            />
           </div>
-          <i className="ti ti-sun" style={{ color: !isNightMode ? '#eab308' : '#64748b', fontSize: '14px' }}></i>
         </div>
 
         {/* 7. WEATHER INFO */}
