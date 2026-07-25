@@ -9,6 +9,8 @@
   color: var(--brand-bright);
   border-left: 2px solid var(--brand);
   box-shadow: none;
+  margin-left: 10px;
+  padding-left: 30px;
 }
 
 sb-group-h {
@@ -66,3 +68,4 @@ sb-group-h {
   overflow: hidden;
 
 }
+

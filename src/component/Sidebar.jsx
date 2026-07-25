@@ -10,7 +10,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, activePage, onNav
         .sidebar-scroll::-webkit-scrollbar { width: 4px; }
         .sidebar-scroll::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
 
-        .sb-group-h { display: flex; align-items: center; padding: 14px 20px; cursor: pointer; color: var(--tx-main); font-size: 14px; font-weight: 600; transition: background 0.2s; }
+        .sb-group-h { display: flex; align-items: center; padding: 8px 20px; cursor: pointer; color: var(--tx-main); font-size: 14px; font-weight: 600; transition: background 0.2s; }
         .sb-group-h:hover { background-color: var(--bg-hover); }
         .sb-group-h > i:first-child { font-size: 18px; margin-right: 14px; color: #cbd5e1; min-width: 20px; display: inline-flex; justify-content: center; }
 

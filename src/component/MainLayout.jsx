@@ -27,6 +27,13 @@ import DigitalTwinEquipment from '../features/Digital_Twin/DigitalTwinEquipment'
 import DigitalTwinFloorHeatmap from '../features/Digital_Twin/DigitalTwinFloorHeatmap';
 import DigitalTwinSensorOverlay from '../features/Digital_Twin/DigitalTwinSensorOverlay';
 import DigitalTwinWorkflow from '../features/Digital_Twin/DigitalTwinWorkflow';
+import AdminBrandingConfig from '../features/Administration/AdminBrandingConfig';
+import { AdminIntegrations } from '../features/Administration/AdminIntegrations';
+import AdminSecurity from '../features/Administration/AdminSecurity';
+import AdminSiteConfig from '../features/Administration/AdminSiteConfig';
+import AdminUsersRoles from '../features/Administration/AdminUsersRoles';
+import DesignSystem from '../features/Administration/DesignSystem';
+import MobileAppPreview from '../features/Administration/MobileAppPreview';
 // डमी कंपोनेंट्स (यहाँ आपके पेजेस आएंगे)
 const CentralDashboard = () => <> <CentralDashboardMain /></>;
 const CommandCentre = () => <> <CommandDashboard /> </>;
@@ -53,6 +60,18 @@ const Equipment = () => <> <DigitalTwinEquipment /></>
 const Heatmap = () => <> <DigitalTwinFloorHeatmap /></>
 const Overlay = () => <> <DigitalTwinSensorOverlay /></>
 const Workflow = () => <> <DigitalTwinWorkflow /></>
+const Config = () => <> <AdminBrandingConfig /></>
+const Integrations = () => <> <AdminIntegrations /></>
+const Security = () => <> <AdminSecurity /></>
+const SiteConfig = () => <> <AdminSiteConfig /></>
+const UsersRoles = () => <> <AdminUsersRoles /></>
+const Design = () => <> <DesignSystem /></>
+const AppPreview = () => <> <MobileAppPreview /></>
+
+
+
+
+
 
 
 
@@ -119,7 +138,20 @@ export default function MainLayout() {
 
       case 'dttwinworkflow':
         return <DigitalTwinWorkflow />;
-
+      case 'adminusers':
+        return <AdminUsersRoles />; // ya <UsersRoles />
+      case 'adminsite':
+        return <AdminSiteConfig />; // ya <SiteConfig />
+      case 'adminbranding':
+        return <AdminBrandingConfig />; // ya <Config />
+      case 'adminintegrations':
+        return <AdminIntegrations />; // ya <Integrations />
+      case 'adminsecurity':
+        return <AdminSecurity />; // ya <Security />
+      case 'designsystem':
+        return <DesignSystem />; // ya <Design />
+      case 'mobileapp':
+        return <MobileAppPreview />; // ya <AppPreview />
 
       default: return <CentralDashboard />;
     }

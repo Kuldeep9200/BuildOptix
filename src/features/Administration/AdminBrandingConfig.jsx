@@ -27,9 +27,9 @@ const AdminBrandingConfig = () => {
         roleBranding: false
     });
 
-    const handleToggle = (key) => {
-        setToggles((prev) => ({ ...prev, [key]: !prev[key] }));
-    };
+    // const handleToggle = (key) => {
+    //     setToggles((prev) => ({ ...prev, [key]: !prev[key] }));
+    // };
     // Toggle Switches State
     const [toggles, setToggles] = useState({
         reauth: false,

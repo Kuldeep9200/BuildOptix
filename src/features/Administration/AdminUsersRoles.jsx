@@ -17,7 +17,6 @@ const AdminUsersRoles = () => {
     const auToggleActive = (userId) => console.log('Toggle user active status:', userId);
     const admOpenRoleModal = (role) => console.log('Open role modal:', role);
     const [actFilter, setActFilter] = useState('all');
-    const [searchQuery, setSearchQuery] = useState('');
 
     // Sample Toast simulation helper
     const showToast = (message) => {
