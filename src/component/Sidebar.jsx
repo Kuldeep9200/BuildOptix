@@ -14,7 +14,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, activePage, onNav
         .sb-group-h:hover { background-color: var(--bg-hover); }
         .sb-group-h > i:first-child { font-size: 18px; margin-right: 14px; color: #cbd5e1; min-width: 20px; display: inline-flex; justify-content: center; }
 
-        .sb-group-items { max-height: 0; overflow: hidden; transition: max-height 0.25s cubic-bezier(0, 0, 0.2, 1); background-color: #03070c; }
+        .sb-group-items { max-height: 0; overflow: hidden; transition: max-height 0.25s cubic-bezier(0, 0, 0.2, 1);}
         .sb-group-items.show { max-height: 1000px; } /* Increased to fit longer groups */
 
         .nav-badge { margin-left: auto; padding: 1px 6px; font-size: 11px; border-radius: 10px; font-weight: bold; }
