@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 
-export default function Predictive_Risk() {
-   const [activeTab, setActiveTab] = useState(1);
+export default function RootCause() {
+   const [activeTab, setActiveTab] = useState(2);
     const [showDownloadMenu, setShowDownloadMenu] = useState(false);
 
   // --- Static Data Mockups ---

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import TopBar from './TopBar';
+
+// Feature Component Imports
 import CentralDashboardMain from '../features/Dashboard/CentralDashboard';
 import CommandDashboard from '../features/Dashboard/CommandDashboard';
-import '../App.css'
 import SiteDashboard from '../features/Dashboard/SiteDashboard';
 import Predictive_Risk from '../features/Ai_Intelligence/Predictive_Risk';
 import AssetsHealth from '../features/Operations/AssetsHealth';
@@ -34,126 +35,98 @@ import AdminSiteConfig from '../features/Administration/AdminSiteConfig';
 import AdminUsersRoles from '../features/Administration/AdminUsersRoles';
 import DesignSystem from '../features/Administration/DesignSystem';
 import MobileAppPreview from '../features/Administration/MobileAppPreview';
-// डमी कंपोनेंट्स (यहाँ आपके पेजेस आएंगे)
-const CentralDashboard = () => <> <CentralDashboardMain /></>;
-const CommandCentre = () => <> <CommandDashboard /> </>;
-const SideCenter = () => <> <SiteDashboard /> </>;
-const Predictive = () => <> <Predictive_Risk /></>
-const AssetsHealt = () => <>  <AssetsHealth /></>
-const Space = () => <> <SpaceUtilisation /></>
-const Complaints = () => <> <ComplaintsDashboard /></>
-const Sla = () => <> <SlaDashboard /></>
-const Vendor = () => <> <VendorDashboard /></>
-const Alert = () => <> <AlertsDashboard /></>
-const Anomalies = () => <> <AnomaliesDashboard /></>
-const Fdd = () => <> <FddDashboard /></>
-const System = () => <> <SystemHealthDashboard /></>
-const Access = () => <> <AccessControlDashboard /></>
-const Health = () => <> <HealthSafetyDashboard /></>
-const Iaq = () => <> <IaqDashboard /></>
-const Permit = () => <> <PermitToWorkDashboard /></>
-const PowerQuality = () => <> <PowerQualityDashboard /></>
-const Reports = () => <> <ReportsDashboard /></>
-const Logbook = () => <> <LogbooksPage /></>
-const Building = () => <> <DigitalTwinBuilding /></>
-const Equipment = () => <> <DigitalTwinEquipment /></>
-const Heatmap = () => <> <DigitalTwinFloorHeatmap /></>
-const Overlay = () => <> <DigitalTwinSensorOverlay /></>
-const Workflow = () => <> <DigitalTwinWorkflow /></>
-const Config = () => <> <AdminBrandingConfig /></>
-const Integrations = () => <> <AdminIntegrations /></>
-const Security = () => <> <AdminSecurity /></>
-const SiteConfig = () => <> <AdminSiteConfig /></>
-const UsersRoles = () => <> <AdminUsersRoles /></>
-const Design = () => <> <DesignSystem /></>
-const AppPreview = () => <> <MobileAppPreview /></>
 
+// AI Intelligence Component Imports
+import AITimelineComp from '../features/Ai_Intelligence/AITimeline';
+import AISummaryComp from '../features/Ai_Intelligence/AI_Summary'; 
+import MaintenanceComp from '../features/Ai_Intelligence/Maintenance';
+import OptimizationComp from '../features/Ai_Intelligence/Optimisation';
+import RootCauseComp from '../features/Ai_Intelligence/RootCause';
+import SrmSiteCommissioningDashboard from '../features/Site_Commissioning/SrmSiteCommissioningDashboard';
+import '../App.css';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const EnergyUtilities = () => <div style={{ color: '#fff', padding: '20px' }}><h2>🔋 Energy & Utilities Analytics</h2><p>पावर कंजम्पशन और रिसोर्स MANAGEMENT ग्रिड।</p></div>;
+// Fallback / Placeholder Component
+const EnergyUtilities = () => (
+  <div style={{ color: '#fff', padding: '20px' }}>
+    <h2>🔋 Energy & Utilities Analytics</h2>
+    <p>Power consumption and resource management grid.</p>
+  </div>
+);
 
 export default function MainLayout() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [activePage, setActivePage] = useState('central');
+  const [activeTab, setActiveTab] = useState(0); // Top Header Tab Sync
   const [isNightMode, setIsNightMode] = useState(true);
 
   const [openGroups, setOpenGroups] = useState({
     dashboard: true,
     operations: false,
+    ai: true,
   });
 
   const toggleGroup = (groupKey) => {
     setOpenGroups((prev) => ({ ...prev, [groupKey]: !prev[groupKey] }));
   };
 
+  // Render active route dynamically
   const renderActiveComponent = () => {
     switch (activePage) {
-      case 'central': return <CentralDashboard />;
-      case 'command': return <CommandCentre />;
+      // --- Dashboard Routes ---
+      case 'central': return <CentralDashboardMain />;
+      case 'command': return <CommandDashboard />;
+      case 'Site': return <SiteDashboard />;
       case 'energy': return <EnergyUtilities />;
-      case 'Site': return <SideCenter />
-      case 'predictive-risk': return <Predictive />
-      case 'assets': return <AssetsHealt />
-      case 'space': return <Space />
-      case 'complaints': return <Complaints />
-      case 'sla': return <Sla />
-      case 'vendor': return <Vendor />
-      case 'alerts': return <Alert />
-      case 'anomalies': return <Anomalies />
-      case 'fdd': return <Fdd />
-      case 'syshealth': return <System />
-      case 'health_safety': return <Health />
-      case 'iaq': return <Iaq />
-      case 'powerquality': return <PowerQuality />
-      case 'access_control': return <Access />
-      case 'ptw': return <Permit />
-      case 'reports': return <Reports />
-      case 'logbooks': return <Logbook />
+
+      // --- AI Intelligence Routes ---
+      case 'ai-summary': return <AISummaryComp activePage={activePage} />;
+      case 'predictive-risk': return <Predictive_Risk activePage={activePage} />;
+      case 'root-cause': return <RootCauseComp activePage={activePage} />;
+      case 'optimisation': return <OptimizationComp activePage={activePage} />;
+      case 'ai-timeline': return <AITimelineComp activePage={activePage} />;
+      case 'maintenance': return <MaintenanceComp activePage={activePage} />;
+
+      // --- Operations & Maintenance Routes ---
+      case 'assets': return <AssetsHealth />;
+      case 'space': return <SpaceUtilisation />;
+      case 'complaints': return <ComplaintsDashboard />;
+      case 'sla': return <SlaDashboard />;
+      case 'vendor': return <VendorDashboard />;
+
+      // --- Monitoring Routes ---
+      case 'alerts': return <AlertsDashboard />;
+      case 'anomalies': return <AnomaliesDashboard />;
+      case 'fdd': return <FddDashboard />;
+      case 'syshealth': return <SystemHealthDashboard />;
+
+      // --- Safety & Compliance Routes ---
+      case 'health_safety': return <HealthSafetyDashboard />;
+      case 'iaq': return <IaqDashboard />;
+      case 'powerquality': return <PowerQualityDashboard />;
+      case 'access_control': return <AccessControlDashboard />;
+      case 'ptw': return <PermitToWorkDashboard />;
+
+      // --- Reports & Logbooks ---
+      case 'reports': return <ReportsDashboard />;
+      case 'logbooks': return <LogbooksPage />;
+
       // --- Digital Twin Navigation Routes ---
-      case 'dtbuilding':
-        return <DigitalTwinBuilding />;
+      case 'dtbuilding': return <DigitalTwinBuilding />;
+      case 'dtfloors': return <DigitalTwinFloorHeatmap />;
+      case 'dtequip': return <DigitalTwinEquipment />;
+      case 'dtsensors': return <DigitalTwinSensorOverlay />;
+      case 'dttwinworkflow': return <DigitalTwinWorkflow />;
 
-      case 'dtfloors':
-        return <DigitalTwinFloorHeatmap />;
-
-      case 'dtequip':
-        return <DigitalTwinEquipment />;
-
-      case 'dtsensors':
-        return <DigitalTwinSensorOverlay />;
-
-      case 'dttwinworkflow':
-        return <DigitalTwinWorkflow />;
-      case 'adminusers':
-        return <AdminUsersRoles />; // ya <UsersRoles />
-      case 'adminsite':
-        return <AdminSiteConfig />; // ya <SiteConfig />
-      case 'adminbranding':
-        return <AdminBrandingConfig />; // ya <Config />
-      case 'adminintegrations':
-        return <AdminIntegrations />; // ya <Integrations />
-      case 'adminsecurity':
-        return <AdminSecurity />; // ya <Security />
-      case 'designsystem':
-        return <DesignSystem />; // ya <Design />
-      case 'mobileapp':
-        return <MobileAppPreview />; // ya <AppPreview />
-
-      default: return <CentralDashboard />;
+      // --- Administration Routes ---
+      case 'adminusers': return <AdminUsersRoles />;
+      case 'adminsite': return <AdminSiteConfig />;
+      case 'adminbranding': return <AdminBrandingConfig />;
+      case 'adminintegrations': return <AdminIntegrations />;
+      case 'adminsecurity': return <AdminSecurity />;
+      case 'designsystem': return <DesignSystem />;
+      case 'mobileapp': return <MobileAppPreview />;
+      case 'srmsite': return <SrmSiteCommissioningDashboard />;
+      default: return <CentralDashboardMain />;
     }
   };
 
@@ -166,24 +139,26 @@ export default function MainLayout() {
         height: '100vh',
         width: '100vw',
         overflow: 'hidden',
-        background: isNightMode ? '#03070c' : '#f8fafc'
+        background: isNightMode ? '#03070c' : '#f8fafc',
       }}
     >
       <TopBar isNightMode={isNightMode} setIsNightMode={setIsNightMode} />
 
       <div style={{ display: 'flex', flex: 1, height: 'calc(100vh - 60px)', width: '100%', overflow: 'hidden' }}>
-
-        {/* बाएं तरफ साइडबार (अब इसकी ऊंचाई टॉपबार के नीचे से शुरू होगी) */}
+        
+        {/* Sidebar with all required props */}
         <Sidebar
           isCollapsed={isSidebarCollapsed}
           setIsCollapsed={setIsSidebarCollapsed}
           activePage={activePage}
           onNavigate={(page) => setActivePage(page)}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
           openGroups={openGroups}
           toggleGroup={toggleGroup}
         />
 
-        {/* दाएं तरफ का मुख्य कंटेंट एरिया */}
+        {/* Main Content Area */}
         <main style={{ flex: 1, overflowY: 'auto', padding: '24px', background: isNightMode ? '#040911' : '#ffffff' }}>
           {renderActiveComponent()}
         </main>
