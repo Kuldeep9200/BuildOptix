@@ -15,8 +15,43 @@ export const MobileAppPreview = ({
     setIsLoaded(false);
   };
 
+ const [showDownloadMenu, setShowDownloadMenu] = useState(false);
+
+  // States for Range Picker
+  const [selectedRange, setSelectedRange] = useState("today"); // 'today', '7d', '30d', 'custom'
+  const [showCustomPicker, setShowCustomPicker] = useState(false);
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+
+  // Handler for Range Button Clicks
+  const handleRangeChange = (range) => {
+    setSelectedRange(range);
+    if (range === "custom") {
+      setShowCustomPicker((prev) => !prev);
+    } else {
+      setShowCustomPicker(false);
+      // Yahan aap non-custom range change handle kar sakte ho
+      console.log("Selected Range:", range);
+    }
+  };
+
+  const handleApplyCustomRange = () => {
+    if (!fromDate || !toDate) {
+      alert("Kripya From aur To dates select karein.");
+      return;
+    }
+    console.log("Custom Range Applied:", { fromDate, toDate });
+    setShowCustomPicker(false);
+  };
+
+
+
   return (
     <div className="page active" id="pg-mobileapp">
+
+
+
+      
       <div
         className="tab-panel active"
         data-page="mobileapp"

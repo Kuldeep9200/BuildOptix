@@ -75,7 +75,7 @@ export default function MainLayout() {
       // --- Dashboard Routes ---
       case 'central': return <CentralDashboardMain />;
       case 'command': return <CommandDashboard />;
-      case 'Site': return <SiteDashboard />;
+      case 'site': return <SiteDashboard />;
       case 'energy': return <EnergyUtilities />;
 
       // --- AI Intelligence Routes ---
@@ -159,7 +159,7 @@ export default function MainLayout() {
         />
 
         {/* Main Content Area */}
-        <main style={{ flex: 1, overflowY: 'auto', padding: '24px', background: isNightMode ? '#040911' : '#ffffff' }}>
+        <main style={{ flex: 1, overflowY: 'auto', padding: '24px', background: isNightMode ? '#040911' : '#ffffff',marginBottom:"22px" }}>
           {renderActiveComponent()}
         </main>
 

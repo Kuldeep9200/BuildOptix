@@ -21,7 +21,7 @@ export default function CommandDashboard() {
 
                     <div>
                         <div className="ph-title" id="dash-page-title">
-                            Central Dashboard
+                            Command Centre
                         </div>
 
                         <div

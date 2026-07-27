@@ -69,3 +69,20 @@ sb-group-h {
 
 }
 
+.statusbar {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  height: 28px !important;
+  z-index: 999999 !important; 
+  display: flex;
+  align-items: center;
+  background-color: #0f172a;
+  color: #94a3b8;
+  font-size: 12px;
+  padding: 6px 16px;
+  border-top: 1px solid #1e293b;
+  box-sizing: border-box;
+}
