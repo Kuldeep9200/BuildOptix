@@ -38,20 +38,14 @@ import MobileAppPreview from '../features/Administration/MobileAppPreview';
 
 // AI Intelligence Component Imports
 import AITimelineComp from '../features/Ai_Intelligence/AITimeline';
-import AISummaryComp from '../features/Ai_Intelligence/AI_Summary'; 
+import AISummaryComp from '../features/Ai_Intelligence/AI_Summary';
 import MaintenanceComp from '../features/Ai_Intelligence/Maintenance';
 import OptimizationComp from '../features/Ai_Intelligence/Optimisation';
 import RootCauseComp from '../features/Ai_Intelligence/RootCause';
 import SrmSiteCommissioningDashboard from '../features/Site_Commissioning/SrmSiteCommissioningDashboard';
 import '../App.css';
+import Energy_Utilities from '../features/Operations/Energy_Utilities';
 
-// Fallback / Placeholder Component
-const EnergyUtilities = () => (
-  <div style={{ color: '#fff', padding: '20px' }}>
-    <h2>🔋 Energy & Utilities Analytics</h2>
-    <p>Power consumption and resource management grid.</p>
-  </div>
-);
 
 export default function MainLayout() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -76,7 +70,6 @@ export default function MainLayout() {
       case 'central': return <CentralDashboardMain />;
       case 'command': return <CommandDashboard />;
       case 'site': return <SiteDashboard />;
-      case 'energy': return <EnergyUtilities />;
 
       // --- AI Intelligence Routes ---
       case 'ai-summary': return <AISummaryComp activePage={activePage} />;
@@ -92,6 +85,7 @@ export default function MainLayout() {
       case 'complaints': return <ComplaintsDashboard />;
       case 'sla': return <SlaDashboard />;
       case 'vendor': return <VendorDashboard />;
+      case 'energy': return <Energy_Utilities />;
 
       // --- Monitoring Routes ---
       case 'alerts': return <AlertsDashboard />;
@@ -126,6 +120,7 @@ export default function MainLayout() {
       case 'designsystem': return <DesignSystem />;
       case 'mobileapp': return <MobileAppPreview />;
       case 'srmsite': return <SrmSiteCommissioningDashboard />;
+
       default: return <CentralDashboardMain />;
     }
   };
@@ -145,7 +140,7 @@ export default function MainLayout() {
       <TopBar isNightMode={isNightMode} setIsNightMode={setIsNightMode} />
 
       <div style={{ display: 'flex', flex: 1, height: 'calc(100vh - 60px)', width: '100%', overflow: 'hidden' }}>
-        
+
         {/* Sidebar with all required props */}
         <Sidebar
           isCollapsed={isSidebarCollapsed}
@@ -159,7 +154,7 @@ export default function MainLayout() {
         />
 
         {/* Main Content Area */}
-        <main style={{ flex: 1, overflowY: 'auto', padding: '24px', background: isNightMode ? '#040911' : '#ffffff',marginBottom:"22px" }}>
+        <main style={{ flex: 1, overflowY: 'auto', padding: '24px', background: isNightMode ? '#040911' : '#F0F4FA', marginBottom: "22px" }}>
           {renderActiveComponent()}
         </main>
 

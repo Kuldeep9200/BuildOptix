@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-
+import { showToast } from '../../utils/toast';
 export default function AISummary() {
    const [activeTab, setActiveTab] = useState(0);
     const [showDownloadMenu, setShowDownloadMenu] = useState(false);
@@ -46,7 +46,7 @@ export default function AISummary() {
 
   // --- Helper Event Triggers ---
   const handleAction = (message, type = 'info') => {
-    alert(`[${type.toUpperCase()}]: ${message}`);
+    showToast(`[${type.toUpperCase()}]: ${message}`);
   };
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import "../../App.css"
-
+import { showToast } from '../../utils/toast';
 // === 1. छोटे रीयूजेबल कंपोनेंट्स ===
 
 // KPI कार्ड कंपोनेंट (Tab 0 के लिए)
@@ -487,7 +487,7 @@ export default function CentralDashboardMain() {
                     <div className="card mb-12">
                         <div className="ch">
                             <div><div className="ct">Site-wise Energy Performance — May 2026</div></div>
-                            <span className="ca" style={{ cursor: 'pointer' }} onClick={() => toast('Exporting XLSX...', 'ok')}>Export XLSX →</span>
+                            <span className="ca" style={{ cursor: 'pointer' }} onClick={() => showToast('Exporting XLSX...', 'ok')}>Export XLSX →</span>
                         </div>
                         <div className="cb" style={{ padding: 0 }}>
                             <table className="dt">

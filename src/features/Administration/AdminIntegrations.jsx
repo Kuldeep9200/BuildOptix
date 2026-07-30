@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { showToast } from '../../utils/toast';
 
 const KPI_DATA = [
   { label: 'Connected', value: '6', color: 'var(--ok)' },
@@ -123,7 +124,7 @@ export const AdminIntegrations = () => {
     } else {
       setShowCustomPicker(false);
       // Yahan aap non-custom range change handle kar sakte ho
-      console.log("Selected Range:", range);
+      showToast("Selected Range:", range);
     }
   };
 
@@ -132,7 +133,7 @@ export const AdminIntegrations = () => {
       alert("Kripya From aur To dates select karein.");
       return;
     }
-    console.log("Custom Range Applied:", { fromDate, toDate });
+    showToast("Custom Range Applied:", { fromDate, toDate });
     setShowCustomPicker(false);
   };
 

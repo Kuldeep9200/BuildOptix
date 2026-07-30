@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { showToast } from '../../utils/toast';
 
 // --- DATA DEFINITIONS ---
 
@@ -222,10 +223,10 @@ export const AdminSecurity = () => {
 
   const handleApplyCustomRange = () => {
     if (!fromDate || !toDate) {
-      alert("Kripya From aur To dates select karein.");
+      showToast("Kripya From aur To dates select karein.");
       return;
     }
-    console.log("Custom Range Applied:", { fromDate, toDate });
+    showToast("Custom Range Applied:", { fromDate, toDate });
     setShowCustomPicker(false);
   };
   return (

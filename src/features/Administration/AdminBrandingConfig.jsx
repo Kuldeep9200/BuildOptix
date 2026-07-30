@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { showToast } from '../../utils/toast';
 const SITES_DATA = [
     { id: 'vikhroli', name: 'Mumbai — Vikhroli', brand: 'BuildOptix brand', type: 'BuildOptix', active: true, color: '#EE9A3A' },
     { id: 'delhi', name: 'Delhi — Sector 62', brand: 'Apex Integrators · Cyberhub Estates', type: 'Co-branded', active: false, color: '#4EA1FF' },
@@ -46,11 +47,11 @@ const AdminBrandingConfig = () => {
 
     // Logout Handlers
     const handleLogout = () => {
-        alert('Signing out...');
+        showToast('Signing out...');
     };
 
     const handleLogoutAll = () => {
-        alert('Signing out of all devices...');
+        showToast('Signing out of all devices...');
     };
 
     const [showDownloadMenu, setShowDownloadMenu] = useState(false);
@@ -69,16 +70,16 @@ const AdminBrandingConfig = () => {
         } else {
             setShowCustomPicker(false);
             // Yahan aap non-custom range change handle kar sakte ho
-            console.log("Selected Range:", range);
+            showToast("Selected Range:", range);
         }
     };
 
     const handleApplyCustomRange = () => {
         if (!fromDate || !toDate) {
-            alert("Kripya From aur To dates select karein.");
+            // alert("Kripya From aur To dates select karein.");
             return;
         }
-        console.log("Custom Range Applied:", { fromDate, toDate });
+        showToast("Custom Range Applied:", { fromDate, toDate });
         setShowCustomPicker(false);
     };
 
@@ -125,11 +126,11 @@ const AdminBrandingConfig = () => {
     // Action handlers
     const handleReset = () => {
         setBrandingMode('buildoptix');
-        alert('Settings reset to default!');
+        showToast('Settings reset to default!');
     };
 
     const handleSave = () => {
-        alert('Settings saved & applied successfully!');
+        showToast('Settings saved & applied successfully!');
     };
     const sitesList = [
         {
@@ -211,7 +212,7 @@ const [brandingMode1, setBrandingMode1] = useState("cobrand");
   };
 
   const handleSetActive = () => {
-    alert(`${selectedSite.toUpperCase()} is now set as the active site!`);
+    showToast(`${selectedSite.toUpperCase()} is now set as the active site!`);
   };
 
   const handleReset1 = () => {
@@ -222,15 +223,15 @@ const [brandingMode1, setBrandingMode1] = useState("cobrand");
     setCustPlacement("secondary");
     setAccentColor("blue");
     setLoginBg("aurora");
-    alert("Form reset to defaults!");
+    showToast("Form reset to defaults!");
   };
 
   const handleSave1 = () => {
-    alert("Branding settings saved & applied!");
+    showToast("Branding settings saved & applied!");
   };
 
   const handlePickUpload = (type) => {
-    alert(`Upload trigger for: ${type} logo`);
+    showToast(`Upload trigger for: ${type} logo`);
   };
 
 

@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { showToast } from '../../utils/toast';
 
 export default function RootCause() {
    const [activeTab, setActiveTab] = useState(2);
@@ -46,7 +47,7 @@ export default function RootCause() {
 
   // --- Helper Event Triggers ---
   const handleAction = (message, type = 'info') => {
-    alert(`[${type.toUpperCase()}]: ${message}`);
+    showToast(`${message}`);
   };
 
   return (

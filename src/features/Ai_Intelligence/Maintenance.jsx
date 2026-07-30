@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
+import { showToast } from '../../utils/toast';
 
 export default function Maintenance() {
-   const [activeTab, setActiveTab] = useState(5);
-    const [showDownloadMenu, setShowDownloadMenu] = useState(false);
+  const [activeTab, setActiveTab] = useState(5);
+  const [showDownloadMenu, setShowDownloadMenu] = useState(false);
 
   // --- Static Data Mockups ---
   const kpiSummary = [
@@ -46,364 +47,364 @@ export default function Maintenance() {
 
   // --- Helper Event Triggers ---
   const handleAction = (message, type = 'info') => {
-    alert(`[${type.toUpperCase()}]: ${message}`);
+    showToast(`${message}`);
   };
 
   return (
     <div className="page" id="pg-ai">
-      
+
       {/* Tab Navigation Controls (Optional UI wrapper for switching views) */}
-        <div className="page-header" id="dash-page-header" style={{ marginBottom: "10px" }}>
-                <div className="ph-left">
-                    <div className="live-dot"></div>
+      <div className="page-header" id="dash-page-header" style={{ marginBottom: "10px" }}>
+        <div className="ph-left">
+          <div className="live-dot"></div>
 
-                    <div>
-                        <div className="ph-title" id="dash-page-title">
-                            AI Intelligence
-                        </div>
-
-                        <div
-                            id="dash-page-sub"
-                            style={{ fontSize: "10px", color: "var(--ink-3)" }}
-                        >
-                            Predictive · Diagnostic · Optimisation — BuildOptix AI
-                        </div>
-                    </div>
-                </div>
-
-                <div className="ph-tabs" id="dash-tab-bar">
-                    <div
-                        onClick={() => setActiveTab(0)}
-                        className={`ph-tab ${activeTab === 0 ? "active" : ""}`}
-                    >
-                       AI Summary
-                    </div>
-
-                    <div
-                        onClick={() => setActiveTab(1)}
-                        className={`ph-tab ${activeTab === 1 ? "active" : ""}`}
-                    >
-                       Risk Matrix
-                    </div>
-
-                    <div
-                        onClick={() => setActiveTab(2)}
-                        className={`ph-tab ${activeTab === 2 ? "active" : ""}`}
-                    >
-                       Root Cause
-                    </div>
-
-                    <div
-                        onClick={() => setActiveTab(3)}
-                        className={`ph-tab ${activeTab === 3 ? "active" : ""}`}
-                    >
-                       Optimization
-                    </div>
-                     <div
-                        onClick={() => setActiveTab(4)}
-                        className={`ph-tab ${activeTab === 4 ? "active" : ""}`}
-                    >
-                       Timeline
-                    </div>
-                     <div
-                        onClick={() => setActiveTab(5)}
-                        className={`ph-tab ${activeTab === 5 ? "active" : ""}`}
-                    >
-                       Maintenance
-                    </div>
-                </div>
-
-                {/* Range Picker */}
-                <div className="range-picker" id="boRangePicker">
-                    <span className="rp-label">Range</span>
-
-                    <div className="rp-seg">
-                        <button data-range="today" className="active">
-                            Today
-                        </button>
-
-                        <button data-range="7d">7D</button>
-
-                        <button data-range="30d">30D</button>
-
-                        <button data-range="custom">
-                            <i className="ti ti-calendar" style={{ fontSize: "12px" }}></i>
-                            Custom
-                        </button>
-                    </div>
-
-                    <div className="rp-pop" id="rpPop">
-                        <label>From</label>
-                        <input type="date" id="rpFrom" />
-
-                        <label>To</label>
-                        <input type="date" id="rpTo" />
-
-                        <button className="rp-apply" id="rpApply">
-                            Apply range
-                        </button>
-                    </div>
-                </div>
-
-                {/* Download */}
-                <div className="dash-dl" id="dashDl">
-                    <button
-                        className="dash-dl-btn"
-                        id="dashDlBtn"
-                        onClick={() => setShowDownloadMenu(!showDownloadMenu)}
-                    >
-                        <i className="ti ti-download"></i>
-                        Download Reports
-                        <i
-                            className="ti ti-chevron-down"
-                            style={{ fontSize: "12px", opacity: 0.8 }}
-                        ></i>
-                    </button>
-                    {showDownloadMenu && (
-                        <div className="dash-dl-menu" style={{ display: showDownloadMenu ? "block" : "none" }}>
-
-                            {/* Energy */}
-                            
-                            <div className="dash-dl-h">Quick report downloads</div>
-
-                            <div className="dash-dl-opt" data-i="0">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--info)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-bolt"
-                                        style={{ color: "var(--info)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">Energy &amp; Utilities</div>
-                                    <div className="ds">Floor-wise · cost · EPI</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            {/* CO2 */}
-                            <div className="dash-dl-opt" data-i="1">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--ok)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-leaf"
-                                        style={{ color: "var(--ok)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">CO₂ &amp; ESG Summary</div>
-                                    <div className="ds">Scope 1/2/3 · offsets</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            {/* SLA */}
-                            <div className="dash-dl-opt" data-i="2">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--warn)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-clipboard-check"
-                                        style={{ color: "var(--warn)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">SLA &amp; Tickets</div>
-                                    <div className="ds">Live ticket + SLA export</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            {/* Asset */}
-                            <div className="dash-dl-opt" data-i="3">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--violet)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-tool"
-                                        style={{ color: "var(--violet)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">Asset PM</div>
-                                    <div className="ds">PM status · health</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            {/* Solar */}
-                            <div className="dash-dl-opt" data-i="4">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--solar)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-solar-panel"
-                                        style={{ color: "var(--solar)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">Solar &amp; ROI</div>
-                                    <div className="ds">Generation · savings</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            {/* Device */}
-                            <div className="dash-dl-opt" data-i="5">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--cool)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-router"
-                                        style={{ color: "var(--cool)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">Device Fleet</div>
-                                    <div className="ds">IoT health · connectivity</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            <div
-                                style={{
-                                    borderTop: "1px solid var(--line-1)",
-                                    marginTop: "5px",
-                                    paddingTop: "6px",
-                                }}
-                            >
-                                <div className="dash-dl-opt" id="dashDlAll">
-                                    <div
-                                        className="di"
-                                        style={{ background: "var(--info)", opacity: 0.16 }}
-                                    ></div>
-
-                                    <div
-                                        style={{
-                                            marginLeft: "-38px",
-                                            width: "28px",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                        }}
-                                    >
-                                        <i
-                                            className="ti ti-package"
-                                            style={{ color: "var(--info)", fontSize: "14px" }}
-                                        ></i>
-                                    </div>
-
-                                    <div>
-                                        <div className="dt2">All reports</div>
-                                        <div className="ds">Download every report (CSV)</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div style={{ padding: "7px 9px 3px" }}>
-                                <a
-                                    href="#"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        navTo("reports");
-                                    }}
-                                    style={{
-                                        fontSize: "10.5px",
-                                        color: "var(--info)",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    Open full Reports &amp; Bills library →
-                                </a>
-                            </div>
-                        </div>
-                    )}
-                </div>
+          <div>
+            <div className="ph-title" id="dash-page-title">
+              AI Intelligence
             </div>
 
+            <div
+              id="dash-page-sub"
+              style={{ fontSize: "10px", color: "var(--ink-3)" }}
+            >
+              Predictive · Diagnostic · Optimisation — BuildOptix AI
+            </div>
+          </div>
+        </div>
+
+        <div className="ph-tabs" id="dash-tab-bar">
+          <div
+            onClick={() => setActiveTab(0)}
+            className={`ph-tab ${activeTab === 0 ? "active" : ""}`}
+          >
+            AI Summary
+          </div>
+
+          <div
+            onClick={() => setActiveTab(1)}
+            className={`ph-tab ${activeTab === 1 ? "active" : ""}`}
+          >
+            Risk Matrix
+          </div>
+
+          <div
+            onClick={() => setActiveTab(2)}
+            className={`ph-tab ${activeTab === 2 ? "active" : ""}`}
+          >
+            Root Cause
+          </div>
+
+          <div
+            onClick={() => setActiveTab(3)}
+            className={`ph-tab ${activeTab === 3 ? "active" : ""}`}
+          >
+            Optimization
+          </div>
+          <div
+            onClick={() => setActiveTab(4)}
+            className={`ph-tab ${activeTab === 4 ? "active" : ""}`}
+          >
+            Timeline
+          </div>
+          <div
+            onClick={() => setActiveTab(5)}
+            className={`ph-tab ${activeTab === 5 ? "active" : ""}`}
+          >
+            Maintenance
+          </div>
+        </div>
+
+        {/* Range Picker */}
+        <div className="range-picker" id="boRangePicker">
+          <span className="rp-label">Range</span>
+
+          <div className="rp-seg">
+            <button data-range="today" className="active">
+              Today
+            </button>
+
+            <button data-range="7d">7D</button>
+
+            <button data-range="30d">30D</button>
+
+            <button data-range="custom">
+              <i className="ti ti-calendar" style={{ fontSize: "12px" }}></i>
+              Custom
+            </button>
+          </div>
+
+          <div className="rp-pop" id="rpPop">
+            <label>From</label>
+            <input type="date" id="rpFrom" />
+
+            <label>To</label>
+            <input type="date" id="rpTo" />
+
+            <button className="rp-apply" id="rpApply">
+              Apply range
+            </button>
+          </div>
+        </div>
+
+        {/* Download */}
+        <div className="dash-dl" id="dashDl">
+          <button
+            className="dash-dl-btn"
+            id="dashDlBtn"
+            onClick={() => setShowDownloadMenu(!showDownloadMenu)}
+          >
+            <i className="ti ti-download"></i>
+            Download Reports
+            <i
+              className="ti ti-chevron-down"
+              style={{ fontSize: "12px", opacity: 0.8 }}
+            ></i>
+          </button>
+          {showDownloadMenu && (
+            <div className="dash-dl-menu" style={{ display: showDownloadMenu ? "block" : "none" }}>
+
+              {/* Energy */}
+
+              <div className="dash-dl-h">Quick report downloads</div>
+
+              <div className="dash-dl-opt" data-i="0">
+                <div
+                  className="di"
+                  style={{ background: "var(--info)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-bolt"
+                    style={{ color: "var(--info)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">Energy &amp; Utilities</div>
+                  <div className="ds">Floor-wise · cost · EPI</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* CO2 */}
+              <div className="dash-dl-opt" data-i="1">
+                <div
+                  className="di"
+                  style={{ background: "var(--ok)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-leaf"
+                    style={{ color: "var(--ok)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">CO₂ &amp; ESG Summary</div>
+                  <div className="ds">Scope 1/2/3 · offsets</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* SLA */}
+              <div className="dash-dl-opt" data-i="2">
+                <div
+                  className="di"
+                  style={{ background: "var(--warn)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-clipboard-check"
+                    style={{ color: "var(--warn)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">SLA &amp; Tickets</div>
+                  <div className="ds">Live ticket + SLA export</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* Asset */}
+              <div className="dash-dl-opt" data-i="3">
+                <div
+                  className="di"
+                  style={{ background: "var(--violet)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-tool"
+                    style={{ color: "var(--violet)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">Asset PM</div>
+                  <div className="ds">PM status · health</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* Solar */}
+              <div className="dash-dl-opt" data-i="4">
+                <div
+                  className="di"
+                  style={{ background: "var(--solar)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-solar-panel"
+                    style={{ color: "var(--solar)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">Solar &amp; ROI</div>
+                  <div className="ds">Generation · savings</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* Device */}
+              <div className="dash-dl-opt" data-i="5">
+                <div
+                  className="di"
+                  style={{ background: "var(--cool)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-router"
+                    style={{ color: "var(--cool)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">Device Fleet</div>
+                  <div className="ds">IoT health · connectivity</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              <div
+                style={{
+                  borderTop: "1px solid var(--line-1)",
+                  marginTop: "5px",
+                  paddingTop: "6px",
+                }}
+              >
+                <div className="dash-dl-opt" id="dashDlAll">
+                  <div
+                    className="di"
+                    style={{ background: "var(--info)", opacity: 0.16 }}
+                  ></div>
+
+                  <div
+                    style={{
+                      marginLeft: "-38px",
+                      width: "28px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <i
+                      className="ti ti-package"
+                      style={{ color: "var(--info)", fontSize: "14px" }}
+                    ></i>
+                  </div>
+
+                  <div>
+                    <div className="dt2">All reports</div>
+                    <div className="ds">Download every report (CSV)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ padding: "7px 9px 3px" }}>
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navTo("reports");
+                  }}
+                  style={{
+                    fontSize: "10.5px",
+                    color: "var(--info)",
+                    cursor: "pointer",
+                  }}
+                >
+                  Open full Reports &amp; Bills library →
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* Tab 0: AI Summary */}
-   {activeTab === 0 && (
-  <div className={`tab-panel ${activeTab === 0 ? 'active' : ''}`}>
+      {activeTab === 0 && (
+        <div className={`tab-panel ${activeTab === 0 ? 'active' : ''}`}>
           <div className="aip-hero">
             <div className="aip-hero-top">
               <span className="aip-hero-badge">
@@ -501,8 +502,8 @@ export default function Maintenance() {
       )}
 
       {/* Tab 1: Predictive Risk Matrix */}
-    {activeTab === 1 && (
-  <div className={`tab-panel ${activeTab === 1 ? 'active' : ''}`}>
+      {activeTab === 1 && (
+        <div className={`tab-panel ${activeTab === 1 ? 'active' : ''}`}>
           <div className="kpi-strip mb-14" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '12px' }}>
             <div className="kpi"><div className="kpi-l">Assets at Risk</div><div className="kpi-v" style={{ color: 'var(--warn)' }}>7</div><div className="kpi-d">of 2,148 monitored</div></div>
             <div className="kpi"><div className="kpi-l">High Severity</div><div className="kpi-v" style={{ color: 'var(--bad)' }}>2</div><div className="kpi-d">immediate attention</div></div>
@@ -518,17 +519,17 @@ export default function Maintenance() {
                 <div className="aip-matrix" style={{ display: 'grid', gridTemplateColumns: 'auto repeat(3, 1fr)', gap: '4px' }}>
                   <div></div>
                   <div className="aip-mx-h">Low</div><div className="aip-mx-h">Medium</div><div className="aip-mx-h">High</div>
-                  
+
                   <div className="aip-mx-yl">High<br />impact</div>
                   <div className="aip-cell" style={{ background: 'rgba(245,180,65,.14)' }}><span className="n" style={{ color: 'var(--warn)' }}>1</span><span className="x">Lift-04</span></div>
                   <div className="aip-cell" style={{ background: 'rgba(255,77,79,.14)' }}><span className="n" style={{ color: 'var(--bad)' }}>1</span><span className="x">PMP-03</span></div>
                   <div className="aip-cell" style={{ background: 'rgba(255,77,79,.22)' }}><span className="n" style={{ color: 'var(--bad)' }}>1</span><span className="x">AHU-07</span></div>
-                  
+
                   <div className="aip-mx-yl">Med<br />impact</div>
                   <div className="aip-cell"><span className="n" style={{ color: 'var(--ink-3)' }}>0</span></div>
                   <div className="aip-cell" style={{ background: 'rgba(245,180,65,.12)' }}><span className="n" style={{ color: 'var(--warn)' }}>2</span><span className="x">CT-01, EF-03</span></div>
                   <div className="aip-cell" style={{ background: 'rgba(245,180,65,.14)' }}><span className="n" style={{ color: 'var(--warn)' }}>1</span><span className="x">CHWP-02</span></div>
-                  
+
                   <div className="aip-mx-yl">Low<br />impact</div>
                   <div className="aip-cell" style={{ background: 'rgba(34,214,122,.1)' }}><span className="n" style={{ color: 'var(--ok)' }}>0</span></div>
                   <div className="aip-cell"><span className="n" style={{ color: 'var(--ink-3)' }}>1</span><span className="x">VAV-12</span></div>
@@ -536,7 +537,7 @@ export default function Maintenance() {
                 </div>
               </div>
             </div>
-            
+
             <div className="card">
               <div className="ch">
                 <div><div className="ct">Equipment Risk Register</div><div className="cs">Prognostic scores · time-to-failure · severity</div></div>
@@ -555,8 +556,8 @@ export default function Maintenance() {
                         <td><span className={`badge ${row.badgeClass}`}>{row.impact}</span></td>
                         <td style={{ color: row.trend.includes('rising') ? 'var(--bad)' : 'var(--ink-3)' }}>{row.trend}</td>
                         <td>
-                          <button 
-                            className={`aip-btn ${row.equip === 'AHU-07' ? 'go' : ''}`} 
+                          <button
+                            className={`aip-btn ${row.equip === 'AHU-07' ? 'go' : ''}`}
                             onClick={() => handleAction(`Action triggered for ${row.equip}`, 'info')}
                           >
                             {row.equip === 'AHU-07' ? 'Act' : row.equip === 'PMP-03' ? 'Root cause' : 'Schedule'}
@@ -573,8 +574,8 @@ export default function Maintenance() {
       )}
 
       {/* Tab 2: AI Root Cause Engine */}
-    {activeTab === 2 && (
-  <div className={`tab-panel ${activeTab === 2 ? 'active' : ''}`}>
+      {activeTab === 2 && (
+        <div className={`tab-panel ${activeTab === 2 ? 'active' : ''}`}>
           <div className="card mb-12">
             <div className="ch">
               <div><div className="ct">Alarm Correlation</div><div className="cs">12 raw alarms grouped into 1 root cause</div></div>
@@ -598,7 +599,7 @@ export default function Maintenance() {
               </div>
             </div>
           </div>
-          
+
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <div className="card">
               <div className="ch"><div><div className="ct">Operational Anomaly Explanation</div></div></div>
@@ -630,7 +631,7 @@ export default function Maintenance() {
 
       {/* Tab 3: AI Optimization Suggestions */}
       {activeTab === 3 && (
-  <div className={`tab-panel ${activeTab === 3 ? 'active' : ''}`}>
+        <div className={`tab-panel ${activeTab === 3 ? 'active' : ''}`}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             {optimizationOptions.map((opt, idx) => (
               <div className="aip-opt" key={idx}>
@@ -658,8 +659,8 @@ export default function Maintenance() {
       )}
 
       {/* Tab 4: AI Timeline */}
-    {activeTab === 4 && (
-  <div className={`tab-panel ${activeTab === 4 ? 'active' : ''}`}>
+      {activeTab === 4 && (
+        <div className={`tab-panel ${activeTab === 4 ? 'active' : ''}`}>
           <div className="card">
             <div className="ch">
               <div><div className="ct">AI Operational Timeline</div><div className="cs">Chronological AI insights &amp; actions · today</div></div>
@@ -681,8 +682,8 @@ export default function Maintenance() {
       )}
 
       {/* Tab 5: AI Maintenance Recommendations */}
-   {activeTab === 5 && (
-  <div className={`tab-panel ${activeTab === 5 ? 'active' : ''}`}>
+      {activeTab === 5 && (
+        <div className={`tab-panel ${activeTab === 5 ? 'active' : ''}`}>
           <div className="kpi-strip mb-14" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '12px' }}>
             <div className="kpi"><div className="kpi-l">Open Recommendations</div><div className="kpi-v">6</div><div className="kpi-d">AI-generated</div></div>
             <div className="kpi"><div className="kpi-l">Urgent (≤7d)</div><div className="kpi-v" style={{ color: 'var(--bad)' }}>2</div><div className="kpi-d">act this week</div></div>
@@ -707,8 +708,8 @@ export default function Maintenance() {
                       <td style={{ fontFamily: 'var(--font-mono)' }}>{rec.window}</td>
                       <td style={{ fontFamily: 'var(--font-mono)', color: 'var(--ok)' }}>{rec.conf}</td>
                       <td>
-                        <button 
-                          className={`aip-btn ${rec.actionType === 'go' ? 'go' : ''}`} 
+                        <button
+                          className={`aip-btn ${rec.actionType === 'go' ? 'go' : ''}`}
                           onClick={() => handleAction(`${rec.actionText} executed for ${rec.equip}`, 'ok')}
                         >
                           {rec.actionText}

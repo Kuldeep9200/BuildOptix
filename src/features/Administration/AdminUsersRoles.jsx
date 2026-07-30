@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { showToast } from '../../utils/toast';
 const AdminUsersRoles = () => {
     // Tab State: 0 = Users, 1 = Roles & Permissions
     const [activeTab, setActiveTab] = useState(1);
@@ -18,10 +18,7 @@ const AdminUsersRoles = () => {
     const admOpenRoleModal = (role) => console.log('Open role modal:', role);
     const [actFilter, setActFilter] = useState('all');
 
-    // Sample Toast simulation helper
-    const showToast = (message) => {
-        alert(message); // Standard handler replace with your UI toast/notification system
-    };
+    
 
     const handleRemoveDevice = (userId, deviceId) => {
         console.log(`Removing device ${deviceId} for user ${userId}`);

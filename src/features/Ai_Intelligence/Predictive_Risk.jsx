@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { showToast } from '../../utils/toast';
 
 export default function Predictive_Risk() {
    const [activeTab, setActiveTab] = useState(1);
@@ -45,7 +46,7 @@ export default function Predictive_Risk() {
 
   // --- Helper Event Triggers ---
   const handleAction = (message, type = 'info') => {
-    alert(`[${type.toUpperCase()}]: ${message}`);
+    showToast(`[${type.toUpperCase()}]: ${message}`);
   };
 
   return (

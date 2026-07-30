@@ -659,25 +659,28 @@ export default function AITimeline() {
 
       {/* Tab 4: AI Timeline */}
     {activeTab === 4 && (
-  <div className={`tab-panel ${activeTab === 4 ? 'active' : ''}`}>
-          <div className="card">
-            <div className="ch">
-              <div><div className="ct">AI Operational Timeline</div><div className="cs">Chronological AI insights &amp; actions · today</div></div>
-            </div>
-            <div className="cb">
-              <div className="aip-tl" style={{ display: 'flex', flexDirection: 'column', gap: '16px', position: 'relative', paddingLeft: '20px' }}>
-                {timelineEvents.map((evt, idx) => (
-                  <div className="aip-tl-item" key={idx} style={{ position: 'relative' }}>
-                    <div className="aip-tl-dot" style={{ background: evt.color, position: 'absolute', left: '-24px', top: '4px', width: '10px', height: '10px', borderRadius: '50%' }}></div>
-                    <div className="aip-tl-time" style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--ink-3)' }}>{evt.time}</div>
-                    <div className="aip-tl-t" style={{ fontWeight: 600, fontSize: '13px', margin: '2px 0' }}>{evt.title}</div>
-                    <div className="aip-tl-d" style={{ fontSize: '11.5px', color: 'var(--ink-2)' }}>{evt.desc}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
+  <div className="tab-panel active" data-page="ai" data-tab="4">
+      <div className="card">
+        <div className="ch">
+          <div>
+            <div className="ct">AI Operational Timeline</div>
+            <div className="cs">Chronological AI insights &amp; actions · today</div>
           </div>
         </div>
+        <div className="cb">
+          <div className="aip-tl">
+            {timelineEvents.map((item, index) => (
+              <div key={index} className="aip-tl-item">
+                <div className="aip-tl-dot" style={{ background: item.color }}></div>
+                <div className="aip-tl-time">{item.time}</div>
+                <div className="aip-tl-t">{item.title}</div>
+                <div className="aip-tl-d">{item.description}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
       )}
 
       {/* Tab 5: AI Maintenance Recommendations */}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { showToast } from '../../utils/toast';
 const AdminSiteConfig = () => {
   // State for Tabs
   const [activeTab, setActiveTab] = useState(0);
@@ -16,9 +16,7 @@ const AdminSiteConfig = () => {
   const [openGateways, setOpenGateways] = useState({});
 
   // Toast / Notification Placeholder
-  const showToast = (message, type) => {
-    alert(`[${type.toUpperCase()}]: ${message}`);
-  };
+  
 
   const toggleTreeNode = (key) => {
     setTreeExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -50,10 +48,10 @@ const AdminSiteConfig = () => {
 
   const handleApplyCustomRange = () => {
     if (!fromDate || !toDate) {
-      alert("Kripya From aur To dates select karein.");
+      showToast("Kripya From aur To dates select karein.");
       return;
     }
-    console.log("Custom Range Applied:", { fromDate, toDate });
+    showToast("Custom Range Applied:", { fromDate, toDate });
     setShowCustomPicker(false);
   };
 
