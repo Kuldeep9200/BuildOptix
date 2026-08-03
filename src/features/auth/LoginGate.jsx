@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLoginController } from '../hooks/useLoginController';
-
+import logo from "../../assets/download.png"
+import sidelogin from "../../assets/sidelogin.png"
 export default function LoginGate({ onLoginComplete, onLogoutTrigger, globalImages }) {
   const {
     step, setStep, user, provider, remember, setRemember, trusted, ROLES, PERMS,
@@ -128,7 +129,7 @@ export default function LoginGate({ onLoginComplete, onLogoutTrigger, globalImag
       {/* ── LEFT PANEL (Branding & Live Metrics) ── */}
       <div className="bolg-brand">
         <div className="bolg-grid"></div>
-        <div className="bolg-logo"><img src={globalImages?.logo || "/path-to-logo.png"} alt="BuildOptix" /></div>
+        <div className="bolg-logo"><img src={logo} alt="BuildOptix" /></div>
         <div className="bolg-mid">
           <span className="bolg-eyebrow"><span className="lvd"></span>Smart Building Operations</span>
           <h1 className="bolg-h">Run every building like your best one.</h1>
@@ -240,23 +241,108 @@ export default function LoginGate({ onLoginComplete, onLogoutTrigger, globalImag
           {/* STEP 3: MFA AUTHENTICATION */}
           {step === 'mfa' && (
             <div className="bolg-card bolg-fade">
-              <span className="bolg-back" onClick={() => setStep('signin')}><i className="ti ti-arrow-left"></i>Back</span>
-              <h1 className="bolg-cardh">Enter your code</h1>
-              <div className="bolg-acct">
-                <div className="av" style={{ background: ROLES[user?.role]?.av }}>{getInitials(user?.name)}</div>
-                <div className="info"><div className="nm">{user?.name}</div><div className="em">{user?.email}</div></div>
+              {/* Back Button */}
+              <span className="bolg-back" onClick={() => setStep('signin')}>
+                <i className="ti ti-arrow-left"></i>Back
+              </span>
+
+              {/* Header Logo & Step Info */}
+              <div className="bolg-mark">
+                <img src={sidelogin} /> {/* Aapka logo path */}
+                <div>
+                  <div className="nm">Two-factor authentication</div>
+                  <div className="sb">Step 2 of 2</div>
+                </div>
               </div>
-              <div className="bolg-otprow">
+
+              <h1 className="bolg-cardh">Enter your code</h1>
+              <p className="bolg-sub">
+                Open your authenticator app (Microsoft Authenticator, Google Authenticator, Authy…) and enter the 6-digit code for BuildOptix.
+              </p>
+
+              {/* Dynamic User Profile Card */}
+              <div className="bolg-acct">
+                <div
+                  className="av"
+                  style={{ background: ROLES[user?.role]?.av || 'linear-gradient(135deg,#5AA6FF,#2F6FD6)' }}
+                >
+                  {getInitials(user?.name)}
+                </div>
+                <div className="info">
+                  <div className="nm">{user?.name}</div>
+                  <div className="em">{user?.email}</div>
+                </div>
+                <span className="sw" onClick={() => setStep('signin')}>Switch</span>
+              </div>
+
+              {/* OTP Inputs */}
+              <div className="bolg-otprow" id="bolgOtpRow">
                 {otp.map((digit, i) => (
-                  <input key={i} ref={el => otpRefs.current[i] = el} className={`bolg-otp ${digit ? 'filled' : ''}`} type="text" maxLength="1" value={digit} onChange={(e) => handleOtpChange(e.target.value, i)} />
+                  <input
+                    key={i}
+                    ref={(el) => (otpRefs.current[i] = el)}
+                    className={`bolg-otp ${digit ? 'filled' : ''}`}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength="1"
+                    value={digit}
+                    autoFocus={i === 0}
+                    onChange={(e) => handleOtpChange(e.target.value, i)}
+                  />
                 ))}
               </div>
-              {otpErr && <div className="bolg-otperr">{otpErr}</div>}
-              <div className="bolg-otpmeta">Code refreshes in <b>{mfaSecs}s</b></div>
-              <label className="bolg-chk">
-                <input type="checkbox" checked={trustThisDevice} onChange={(e) => setTrustThisDevice(e.target.checked)} /> Trust this device for 30 days
+
+              {/* Error Message */}
+              {otpErr && <div id="bolgOtpErr" className="bolg-otperr">{otpErr}</div>}
+
+              {/* OTP Meta Info */}
+              <div className="bolg-otpmeta">
+                <span>
+                  Code refreshes in{' '}
+                  <b id="bolgSecs" style={{ color: 'var(--ink-1)', fontFamily: 'var(--font-mono)' }}>
+                    {mfaSecs}s
+                  </b>
+                </span>
+                <span className="bolg-lnk" onClick={() => setStep('signin')}>
+                  Use a different account
+                </span>
+              </div>
+
+              {/* Trust Device Checkbox */}
+              <label className="bolg-chk" id="bolgTrustWrap" style={{ marginTop: '18px' }}>
+                <input
+                  type="checkbox"
+                  id="bolgTrust"
+                  checked={trustThisDevice}
+                  onChange={(e) => setTrustThisDevice(e.target.checked)}
+                />
+                <span className="box">
+                  <i className="ti ti-check"></i>
+                </span>
+                Trust this device for 30 days — skip the code here next time
               </label>
-              <button className="bolg-btn" disabled={otp.join('').length < 6} onClick={() => triggerMFAVerify(otp.join(''))} type="button">Verify &amp; continue</button>
+
+              {/* Verify Button */}
+              <button
+                className="bolg-btn"
+                id="bolgVerify"
+                type="button"
+                disabled={otp.join('').length < 6}
+                onClick={() => triggerMFAVerify(otp.join(''))}
+              >
+                <i className="ti ti-shield-check"></i>
+                <span>Verify &amp; continue</span>
+              </button>
+
+              {/* Backup Code Button */}
+              <button className="bolg-btng" type="button" onClick={() => setStep('backup')}>
+                <i className="ti ti-key"></i>Use a backup code instead
+              </button>
+
+              {/* Tip / Legal Info */}
+              <p className="bolg-legal">
+                Tip: type <b style={{ color: 'var(--ink-2)' }}>000000</b> to preview the error state, or any other 6 digits to continue.
+              </p>
             </div>
           )}
 

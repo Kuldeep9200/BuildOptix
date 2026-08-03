@@ -122,7 +122,6 @@ export default function Sidebar({
   activePage,
   onNavigate,
 }) {
-  // Accordion open/close state logic locally handled
   const [openGroups, setOpenGroups] = useState({});
 
   const handleKeyDown = (e, callback) => {
@@ -132,7 +131,6 @@ export default function Sidebar({
     }
   };
 
-  // Accordion Logic: Ek khulega to bakki sab close honge
   const toggleGroup = (groupId) => {
     setOpenGroups((prev) => {
       if (prev[groupId]) {
@@ -149,9 +147,21 @@ export default function Sidebar({
       <style
         dangerouslySetInnerHTML={{
           __html: `
-          .sidebar-scroll { flex: 1; overflow-y: auto; padding: 12px 0; }
+          .sidebar {
+            position: relative;
+            z-index: 1000;
+          }
+          .sidebar-scroll { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 12px 0; 
+          }
           .sidebar-scroll::-webkit-scrollbar { width: 4px; }
           .sidebar-scroll::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+
+          .sb-group {
+            position: relative;
+          }
 
           .sb-group-h {
             display: flex;
@@ -193,16 +203,83 @@ export default function Sidebar({
           .nav-badge.warn { background-color: var(--warn, #f59e0b); color: #000; }
           .nav-badge.info { background-color: var(--info, #3b82f6); color: #fff; }
 
-          .sidebar.collapsed .nav-tx,
+          /* Standard Parent Header inside expanded menu (Hidden by default) */
+          .popover-parent-header {
+            display: none;
+          }
+
+          /* ======================================================= */
+          /* ===== COLLAPSED HOVER OVERLAY POPUP WITH PARENT ====== */
+          /* ======================================================= */
+          
+          .sidebar.collapsed,
+          .sidebar.collapsed .sidebar-scroll { 
+            overflow: visible !important; 
+          }
+
+          .sidebar.collapsed > .sidebar-scroll > .sb-group > .sb-group-h > .nav-tx,
           .sidebar.collapsed .chev,
-          .sidebar.collapsed .nav-badge,
-          .sidebar.collapsed .sb-section-l,
-          .sidebar.collapsed .sb-group-items { display: none !important; }
+          .sidebar.collapsed .sb-section-l { 
+            display: none !important; 
+          }
 
           .sidebar.collapsed .sb-group-h { justify-content: center; padding: 14px 0; }
           .sidebar.collapsed .sb-group-h > i:first-child { margin-right: 0; }
 
-          .sb-collapse { padding: 16px;  display: flex; justify-content: flex-end; color: #475569; cursor: pointer; transition: color 0.2s; margin-bottom: 20px; }
+          /* Floating Overlay Box */
+          .sidebar.collapsed .sb-group-items {
+            display: none !important;
+            position: absolute;
+            left: calc(100% + 8px);
+            top: 0;
+            width: 240px;
+            background: #090f1e;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
+            padding: 8px;
+            z-index: 9999 !important;
+            max-height: none !important;
+            overflow: visible !important;
+          }
+
+          /* Display on Hover */
+          .sidebar.collapsed .sb-group:hover .sb-group-items {
+            display: block !important;
+          }
+
+          /* Parent Header inside Floating Box (Matches Screenshot) */
+          .sidebar.collapsed .popover-parent-header {
+            display: flex !important;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px 10px 10px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            color: #f97316; /* Orange Highlight Accent */
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+          }
+
+          .sidebar.collapsed .popover-parent-header i {
+            font-size: 16px;
+            color: #f97316;
+          }
+
+          /* Sub-items in Floating Popup */
+          .sidebar.collapsed .sb-group-items .nav-tx,
+          .sidebar.collapsed .sb-group-items .nav-badge {
+            display: inline-flex !important;
+          }
+
+          .sidebar.collapsed .sb-group-items .nav-item {
+            padding: 8px 12px !important;
+            font-weight: 500;
+          }
+
+          .sb-collapse { padding: 16px; display: flex; justify-content: flex-end; color: #475569; cursor: pointer; transition: color 0.2s; margin-bottom: 20px; }
           .sb-collapse:hover { color: var(--tx-main, #fff); }
           .sidebar.collapsed .sb-collapse { justify-content: center; }
         `,
@@ -236,6 +313,12 @@ export default function Sidebar({
                 </div>
 
                 <div className={`sb-group-items ${isOpen ? 'show' : ''}`}>
+                  {/* Floating Popover Parent Header (Screenshot Design) */}
+                  <div className="popover-parent-header">
+                    <i className={`ti ${group.icon}`} aria-hidden="true"></i>
+                    <span>{group.label}</span>
+                  </div>
+
                   {group.items.map((item) => (
                     <div
                       key={item.id}

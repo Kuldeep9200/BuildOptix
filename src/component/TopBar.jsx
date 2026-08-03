@@ -19,7 +19,11 @@ export default function TopBar({ isNightMode, setIsNightMode, openMobileSidebar,
   const toggleDropdown = (dropdownName) => {
     setOpenDropdown(prev => prev === dropdownName ? null : dropdownName);
   };
-
+const handleLogout = () => {
+    localStorage.clear(); 
+   
+    navigate('/');
+  };
   // Exact same Theme toggle Handler
   const toggleNight = () => {
     const nextMode = !isNightMode;
@@ -406,7 +410,7 @@ export default function TopBar({ isNightMode, setIsNightMode, openMobileSidebar,
               <div style={{ height: "1px", background: "var(--line-1)", margin: "6px 2px" }}></div>
               <div className="bolg-umopt" style={{ cursor: "default", color: "var(--ink-3)" }}><i className="ti ti-shield-lock" style={{ color: "var(--ink-3)" }}></i>MFA required on this device</div>
               <div style={{ height: "1px", background: "var(--line-1)", margin: "6px 2px" }}></div>
-              <button className="bolg-umopt" type="button" data-um="logout"><i className="ti ti-logout"></i>Sign out</button>
+              <button className="bolg-umopt" type="button" data-um="logout" onClick={handleLogout}><i className="ti ti-logout" ></i>Sign out</button>
               <button className="bolg-umopt danger" type="button" data-um="logoutall"><i className="ti ti-shield-x"></i>Sign out of all devices</button>
             </div>
           )}
