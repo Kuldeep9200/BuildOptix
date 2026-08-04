@@ -18,7 +18,7 @@ const AdminUsersRoles = () => {
     const admOpenRoleModal = (role) => console.log('Open role modal:', role);
     const [actFilter, setActFilter] = useState('all');
 
-    
+
 
     const handleRemoveDevice = (userId, deviceId) => {
         console.log(`Removing device ${deviceId} for user ${userId}`);
@@ -31,11 +31,349 @@ const AdminUsersRoles = () => {
     const handleTogglePolicy = (policyKey) => {
         console.log(`Toggling policy: ${policyKey}`);
     };
+    const [showDownloadMenu, setShowDownloadMenu] = useState(false);
+
     return (
         <div className="page active" id='pg-adminusers'>
             {/* TAB 0: USERS MANAGEMENT */}
 
-            
+
+            <div className="page-header" id="dash-page-header" style={{ marginBottom: "10px" }}>
+                <div className="ph-left">
+                    <div className="live-dot"></div>
+
+                    <div>
+                        <div className="ph-title" id="dash-page-title">
+                            Users & Roles
+                        </div>
+
+                        <div
+                            id="dash-page-sub"
+                            style={{ fontSize: "10px", color: "var(--ink-3)" }}
+                        >
+                            Administration · User directory · RBAC roles & permissions                        </div>
+                    </div>
+                </div>
+
+                <div className="ph-tabs" id="dash-tab-bar">
+                    <div
+                        onClick={() => setActiveTab(0)}
+                        className={`ph-tab ${activeTab === 0 ? "active" : ""}`}
+                    >
+                        Users
+                    </div>
+
+                    <div
+                        onClick={() => setActiveTab(1)}
+                        className={`ph-tab ${activeTab === 1 ? "active" : ""}`}
+                    >
+                        Roles & Permissions
+                    </div>
+
+                    <div
+                        onClick={() => setActiveTab(2)}
+                        className={`ph-tab ${activeTab === 2 ? "active" : ""}`}
+                    >
+                        Activity Log
+                    </div>
+
+                    <div
+                        onClick={() => setActiveTab(3)}
+                        className={`ph-tab ${activeTab === 3 ? "active" : ""}`}
+                    >
+                        Device Security
+                    </div>
+                </div>
+
+                {/* Range Picker */}
+                <div className="range-picker" id="boRangePicker">
+                    <span className="rp-label">Range</span>
+
+                    <div className="rp-seg">
+                        <button data-range="today" className="active">
+                            Today
+                        </button>
+
+                        <button data-range="7d">7D</button>
+
+                        <button data-range="30d">30D</button>
+
+                        <button data-range="custom">
+                            <i className="ti ti-calendar" style={{ fontSize: "12px" }}></i>
+                            Custom
+                        </button>
+                    </div>
+
+                    <div className="rp-pop" id="rpPop">
+                        <label>From</label>
+                        <input type="date" id="rpFrom" />
+
+                        <label>To</label>
+                        <input type="date" id="rpTo" />
+
+                        <button className="rp-apply" id="rpApply">
+                            Apply range
+                        </button>
+                    </div>
+                </div>
+
+                {/* Download */}
+                <div className="dash-dl" id="dashDl">
+                    <button
+                        className="dash-dl-btn"
+                        id="dashDlBtn"
+                        onClick={() => setShowDownloadMenu(!showDownloadMenu)}
+                    >
+                        <i className="ti ti-download"></i>
+                        Download Reports
+                        <i
+                            className="ti ti-chevron-down"
+                            style={{ fontSize: "12px", opacity: 0.8 }}
+                        ></i>
+                    </button>
+                    {showDownloadMenu && (
+                        <div className="dash-dl-menu" style={{ display: showDownloadMenu ? "block" : "none" }}>
+
+                            {/* Energy */}
+
+                            <div className="dash-dl-h">Quick report downloads</div>
+
+                            <div className="dash-dl-opt" data-i="0">
+                                <div
+                                    className="di"
+                                    style={{ background: "var(--info)", opacity: 0.16 }}
+                                ></div>
+
+                                <div
+                                    style={{
+                                        marginLeft: "-38px",
+                                        width: "28px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <i
+                                        className="ti ti-bolt"
+                                        style={{ color: "var(--info)", fontSize: "14px" }}
+                                    ></i>
+                                </div>
+
+                                <div>
+                                    <div className="dt2">Energy &amp; Utilities</div>
+                                    <div className="ds">Floor-wise · cost · EPI</div>
+                                </div>
+
+                                <span className="dx">CSV</span>
+                            </div>
+
+                            {/* CO2 */}
+                            <div className="dash-dl-opt" data-i="1">
+                                <div
+                                    className="di"
+                                    style={{ background: "var(--ok)", opacity: 0.16 }}
+                                ></div>
+
+                                <div
+                                    style={{
+                                        marginLeft: "-38px",
+                                        width: "28px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <i
+                                        className="ti ti-leaf"
+                                        style={{ color: "var(--ok)", fontSize: "14px" }}
+                                    ></i>
+                                </div>
+
+                                <div>
+                                    <div className="dt2">CO₂ &amp; ESG Summary</div>
+                                    <div className="ds">Scope 1/2/3 · offsets</div>
+                                </div>
+
+                                <span className="dx">CSV</span>
+                            </div>
+
+                            {/* SLA */}
+                            <div className="dash-dl-opt" data-i="2">
+                                <div
+                                    className="di"
+                                    style={{ background: "var(--warn)", opacity: 0.16 }}
+                                ></div>
+
+                                <div
+                                    style={{
+                                        marginLeft: "-38px",
+                                        width: "28px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <i
+                                        className="ti ti-clipboard-check"
+                                        style={{ color: "var(--warn)", fontSize: "14px" }}
+                                    ></i>
+                                </div>
+
+                                <div>
+                                    <div className="dt2">SLA &amp; Tickets</div>
+                                    <div className="ds">Live ticket + SLA export</div>
+                                </div>
+
+                                <span className="dx">CSV</span>
+                            </div>
+
+                            {/* Asset */}
+                            <div className="dash-dl-opt" data-i="3">
+                                <div
+                                    className="di"
+                                    style={{ background: "var(--violet)", opacity: 0.16 }}
+                                ></div>
+
+                                <div
+                                    style={{
+                                        marginLeft: "-38px",
+                                        width: "28px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <i
+                                        className="ti ti-tool"
+                                        style={{ color: "var(--violet)", fontSize: "14px" }}
+                                    ></i>
+                                </div>
+
+                                <div>
+                                    <div className="dt2">Asset PM</div>
+                                    <div className="ds">PM status · health</div>
+                                </div>
+
+                                <span className="dx">CSV</span>
+                            </div>
+
+                            {/* Solar */}
+                            <div className="dash-dl-opt" data-i="4">
+                                <div
+                                    className="di"
+                                    style={{ background: "var(--solar)", opacity: 0.16 }}
+                                ></div>
+
+                                <div
+                                    style={{
+                                        marginLeft: "-38px",
+                                        width: "28px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <i
+                                        className="ti ti-solar-panel"
+                                        style={{ color: "var(--solar)", fontSize: "14px" }}
+                                    ></i>
+                                </div>
+
+                                <div>
+                                    <div className="dt2">Solar &amp; ROI</div>
+                                    <div className="ds">Generation · savings</div>
+                                </div>
+
+                                <span className="dx">CSV</span>
+                            </div>
+
+                            {/* Device */}
+                            <div className="dash-dl-opt" data-i="5">
+                                <div
+                                    className="di"
+                                    style={{ background: "var(--cool)", opacity: 0.16 }}
+                                ></div>
+
+                                <div
+                                    style={{
+                                        marginLeft: "-38px",
+                                        width: "28px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <i
+                                        className="ti ti-router"
+                                        style={{ color: "var(--cool)", fontSize: "14px" }}
+                                    ></i>
+                                </div>
+
+                                <div>
+                                    <div className="dt2">Device Fleet</div>
+                                    <div className="ds">IoT health · connectivity</div>
+                                </div>
+
+                                <span className="dx">CSV</span>
+                            </div>
+
+                            <div
+                                style={{
+                                    borderTop: "1px solid var(--line-1)",
+                                    marginTop: "5px",
+                                    paddingTop: "6px",
+                                }}
+                            >
+                                <div className="dash-dl-opt" id="dashDlAll">
+                                    <div
+                                        className="di"
+                                        style={{ background: "var(--info)", opacity: 0.16 }}
+                                    ></div>
+
+                                    <div
+                                        style={{
+                                            marginLeft: "-38px",
+                                            width: "28px",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                        }}
+                                    >
+                                        <i
+                                            className="ti ti-package"
+                                            style={{ color: "var(--info)", fontSize: "14px" }}
+                                        ></i>
+                                    </div>
+
+                                    <div>
+                                        <div className="dt2">All reports</div>
+                                        <div className="ds">Download every report (CSV)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style={{ padding: "7px 9px 3px" }}>
+                                <a
+                                    href="#"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        navTo("reports");
+                                    }}
+                                    style={{
+                                        fontSize: "10.5px",
+                                        color: "var(--info)",
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    Open full Reports &amp; Bills library →
+                                </a>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+
             <div
                 className={`tab-panel ${activeTab === 0 ? 'active' : ''}`}
                 data-page="adminusers"
@@ -669,746 +1007,755 @@ const AdminUsersRoles = () => {
                     </div>
                 </div>
             </div>
-            {activeTab === 2 && (
-                <div className="tab-panel" data-page="adminusers" data-tab="2">
-                    {/* KPI Summary Cards */}
-                    <div className="kpi-strip mb-14" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
-                        <div className="kpi glow-info">
-                            <div className="kpi-l">Events (24h)</div>
-                            <div className="kpi-v" id="au-act-24">9</div>
-                        </div>
-                        <div className="kpi glow-ok">
-                            <div className="kpi-l">Logins (24h)</div>
-                            <div className="kpi-v ok" id="au-act-logins">3</div>
-                        </div>
-                        <div className="kpi glow-warn">
-                            <div className="kpi-l">Password Resets</div>
-                            <div className="kpi-v warn" id="au-act-resets">2</div>
-                        </div>
-                        <div className="kpi glow-info">
-                            <div className="kpi-l">Role / Access Changes</div>
-                            <div className="kpi-v" id="au-act-changes">2</div>
-                        </div>
-                    </div>
 
-                    {/* Search Toolbar & Filter Chips */}
-                    <div className="api-toolbar">
-                        <div className="api-search">
-                            <i className="ti ti-search"></i>
-                            <input
-                                id="au-act-search"
-                                type="text"
-                                placeholder="Search activity by user, action or IP…"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                        </div>
-                        <div className="au-chips" id="au-act-chips">
-                            <span
-                                className={`au-chip ${actFilter === 'all' ? 'active' : ''}`}
-                                onClick={() => setActFilter('all')}
-                            >
-                                <i className="ti ti-list" style={{ fontSize: '12px' }}></i>All
-                            </span>
-                            <span
-                                className={`au-chip ${actFilter === 'logins' ? 'active' : ''}`}
-                                onClick={() => setActFilter('logins')}
-                            >
-                                <i className="ti ti-login-2" style={{ fontSize: '12px' }}></i>Logins
-                            </span>
-                            <span
-                                className={`au-chip ${actFilter === 'password' ? 'active' : ''}`}
-                                onClick={() => setActFilter('password')}
-                            >
-                                <i className="ti ti-key" style={{ fontSize: '12px' }}></i>Password
-                            </span>
-                            <span
-                                className={`au-chip ${actFilter === 'access' ? 'active' : ''}`}
-                                onClick={() => setActFilter('access')}
-                            >
-                                <i className="ti ti-user-cog" style={{ fontSize: '12px' }}></i>Roles &amp; Access
-                            </span>
-                            <span
-                                className={`au-chip ${actFilter === 'mfa' ? 'active' : ''}`}
-                                onClick={() => setActFilter('mfa')}
-                            >
-                                <i className="ti ti-device-mobile-check" style={{ fontSize: '12px' }}></i>MFA
-                            </span>
-                            <span
-                                className={`au-chip ${actFilter === 'devices' ? 'active' : ''}`}
-                                onClick={() => setActFilter('devices')}
-                            >
-                                <i className="ti ti-devices" style={{ fontSize: '12px' }}></i>Devices
-                            </span>
-                            <span
-                                className={`au-chip ${actFilter === 'account' ? 'active' : ''}`}
-                                onClick={() => setActFilter('account')}
-                            >
-                                <i className="ti ti-user" style={{ fontSize: '12px' }}></i>Account
-                            </span>
-                        </div>
+            <div
+                className={`tab-panel ${activeTab === 2 ? 'active' : ''}`}
+                data-page="adminusers"
+                data-tab="2"
+                style={{ display: activeTab === 2 ? 'block' : 'none' }}
+            >
+                {/* KPI Summary Cards */}
+                <div className="kpi-strip mb-14" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
+                    <div className="kpi glow-info">
+                        <div className="kpi-l">Events (24h)</div>
+                        <div className="kpi-v" id="au-act-24">9</div>
                     </div>
+                    <div className="kpi glow-ok">
+                        <div className="kpi-l">Logins (24h)</div>
+                        <div className="kpi-v ok" id="au-act-logins">3</div>
+                    </div>
+                    <div className="kpi glow-warn">
+                        <div className="kpi-l">Password Resets</div>
+                        <div className="kpi-v warn" id="au-act-resets">2</div>
+                    </div>
+                    <div className="kpi glow-info">
+                        <div className="kpi-l">Role / Access Changes</div>
+                        <div className="kpi-v" id="au-act-changes">2</div>
+                    </div>
+                </div>
 
-                    {/* Audit Logs Table Card */}
-                    <div className="card">
-                        <div className="ch">
-                            <div>
-                                <div className="ct">User Activity &amp; Audit Trail</div>
-                                <div className="cs">Immutable log · logins, password resets, role &amp; access changes, MFA and device events · 90-day retention</div>
-                            </div>
-                            <span className="ca" onClick={() => showToast('Exporting activity log to CSV…')}>
-                                Export CSV →
-                            </span>
+                {/* Search Toolbar & Filter Chips */}
+                <div className="api-toolbar">
+                    <div className="api-search">
+                        <i className="ti ti-search"></i>
+                        <input
+                            id="au-act-search"
+                            type="text"
+                            placeholder="Search activity by user, action or IP…"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </div>
+                    <div className="au-chips" id="au-act-chips">
+                        <span
+                            className={`au-chip ${actFilter === 'all' ? 'active' : ''}`}
+                            onClick={() => setActFilter('all')}
+                        >
+                            <i className="ti ti-list" style={{ fontSize: '12px' }}></i>All
+                        </span>
+                        <span
+                            className={`au-chip ${actFilter === 'logins' ? 'active' : ''}`}
+                            onClick={() => setActFilter('logins')}
+                        >
+                            <i className="ti ti-login-2" style={{ fontSize: '12px' }}></i>Logins
+                        </span>
+                        <span
+                            className={`au-chip ${actFilter === 'password' ? 'active' : ''}`}
+                            onClick={() => setActFilter('password')}
+                        >
+                            <i className="ti ti-key" style={{ fontSize: '12px' }}></i>Password
+                        </span>
+                        <span
+                            className={`au-chip ${actFilter === 'access' ? 'active' : ''}`}
+                            onClick={() => setActFilter('access')}
+                        >
+                            <i className="ti ti-user-cog" style={{ fontSize: '12px' }}></i>Roles &amp; Access
+                        </span>
+                        <span
+                            className={`au-chip ${actFilter === 'mfa' ? 'active' : ''}`}
+                            onClick={() => setActFilter('mfa')}
+                        >
+                            <i className="ti ti-device-mobile-check" style={{ fontSize: '12px' }}></i>MFA
+                        </span>
+                        <span
+                            className={`au-chip ${actFilter === 'devices' ? 'active' : ''}`}
+                            onClick={() => setActFilter('devices')}
+                        >
+                            <i className="ti ti-devices" style={{ fontSize: '12px' }}></i>Devices
+                        </span>
+                        <span
+                            className={`au-chip ${actFilter === 'account' ? 'active' : ''}`}
+                            onClick={() => setActFilter('account')}
+                        >
+                            <i className="ti ti-user" style={{ fontSize: '12px' }}></i>Account
+                        </span>
+                    </div>
+                </div>
+
+                {/* Audit Logs Table Card */}
+                <div className="card">
+                    <div className="ch">
+                        <div>
+                            <div className="ct">User Activity &amp; Audit Trail</div>
+                            <div className="cs">Immutable log · logins, password resets, role &amp; access changes, MFA and device events · 90-day retention</div>
                         </div>
-                        <div className="cb" style={{ padding: 0, overflowX: 'auto' }}>
-                            <div id="au-act-table">
-                                <table className="adm-tbl">
-                                    <thead>
-                                        <tr>
-                                            <th>Time</th>
-                                            <th>Event</th>
-                                            <th>User</th>
-                                            <th>Detail</th>
-                                            <th>IP</th>
-                                            <th>Device</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>just now</td>
-                                            <td>
-                                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
-                                                    <i className="ti ti-login-2" style={{ color: 'var(--ok)', fontSize: '14px' }}></i>Login
-                                                </span>
-                                            </td>
-                                            <td>Sandeep Rao</td>
-                                            <td style={{ color: 'var(--ink-2)' }}>Signed in from trusted device (MacBook Pro 16")</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.12</td>
-                                            <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>MacBook Pro 16"</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>2 min ago</td>
-                                            <td>
-                                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
-                                                    <i className="ti ti-login-2" style={{ color: 'var(--ok)', fontSize: '14px' }}></i>Login
-                                                </span>
-                                            </td>
-                                            <td>Rajan Mehta</td>
-                                            <td style={{ color: 'var(--ink-2)' }}>Signed in · MFA verified</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.31</td>
-                                            <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>Dell Latitude 7440</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>9 min ago</td>
-                                            <td>
-                                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
-                                                    <i className="ti ti-device-mobile-check" style={{ color: 'var(--violet)', fontSize: '14px' }}></i>MFA event
-                                                </span>
-                                            </td>
-                                            <td>Anil Desai</td>
-                                            <td style={{ color: 'var(--ink-2)' }}>MFA challenge passed (TOTP)</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.22</td>
-                                            <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>ThinkPad X1 Carbon</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>14 min ago</td>
-                                            <td>
-                                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
-                                                    <i className="ti ti-devices" style={{ color: 'var(--cool)', fontSize: '14px' }}></i>Device event
-                                                </span>
-                                            </td>
-                                            <td>Anil Desai</td>
-                                            <td style={{ color: 'var(--ink-2)' }}>New device pending registration — Samsung Galaxy S24</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>49.36.x.x</td>
-                                            <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>Samsung Galaxy S24</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>38 min ago</td>
-                                            <td>
-                                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
-                                                    <i className="ti ti-user-cog" style={{ color: 'var(--info)', fontSize: '14px' }}></i>Role changed
-                                                </span>
-                                            </td>
-                                            <td>admin → Karthik Menon</td>
-                                            <td style={{ color: 'var(--ink-2)' }}>Role changed: Senior Engineer → FM Manager</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
-                                            <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>1 hr ago</td>
-                                            <td>
-                                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
-                                                    <i className="ti ti-map-pin" style={{ color: 'var(--info)', fontSize: '14px' }}></i>Site access changed
-                                                </span>
-                                            </td>
-                                            <td>admin → Pooja Nair</td>
-                                            <td style={{ color: 'var(--ink-2)' }}>Site access updated: +Powai Campus</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
-                                            <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>2 hr ago</td>
-                                            <td>
-                                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
-                                                    <i className="ti ti-key" style={{ color: 'var(--warn)', fontSize: '14px' }}></i>Password reset
-                                                </span>
-                                            </td>
-                                            <td>Meera Iyer</td>
-                                            <td style={{ color: 'var(--ink-2)' }}>Password reset link sent to meera.iyer@buildoptix.in</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
-                                            <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>3 hr ago</td>
-                                            <td>
-                                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
-                                                    <i className="ti ti-login-2" style={{ color: 'var(--ok)', fontSize: '14px' }}></i>Login
-                                                </span>
-                                            </td>
-                                            <td>Meera Iyer</td>
-                                            <td style={{ color: 'var(--ink-2)' }}>Signed in from trusted device</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.18</td>
-                                            <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>HP ProBook 450</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>5 hr ago</td>
-                                            <td>
-                                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
-                                                    <i className="ti ti-lock-x" style={{ color: 'var(--bad)', fontSize: '14px' }}></i>Failed login
-                                                </span>
-                                            </td>
-                                            <td>Vikram Shah</td>
-                                            <td style={{ color: 'var(--ink-2)' }}>Blocked: login attempt from unrecognised device (account is device-locked)</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>45.13.x.x</td>
-                                            <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>Unknown device</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>Yesterday</td>
-                                            <td>
-                                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
-                                                    <i className="ti ti-user-plus" style={{ color: 'var(--ink-2)', fontSize: '14px' }}></i>Account
-                                                </span>
-                                            </td>
-                                            <td>admin → Neha Kulkarni</td>
-                                            <td style={{ color: 'var(--ink-2)' }}>User created &amp; invite sent — role Operator</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
-                                            <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>Yesterday</td>
-                                            <td>
-                                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
-                                                    <i className="ti ti-devices" style={{ color: 'var(--cool)', fontSize: '14px' }}></i>Device event
-                                                </span>
-                                            </td>
-                                            <td>Sandeep Rao</td>
-                                            <td style={{ color: 'var(--ink-2)' }}>Registered trusted device — iPhone 15 Pro</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.40</td>
-                                            <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>iPhone 15 Pro</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>Yesterday</td>
-                                            <td>
-                                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
-                                                    <i className="ti ti-logout-2" style={{ color: 'var(--ink-3)', fontSize: '14px' }}></i>Logout
-                                                </span>
-                                            </td>
-                                            <td>Anil Desai</td>
-                                            <td style={{ color: 'var(--ink-2)' }}>Signed out</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.22</td>
-                                            <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>ThinkPad X1 Carbon</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>2 days ago</td>
-                                            <td>
-                                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
-                                                    <i className="ti ti-user-plus" style={{ color: 'var(--ink-2)', fontSize: '14px' }}></i>Account
-                                                </span>
-                                            </td>
-                                            <td>admin → Arjun Pillai</td>
-                                            <td style={{ color: 'var(--ink-2)' }}>Account deactivated</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
-                                            <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>3 days ago</td>
-                                            <td>
-                                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
-                                                    <i className="ti ti-device-mobile-check" style={{ color: 'var(--violet)', fontSize: '14px' }}></i>MFA event
-                                                </span>
-                                            </td>
-                                            <td>Meera Iyer</td>
-                                            <td style={{ color: 'var(--ink-2)' }}>MFA enrolment skipped (pending)</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.18</td>
-                                            <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>HP ProBook 450</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>4 days ago</td>
-                                            <td>
-                                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
-                                                    <i className="ti ti-key" style={{ color: 'var(--warn)', fontSize: '14px' }}></i>Password reset
-                                                </span>
-                                            </td>
-                                            <td>Arjun Pillai</td>
-                                            <td style={{ color: 'var(--ink-2)' }}>Password reset completed</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>14.139.x.x</td>
-                                            <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>MacBook Air M2</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                        <span className="ca" onClick={() => showToast('Exporting activity log to CSV…')}>
+                            Export CSV →
+                        </span>
+                    </div>
+                    <div className="cb" style={{ padding: 0, overflowX: 'auto' }}>
+                        <div id="au-act-table">
+                            <table className="adm-tbl">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Event</th>
+                                        <th>User</th>
+                                        <th>Detail</th>
+                                        <th>IP</th>
+                                        <th>Device</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>just now</td>
+                                        <td>
+                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
+                                                <i className="ti ti-login-2" style={{ color: 'var(--ok)', fontSize: '14px' }}></i>Login
+                                            </span>
+                                        </td>
+                                        <td>Sandeep Rao</td>
+                                        <td style={{ color: 'var(--ink-2)' }}>Signed in from trusted device (MacBook Pro 16")</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.12</td>
+                                        <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>MacBook Pro 16"</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>2 min ago</td>
+                                        <td>
+                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
+                                                <i className="ti ti-login-2" style={{ color: 'var(--ok)', fontSize: '14px' }}></i>Login
+                                            </span>
+                                        </td>
+                                        <td>Rajan Mehta</td>
+                                        <td style={{ color: 'var(--ink-2)' }}>Signed in · MFA verified</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.31</td>
+                                        <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>Dell Latitude 7440</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>9 min ago</td>
+                                        <td>
+                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
+                                                <i className="ti ti-device-mobile-check" style={{ color: 'var(--violet)', fontSize: '14px' }}></i>MFA event
+                                            </span>
+                                        </td>
+                                        <td>Anil Desai</td>
+                                        <td style={{ color: 'var(--ink-2)' }}>MFA challenge passed (TOTP)</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.22</td>
+                                        <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>ThinkPad X1 Carbon</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>14 min ago</td>
+                                        <td>
+                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
+                                                <i className="ti ti-devices" style={{ color: 'var(--cool)', fontSize: '14px' }}></i>Device event
+                                            </span>
+                                        </td>
+                                        <td>Anil Desai</td>
+                                        <td style={{ color: 'var(--ink-2)' }}>New device pending registration — Samsung Galaxy S24</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>49.36.x.x</td>
+                                        <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>Samsung Galaxy S24</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>38 min ago</td>
+                                        <td>
+                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
+                                                <i className="ti ti-user-cog" style={{ color: 'var(--info)', fontSize: '14px' }}></i>Role changed
+                                            </span>
+                                        </td>
+                                        <td>admin → Karthik Menon</td>
+                                        <td style={{ color: 'var(--ink-2)' }}>Role changed: Senior Engineer → FM Manager</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
+                                        <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>1 hr ago</td>
+                                        <td>
+                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
+                                                <i className="ti ti-map-pin" style={{ color: 'var(--info)', fontSize: '14px' }}></i>Site access changed
+                                            </span>
+                                        </td>
+                                        <td>admin → Pooja Nair</td>
+                                        <td style={{ color: 'var(--ink-2)' }}>Site access updated: +Powai Campus</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
+                                        <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>2 hr ago</td>
+                                        <td>
+                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
+                                                <i className="ti ti-key" style={{ color: 'var(--warn)', fontSize: '14px' }}></i>Password reset
+                                            </span>
+                                        </td>
+                                        <td>Meera Iyer</td>
+                                        <td style={{ color: 'var(--ink-2)' }}>Password reset link sent to meera.iyer@buildoptix.in</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
+                                        <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>3 hr ago</td>
+                                        <td>
+                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
+                                                <i className="ti ti-login-2" style={{ color: 'var(--ok)', fontSize: '14px' }}></i>Login
+                                            </span>
+                                        </td>
+                                        <td>Meera Iyer</td>
+                                        <td style={{ color: 'var(--ink-2)' }}>Signed in from trusted device</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.18</td>
+                                        <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>HP ProBook 450</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>5 hr ago</td>
+                                        <td>
+                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
+                                                <i className="ti ti-lock-x" style={{ color: 'var(--bad)', fontSize: '14px' }}></i>Failed login
+                                            </span>
+                                        </td>
+                                        <td>Vikram Shah</td>
+                                        <td style={{ color: 'var(--ink-2)' }}>Blocked: login attempt from unrecognised device (account is device-locked)</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>45.13.x.x</td>
+                                        <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>Unknown device</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>Yesterday</td>
+                                        <td>
+                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
+                                                <i className="ti ti-user-plus" style={{ color: 'var(--ink-2)', fontSize: '14px' }}></i>Account
+                                            </span>
+                                        </td>
+                                        <td>admin → Neha Kulkarni</td>
+                                        <td style={{ color: 'var(--ink-2)' }}>User created &amp; invite sent — role Operator</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
+                                        <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>Yesterday</td>
+                                        <td>
+                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
+                                                <i className="ti ti-devices" style={{ color: 'var(--cool)', fontSize: '14px' }}></i>Device event
+                                            </span>
+                                        </td>
+                                        <td>Sandeep Rao</td>
+                                        <td style={{ color: 'var(--ink-2)' }}>Registered trusted device — iPhone 15 Pro</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.40</td>
+                                        <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>iPhone 15 Pro</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>Yesterday</td>
+                                        <td>
+                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
+                                                <i className="ti ti-logout-2" style={{ color: 'var(--ink-3)', fontSize: '14px' }}></i>Logout
+                                            </span>
+                                        </td>
+                                        <td>Anil Desai</td>
+                                        <td style={{ color: 'var(--ink-2)' }}>Signed out</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.22</td>
+                                        <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>ThinkPad X1 Carbon</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>2 days ago</td>
+                                        <td>
+                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
+                                                <i className="ti ti-user-plus" style={{ color: 'var(--ink-2)', fontSize: '14px' }}></i>Account
+                                            </span>
+                                        </td>
+                                        <td>admin → Arjun Pillai</td>
+                                        <td style={{ color: 'var(--ink-2)' }}>Account deactivated</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
+                                        <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>—</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>3 days ago</td>
+                                        <td>
+                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
+                                                <i className="ti ti-device-mobile-check" style={{ color: 'var(--violet)', fontSize: '14px' }}></i>MFA event
+                                            </span>
+                                        </td>
+                                        <td>Meera Iyer</td>
+                                        <td style={{ color: 'var(--ink-2)' }}>MFA enrolment skipped (pending)</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.18</td>
+                                        <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>HP ProBook 450</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>4 days ago</td>
+                                        <td>
+                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: 'var(--ink-1)' }}>
+                                                <i className="ti ti-key" style={{ color: 'var(--warn)', fontSize: '14px' }}></i>Password reset
+                                            </span>
+                                        </td>
+                                        <td>Arjun Pillai</td>
+                                        <td style={{ color: 'var(--ink-2)' }}>Password reset completed</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>14.139.x.x</td>
+                                        <td style={{ fontSize: '10.5px', color: 'var(--ink-3)' }}>MacBook Air M2</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-            )}
+            </div>
+
 
             {/* ==================== TAB PANEL 3: DEVICE SECURITY MANAGEMENT ==================== */}
-            {activeTab === 3 && (
-                <div className="tab-panel" data-page="adminusers" data-tab="3">
-                    {/* Banner */}
-                    <div className="au-ds-banner">
-                        <i className="ti ti-shield-lock"></i>
-                        <div>
-                            <div style={{ fontSize: '12.5px', fontWeight: 700, color: 'var(--ink-0)' }}>
-                                Device security is managed centrally by administrators
-                            </div>
-                            <div style={{ fontSize: '11px', color: 'var(--ink-3)', marginTop: '2px' }}>
-                                End users cannot change these settings. Policies apply on first login after Username, Password and MFA verification.
-                            </div>
+            <div
+                className={`tab-panel ${activeTab === 3 ? 'active' : ''}`}
+                data-page="adminusers"
+                data-tab="3"
+                style={{ display: activeTab === 3 ? 'block' : 'none' }}
+            >
+                {/* Banner */}
+                <div className="au-ds-banner">
+                    <i className="ti ti-shield-lock"></i>
+                    <div>
+                        <div style={{ fontSize: '12.5px', fontWeight: 700, color: 'var(--ink-0)' }}>
+                            Device security is managed centrally by administrators
+                        </div>
+                        <div style={{ fontSize: '11px', color: 'var(--ink-3)', marginTop: '2px' }}>
+                            End users cannot change these settings. Policies apply on first login after Username, Password and MFA verification.
                         </div>
                     </div>
+                </div>
 
-                    {/* KPI Strip */}
-                    <div className="kpi-strip mb-14" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
-                        <div className="kpi glow-ok">
-                            <div className="kpi-l">Trusted Devices</div>
-                            <div className="kpi-v ok" id="au-ds-trusted">9</div>
-                        </div>
-                        <div className="kpi glow-info">
-                            <div className="kpi-l">Device-Locked Accounts</div>
-                            <div className="kpi-v" id="au-ds-locked">6</div>
-                        </div>
-                        <div className="kpi glow-warn">
-                            <div className="kpi-l">Pending Re-registration</div>
-                            <div className="kpi-v warn" id="au-ds-pending">1</div>
-                        </div>
-                        <div className="kpi glow-bad">
-                            <div className="kpi-l">Blocked Devices</div>
-                            <div className="kpi-v bad" id="au-ds-blocked">1</div>
-                        </div>
+                {/* KPI Strip */}
+                <div className="kpi-strip mb-14" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
+                    <div className="kpi glow-ok">
+                        <div className="kpi-l">Trusted Devices</div>
+                        <div className="kpi-v ok" id="au-ds-trusted">9</div>
                     </div>
-
-                    {/* Policy Settings & Flow Grid */}
-                    <div className="au-ds-grid">
-                        <div className="card">
-                            <div className="ch">
-                                <div>
-                                    <div className="ct">Device Security Policy</div>
-                                    <div className="cs">Backend-managed · applies platform-wide</div>
-                                </div>
-                            </div>
-                            <div className="cb" id="au-policy">
-                                <div className="au-pol-row">
-                                    <div>
-                                        <div className="l">Device Locking</div>
-                                        <div className="d">Bind accounts to registered trusted devices. A user can only sign in from a registered device until an admin changes it.</div>
-                                    </div>
-                                    <div className="au-sw on" onClick={() => handleTogglePolicy('deviceLock')}></div>
-                                </div>
-                                <div className="au-pol-row">
-                                    <div>
-                                        <div className="l">Auto-register on first login</div>
-                                        <div className="d">Register the device as trusted after the first successful Username + Password + MFA verification.</div>
-                                    </div>
-                                    <div className="au-sw on" onClick={() => handleTogglePolicy('autoRegister')}></div>
-                                </div>
-                                <div className="au-pol-row">
-                                    <div>
-                                        <div className="l">Require MFA</div>
-                                        <div className="d">Enforce a second factor (TOTP / OTP) at every sign-in before a device can be trusted.</div>
-                                    </div>
-                                    <div className="au-sw on" onClick={() => handleTogglePolicy('mfaRequired')}></div>
-                                </div>
-                                <div className="au-pol-row">
-                                    <div>
-                                        <div className="l">Admin approval for re-registration</div>
-                                        <div className="d">New or changed devices stay pending until an administrator approves them.</div>
-                                    </div>
-                                    <div className="au-sw on" onClick={() => handleTogglePolicy('reapproval')}></div>
-                                </div>
-                                <div className="au-pol-row">
-                                    <div>
-                                        <div className="l">Geo / IP fencing</div>
-                                        <div className="d">Restrict sign-ins to approved IP ranges and regions.</div>
-                                    </div>
-                                    <div className="au-sw" onClick={() => handleTogglePolicy('geoFence')}></div>
-                                </div>
-                                <div className="au-pol-row">
-                                    <div>
-                                        <div className="l">Max trusted devices per user</div>
-                                        <div className="d">Limit how many devices a single account can register.</div>
-                                    </div>
-                                    <select className="au-sel" defaultValue="2" onChange={(e) => console.log(`Max devices set to: ${e.target.value}`)}>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="card">
-                            <div className="ch">
-                                <div>
-                                    <div className="ct">First-Login Trust Flow</div>
-                                    <div className="cs">How a device becomes trusted</div>
-                                </div>
-                            </div>
-                            <div className="cb" id="au-flow">
-                                <div className="au-step">
-                                    <span className="n">1</span>
-                                    <div>
-                                        <div className="st">Username &amp; Password</div>
-                                        <div className="sd">User signs in with their work credentials.</div>
-                                    </div>
-                                </div>
-                                <div className="au-step">
-                                    <span className="n">2</span>
-                                    <div>
-                                        <div className="st">MFA verification</div>
-                                        <div className="sd">One-time code (authenticator app / OTP) is verified.</div>
-                                    </div>
-                                </div>
-                                <div className="au-step">
-                                    <span className="n">3</span>
-                                    <div>
-                                        <div className="st">Device registered as trusted</div>
-                                        <div className="sd">On first successful login the device fingerprint is captured and stored against the account.</div>
-                                    </div>
-                                </div>
-                                <div className="au-step">
-                                    <span className="n">4</span>
-                                    <div>
-                                        <div className="st">Account locked to device</div>
-                                        <div className="sd">If Device Locking is on, sign-in is restricted to registered devices until an admin removes or re-registers them.</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div className="kpi glow-info">
+                        <div className="kpi-l">Device-Locked Accounts</div>
+                        <div className="kpi-v" id="au-ds-locked">6</div>
                     </div>
+                    <div className="kpi glow-warn">
+                        <div className="kpi-l">Pending Re-registration</div>
+                        <div className="kpi-v warn" id="au-ds-pending">1</div>
+                    </div>
+                    <div className="kpi glow-bad">
+                        <div className="kpi-l">Blocked Devices</div>
+                        <div className="kpi-v bad" id="au-ds-blocked">1</div>
+                    </div>
+                </div>
 
-                    {/* Trusted Devices Registry Table Card */}
+                {/* Policy Settings & Flow Grid */}
+                <div className="au-ds-grid">
                     <div className="card">
                         <div className="ch">
                             <div>
-                                <div className="ct">Trusted Device Registry</div>
-                                <div className="cs">View, remove or re-register devices bound to user accounts</div>
+                                <div className="ct">Device Security Policy</div>
+                                <div className="cs">Backend-managed · applies platform-wide</div>
                             </div>
                         </div>
-                        <div className="cb" style={{ padding: 0, overflowX: 'auto' }}>
-                            <div id="au-dev-table">
-                                <table className="adm-tbl">
-                                    <thead>
-                                        <tr>
-                                            <th>User</th>
-                                            <th>Device</th>
-                                            <th>OS / Browser</th>
-                                            <th>IP</th>
-                                            <th>Registered</th>
-                                            <th>Last Seen</th>
-                                            <th>Status</th>
-                                            <th style={{ textAlign: 'right' }}>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <span className="adm-avatar" style={{ background: '#2A6FDB' }}>SR</span>
-                                                <b>Sandeep Rao</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
-                                            </td>
-                                            <td>
-                                                <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
-                                                    <i className="ti ti-device-laptop"></i>
-                                                </span>
-                                                MacBook Pro 16" <span style={{ fontSize: '9px', color: 'var(--info)' }}>· current</span>
-                                            </td>
-                                            <td style={{ fontSize: '10.5px' }}>macOS 14 · Chrome</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.12</td>
-                                            <td style={{ fontSize: '10.5px' }}>12 Jan 2024</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>just now</td>
-                                            <td><span className="badge badge-green">Trusted</span></td>
-                                            <td>
-                                                <div className="au-act-btns">
-                                                    <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1001', 'D-9001')}>
-                                                        <i className="ti ti-trash"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
+                        <div className="cb" id="au-policy">
+                            <div className="au-pol-row">
+                                <div>
+                                    <div className="l">Device Locking</div>
+                                    <div className="d">Bind accounts to registered trusted devices. A user can only sign in from a registered device until an admin changes it.</div>
+                                </div>
+                                <div className="au-sw on" onClick={() => handleTogglePolicy('deviceLock')}></div>
+                            </div>
+                            <div className="au-pol-row">
+                                <div>
+                                    <div className="l">Auto-register on first login</div>
+                                    <div className="d">Register the device as trusted after the first successful Username + Password + MFA verification.</div>
+                                </div>
+                                <div className="au-sw on" onClick={() => handleTogglePolicy('autoRegister')}></div>
+                            </div>
+                            <div className="au-pol-row">
+                                <div>
+                                    <div className="l">Require MFA</div>
+                                    <div className="d">Enforce a second factor (TOTP / OTP) at every sign-in before a device can be trusted.</div>
+                                </div>
+                                <div className="au-sw on" onClick={() => handleTogglePolicy('mfaRequired')}></div>
+                            </div>
+                            <div className="au-pol-row">
+                                <div>
+                                    <div className="l">Admin approval for re-registration</div>
+                                    <div className="d">New or changed devices stay pending until an administrator approves them.</div>
+                                </div>
+                                <div className="au-sw on" onClick={() => handleTogglePolicy('reapproval')}></div>
+                            </div>
+                            <div className="au-pol-row">
+                                <div>
+                                    <div className="l">Geo / IP fencing</div>
+                                    <div className="d">Restrict sign-ins to approved IP ranges and regions.</div>
+                                </div>
+                                <div className="au-sw" onClick={() => handleTogglePolicy('geoFence')}></div>
+                            </div>
+                            <div className="au-pol-row">
+                                <div>
+                                    <div className="l">Max trusted devices per user</div>
+                                    <div className="d">Limit how many devices a single account can register.</div>
+                                </div>
+                                <select className="au-sel" defaultValue="2" onChange={(e) => console.log(`Max devices set to: ${e.target.value}`)}>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
-                                        <tr>
-                                            <td>
-                                                <span className="adm-avatar" style={{ background: '#2A6FDB' }}>SR</span>
-                                                <b>Sandeep Rao</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
-                                            </td>
-                                            <td>
-                                                <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
-                                                    <i className="ti ti-device-mobile"></i>
-                                                </span>
-                                                iPhone 15 Pro
-                                            </td>
-                                            <td style={{ fontSize: '10.5px' }}>iOS 17 · Safari</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.40</td>
-                                            <td style={{ fontSize: '10.5px' }}>18 Jan 2024</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>2 hr ago</td>
-                                            <td><span className="badge badge-green">Trusted</span></td>
-                                            <td>
-                                                <div className="au-act-btns">
-                                                    <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1001', 'D-9002')}>
-                                                        <i className="ti ti-trash"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <span className="adm-avatar" style={{ background: '#1F8A5B' }}>RM</span>
-                                                <b>Rajan Mehta</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
-                                            </td>
-                                            <td>
-                                                <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
-                                                    <i className="ti ti-device-laptop"></i>
-                                                </span>
-                                                Dell Latitude 7440 <span style={{ fontSize: '9px', color: 'var(--info)' }}>· current</span>
-                                            </td>
-                                            <td style={{ fontSize: '10.5px' }}>Windows 11 · Edge</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.31</td>
-                                            <td style={{ fontSize: '10.5px' }}>04 Feb 2024</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>2 min ago</td>
-                                            <td><span className="badge badge-green">Trusted</span></td>
-                                            <td>
-                                                <div className="au-act-btns">
-                                                    <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1002', 'D-9010')}>
-                                                        <i className="ti ti-trash"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <span className="adm-avatar" style={{ background: '#B8842A' }}>AD</span>
-                                                <b>Anil Desai</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
-                                            </td>
-                                            <td>
-                                                <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
-                                                    <i className="ti ti-device-laptop"></i>
-                                                </span>
-                                                ThinkPad X1 Carbon <span style={{ fontSize: '9px', color: 'var(--info)' }}>· current</span>
-                                            </td>
-                                            <td style={{ fontSize: '10.5px' }}>Windows 11 · Chrome</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.22</td>
-                                            <td style={{ fontSize: '10.5px' }}>19 Feb 2024</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>14 min ago</td>
-                                            <td><span className="badge badge-green">Trusted</span></td>
-                                            <td>
-                                                <div className="au-act-btns">
-                                                    <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1003', 'D-9020')}>
-                                                        <i className="ti ti-trash"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <span className="adm-avatar" style={{ background: '#B8842A' }}>AD</span>
-                                                <b>Anil Desai</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
-                                            </td>
-                                            <td>
-                                                <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
-                                                    <i className="ti ti-device-mobile"></i>
-                                                </span>
-                                                Samsung Galaxy S24
-                                            </td>
-                                            <td style={{ fontSize: '10.5px' }}>Android 14 · Chrome</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>49.36.x.x</td>
-                                            <td style={{ fontSize: '10.5px' }}>—</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>1 hr ago</td>
-                                            <td><span className="badge badge-amber">Pending</span></td>
-                                            <td>
-                                                <div className="au-act-btns">
-                                                    <span className="au-ib good" title="Approve / re-register" onClick={() => handleReRegisterDevice('U-1003', 'D-9021')}>
-                                                        <i className="ti ti-shield-check"></i>
-                                                    </span>
-                                                    <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1003', 'D-9021')}>
-                                                        <i className="ti ti-trash"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <span className="adm-avatar" style={{ background: '#9B59B6' }}>PN</span>
-                                                <b>Pooja Nair</b>
-                                            </td>
-                                            <td>
-                                                <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
-                                                    <i className="ti ti-device-mobile"></i>
-                                                </span>
-                                                iPad Air <span style={{ fontSize: '9px', color: 'var(--info)' }}>· current</span>
-                                            </td>
-                                            <td style={{ fontSize: '10.5px' }}>iPadOS 17 · Safari</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.55</td>
-                                            <td style={{ fontSize: '10.5px' }}>22 Feb 2024</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>1 hr ago</td>
-                                            <td><span className="badge badge-green">Trusted</span></td>
-                                            <td>
-                                                <div className="au-act-btns">
-                                                    <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1004', 'D-9030')}>
-                                                        <i className="ti ti-trash"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <span className="adm-avatar" style={{ background: '#0B9EBB' }}>MI</span>
-                                                <b>Meera Iyer</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
-                                            </td>
-                                            <td>
-                                                <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
-                                                    <i className="ti ti-device-laptop"></i>
-                                                </span>
-                                                HP ProBook 450 <span style={{ fontSize: '9px', color: 'var(--info)' }}>· current</span>
-                                            </td>
-                                            <td style={{ fontSize: '10.5px' }}>Windows 11 · Chrome</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.18</td>
-                                            <td style={{ fontSize: '10.5px' }}>08 Mar 2024</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>3 hr ago</td>
-                                            <td><span className="badge badge-green">Trusted</span></td>
-                                            <td>
-                                                <div className="au-act-btns">
-                                                    <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1005', 'D-9040')}>
-                                                        <i className="ti ti-trash"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <span className="adm-avatar" style={{ background: '#D1603A' }}>VS</span>
-                                                <b>Vikram Shah</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
-                                            </td>
-                                            <td>
-                                                <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
-                                                    <i className="ti ti-device-laptop"></i>
-                                                </span>
-                                                Surface Laptop 5 <span style={{ fontSize: '9px', color: 'var(--info)' }}>· current</span>
-                                            </td>
-                                            <td style={{ fontSize: '10.5px' }}>Windows 11 · Edge</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>59.144.x.x</td>
-                                            <td style={{ fontSize: '10.5px' }}>15 Mar 2024</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>Yesterday</td>
-                                            <td><span className="badge badge-green">Trusted</span></td>
-                                            <td>
-                                                <div className="au-act-btns">
-                                                    <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1006', 'D-9050')}>
-                                                        <i className="ti ti-trash"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <span className="adm-avatar" style={{ background: '#D1603A' }}>VS</span>
-                                                <b>Vikram Shah</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
-                                            </td>
-                                            <td>
-                                                <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
-                                                    <i className="ti ti-device-desktop"></i>
-                                                </span>
-                                                Unknown device
-                                            </td>
-                                            <td style={{ fontSize: '10.5px' }}>Windows 10 · Firefox</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>45.13.x.x</td>
-                                            <td style={{ fontSize: '10.5px' }}>—</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>2 days ago</td>
-                                            <td><span className="badge badge-red">Blocked</span></td>
-                                            <td>
-                                                <div className="au-act-btns">
-                                                    <span className="au-ib good" title="Approve / re-register" onClick={() => handleReRegisterDevice('U-1006', 'D-9051')}>
-                                                        <i className="ti ti-shield-check"></i>
-                                                    </span>
-                                                    <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1006', 'D-9051')}>
-                                                        <i className="ti ti-trash"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <span className="adm-avatar" style={{ background: '#2FA39A' }}>AP</span>
-                                                <b>Arjun Pillai</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
-                                            </td>
-                                            <td>
-                                                <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
-                                                    <i className="ti ti-device-laptop"></i>
-                                                </span>
-                                                MacBook Air M2 <span style={{ fontSize: '9px', color: 'var(--info)' }}>· current</span>
-                                            </td>
-                                            <td style={{ fontSize: '10.5px' }}>macOS 14 · Safari</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>14.139.x.x</td>
-                                            <td style={{ fontSize: '10.5px' }}>02 Jan 2024</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>12 days ago</td>
-                                            <td><span className="badge badge-green">Trusted</span></td>
-                                            <td>
-                                                <div className="au-act-btns">
-                                                    <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1008', 'D-9080')}>
-                                                        <i className="ti ti-trash"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <span className="adm-avatar" style={{ background: '#2A6FDB' }}>KM</span>
-                                                <b>Karthik Menon</b>
-                                            </td>
-                                            <td>
-                                                <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
-                                                    <i className="ti ti-device-laptop"></i>
-                                                </span>
-                                                MacBook Pro 14" <span style={{ fontSize: '9px', color: 'var(--info)' }}>· current</span>
-                                            </td>
-                                            <td style={{ fontSize: '10.5px' }}>macOS 14 · Chrome</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>roaming</td>
-                                            <td style={{ fontSize: '10.5px' }}>10 Apr 2024</td>
-                                            <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>30 min ago</td>
-                                            <td><span className="badge badge-green">Trusted</span></td>
-                                            <td>
-                                                <div className="au-act-btns">
-                                                    <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1009', 'D-9090')}>
-                                                        <i className="ti ti-trash"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                    <div className="card">
+                        <div className="ch">
+                            <div>
+                                <div className="ct">First-Login Trust Flow</div>
+                                <div className="cs">How a device becomes trusted</div>
+                            </div>
+                        </div>
+                        <div className="cb" id="au-flow">
+                            <div className="au-step">
+                                <span className="n">1</span>
+                                <div>
+                                    <div className="st">Username &amp; Password</div>
+                                    <div className="sd">User signs in with their work credentials.</div>
+                                </div>
+                            </div>
+                            <div className="au-step">
+                                <span className="n">2</span>
+                                <div>
+                                    <div className="st">MFA verification</div>
+                                    <div className="sd">One-time code (authenticator app / OTP) is verified.</div>
+                                </div>
+                            </div>
+                            <div className="au-step">
+                                <span className="n">3</span>
+                                <div>
+                                    <div className="st">Device registered as trusted</div>
+                                    <div className="sd">On first successful login the device fingerprint is captured and stored against the account.</div>
+                                </div>
+                            </div>
+                            <div className="au-step">
+                                <span className="n">4</span>
+                                <div>
+                                    <div className="st">Account locked to device</div>
+                                    <div className="sd">If Device Locking is on, sign-in is restricted to registered devices until an admin removes or re-registers them.</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            )}
+
+                {/* Trusted Devices Registry Table Card */}
+                <div className="card">
+                    <div className="ch">
+                        <div>
+                            <div className="ct">Trusted Device Registry</div>
+                            <div className="cs">View, remove or re-register devices bound to user accounts</div>
+                        </div>
+                    </div>
+                    <div className="cb" style={{ padding: 0, overflowX: 'auto' }}>
+                        <div id="au-dev-table">
+                            <table className="adm-tbl">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Device</th>
+                                        <th>OS / Browser</th>
+                                        <th>IP</th>
+                                        <th>Registered</th>
+                                        <th>Last Seen</th>
+                                        <th>Status</th>
+                                        <th style={{ textAlign: 'right' }}>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span className="adm-avatar" style={{ background: '#2A6FDB' }}>SR</span>
+                                            <b>Sandeep Rao</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
+                                        </td>
+                                        <td>
+                                            <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
+                                                <i className="ti ti-device-laptop"></i>
+                                            </span>
+                                            MacBook Pro 16" <span style={{ fontSize: '9px', color: 'var(--info)' }}>· current</span>
+                                        </td>
+                                        <td style={{ fontSize: '10.5px' }}>macOS 14 · Chrome</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.12</td>
+                                        <td style={{ fontSize: '10.5px' }}>12 Jan 2024</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>just now</td>
+                                        <td><span className="badge badge-green">Trusted</span></td>
+                                        <td>
+                                            <div className="au-act-btns">
+                                                <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1001', 'D-9001')}>
+                                                    <i className="ti ti-trash"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <span className="adm-avatar" style={{ background: '#2A6FDB' }}>SR</span>
+                                            <b>Sandeep Rao</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
+                                        </td>
+                                        <td>
+                                            <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
+                                                <i className="ti ti-device-mobile"></i>
+                                            </span>
+                                            iPhone 15 Pro
+                                        </td>
+                                        <td style={{ fontSize: '10.5px' }}>iOS 17 · Safari</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.40</td>
+                                        <td style={{ fontSize: '10.5px' }}>18 Jan 2024</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>2 hr ago</td>
+                                        <td><span className="badge badge-green">Trusted</span></td>
+                                        <td>
+                                            <div className="au-act-btns">
+                                                <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1001', 'D-9002')}>
+                                                    <i className="ti ti-trash"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <span className="adm-avatar" style={{ background: '#1F8A5B' }}>RM</span>
+                                            <b>Rajan Mehta</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
+                                        </td>
+                                        <td>
+                                            <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
+                                                <i className="ti ti-device-laptop"></i>
+                                            </span>
+                                            Dell Latitude 7440 <span style={{ fontSize: '9px', color: 'var(--info)' }}>· current</span>
+                                        </td>
+                                        <td style={{ fontSize: '10.5px' }}>Windows 11 · Edge</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.31</td>
+                                        <td style={{ fontSize: '10.5px' }}>04 Feb 2024</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>2 min ago</td>
+                                        <td><span className="badge badge-green">Trusted</span></td>
+                                        <td>
+                                            <div className="au-act-btns">
+                                                <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1002', 'D-9010')}>
+                                                    <i className="ti ti-trash"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <span className="adm-avatar" style={{ background: '#B8842A' }}>AD</span>
+                                            <b>Anil Desai</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
+                                        </td>
+                                        <td>
+                                            <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
+                                                <i className="ti ti-device-laptop"></i>
+                                            </span>
+                                            ThinkPad X1 Carbon <span style={{ fontSize: '9px', color: 'var(--info)' }}>· current</span>
+                                        </td>
+                                        <td style={{ fontSize: '10.5px' }}>Windows 11 · Chrome</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.22</td>
+                                        <td style={{ fontSize: '10.5px' }}>19 Feb 2024</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>14 min ago</td>
+                                        <td><span className="badge badge-green">Trusted</span></td>
+                                        <td>
+                                            <div className="au-act-btns">
+                                                <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1003', 'D-9020')}>
+                                                    <i className="ti ti-trash"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <span className="adm-avatar" style={{ background: '#B8842A' }}>AD</span>
+                                            <b>Anil Desai</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
+                                        </td>
+                                        <td>
+                                            <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
+                                                <i className="ti ti-device-mobile"></i>
+                                            </span>
+                                            Samsung Galaxy S24
+                                        </td>
+                                        <td style={{ fontSize: '10.5px' }}>Android 14 · Chrome</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>49.36.x.x</td>
+                                        <td style={{ fontSize: '10.5px' }}>—</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>1 hr ago</td>
+                                        <td><span className="badge badge-amber">Pending</span></td>
+                                        <td>
+                                            <div className="au-act-btns">
+                                                <span className="au-ib good" title="Approve / re-register" onClick={() => handleReRegisterDevice('U-1003', 'D-9021')}>
+                                                    <i className="ti ti-shield-check"></i>
+                                                </span>
+                                                <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1003', 'D-9021')}>
+                                                    <i className="ti ti-trash"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <span className="adm-avatar" style={{ background: '#9B59B6' }}>PN</span>
+                                            <b>Pooja Nair</b>
+                                        </td>
+                                        <td>
+                                            <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
+                                                <i className="ti ti-device-mobile"></i>
+                                            </span>
+                                            iPad Air <span style={{ fontSize: '9px', color: 'var(--info)' }}>· current</span>
+                                        </td>
+                                        <td style={{ fontSize: '10.5px' }}>iPadOS 17 · Safari</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.55</td>
+                                        <td style={{ fontSize: '10.5px' }}>22 Feb 2024</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>1 hr ago</td>
+                                        <td><span className="badge badge-green">Trusted</span></td>
+                                        <td>
+                                            <div className="au-act-btns">
+                                                <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1004', 'D-9030')}>
+                                                    <i className="ti ti-trash"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <span className="adm-avatar" style={{ background: '#0B9EBB' }}>MI</span>
+                                            <b>Meera Iyer</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
+                                        </td>
+                                        <td>
+                                            <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
+                                                <i className="ti ti-device-laptop"></i>
+                                            </span>
+                                            HP ProBook 450 <span style={{ fontSize: '9px', color: 'var(--info)' }}>· current</span>
+                                        </td>
+                                        <td style={{ fontSize: '10.5px' }}>Windows 11 · Chrome</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>103.21.58.18</td>
+                                        <td style={{ fontSize: '10.5px' }}>08 Mar 2024</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>3 hr ago</td>
+                                        <td><span className="badge badge-green">Trusted</span></td>
+                                        <td>
+                                            <div className="au-act-btns">
+                                                <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1005', 'D-9040')}>
+                                                    <i className="ti ti-trash"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <span className="adm-avatar" style={{ background: '#D1603A' }}>VS</span>
+                                            <b>Vikram Shah</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
+                                        </td>
+                                        <td>
+                                            <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
+                                                <i className="ti ti-device-laptop"></i>
+                                            </span>
+                                            Surface Laptop 5 <span style={{ fontSize: '9px', color: 'var(--info)' }}>· current</span>
+                                        </td>
+                                        <td style={{ fontSize: '10.5px' }}>Windows 11 · Edge</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>59.144.x.x</td>
+                                        <td style={{ fontSize: '10.5px' }}>15 Mar 2024</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>Yesterday</td>
+                                        <td><span className="badge badge-green">Trusted</span></td>
+                                        <td>
+                                            <div className="au-act-btns">
+                                                <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1006', 'D-9050')}>
+                                                    <i className="ti ti-trash"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <span className="adm-avatar" style={{ background: '#D1603A' }}>VS</span>
+                                            <b>Vikram Shah</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
+                                        </td>
+                                        <td>
+                                            <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
+                                                <i className="ti ti-device-desktop"></i>
+                                            </span>
+                                            Unknown device
+                                        </td>
+                                        <td style={{ fontSize: '10.5px' }}>Windows 10 · Firefox</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>45.13.x.x</td>
+                                        <td style={{ fontSize: '10.5px' }}>—</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>2 days ago</td>
+                                        <td><span className="badge badge-red">Blocked</span></td>
+                                        <td>
+                                            <div className="au-act-btns">
+                                                <span className="au-ib good" title="Approve / re-register" onClick={() => handleReRegisterDevice('U-1006', 'D-9051')}>
+                                                    <i className="ti ti-shield-check"></i>
+                                                </span>
+                                                <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1006', 'D-9051')}>
+                                                    <i className="ti ti-trash"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <span className="adm-avatar" style={{ background: '#2FA39A' }}>AP</span>
+                                            <b>Arjun Pillai</b> <i className="ti ti-lock" style={{ fontSize: '10px', color: 'var(--info)' }} title="Device-locked"></i>
+                                        </td>
+                                        <td>
+                                            <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
+                                                <i className="ti ti-device-laptop"></i>
+                                            </span>
+                                            MacBook Air M2 <span style={{ fontSize: '9px', color: 'var(--info)' }}>· current</span>
+                                        </td>
+                                        <td style={{ fontSize: '10.5px' }}>macOS 14 · Safari</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>14.139.x.x</td>
+                                        <td style={{ fontSize: '10.5px' }}>02 Jan 2024</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>12 days ago</td>
+                                        <td><span className="badge badge-green">Trusted</span></td>
+                                        <td>
+                                            <div className="au-act-btns">
+                                                <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1008', 'D-9080')}>
+                                                    <i className="ti ti-trash"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <span className="adm-avatar" style={{ background: '#2A6FDB' }}>KM</span>
+                                            <b>Karthik Menon</b>
+                                        </td>
+                                        <td>
+                                            <span className="au-dev-ico" style={{ width: '24px', height: '24px', fontSize: '13px' }}>
+                                                <i className="ti ti-device-laptop"></i>
+                                            </span>
+                                            MacBook Pro 14" <span style={{ fontSize: '9px', color: 'var(--info)' }}>· current</span>
+                                        </td>
+                                        <td style={{ fontSize: '10.5px' }}>macOS 14 · Chrome</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>roaming</td>
+                                        <td style={{ fontSize: '10.5px' }}>10 Apr 2024</td>
+                                        <td style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--ink-3)' }}>30 min ago</td>
+                                        <td><span className="badge badge-green">Trusted</span></td>
+                                        <td>
+                                            <div className="au-act-btns">
+                                                <span className="au-ib danger" title="Remove device" onClick={() => handleRemoveDevice('U-1009', 'D-9090')}>
+                                                    <i className="ti ti-trash"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
 
 

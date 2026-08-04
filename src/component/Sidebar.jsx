@@ -265,7 +265,7 @@ export default function Sidebar({
 
           .sidebar.collapsed .popover-parent-header i {
             font-size: 16px;
-            color: #f97316;
+            // color: #f97316;
           }
 
           /* Sub-items in Floating Popup */

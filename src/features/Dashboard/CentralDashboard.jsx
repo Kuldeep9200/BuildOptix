@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import "../../App.css"
 import { showToast } from '../../utils/toast';
+import { useNavigate } from 'react-router-dom';
 // === 1. छोटे रीयूजेबल कंपोनेंट्स ===
 
 // KPI कार्ड कंपोनेंट (Tab 0 के लिए)
@@ -62,14 +63,11 @@ const MiniSiteCard = ({ name, statusDot, load, epi, alarms, degraded, onClick })
 
 // === 2. मुख्य डैशबोर्ड कंपोनेंट ===
 
-export default function CentralDashboardMain() {
-    // एक्टिव टैब को मैनेज करने के लिए स्टेट (0: Central, 1: CO2, 2: Map, 3: Energy)
+export default function CentralDashboardMain({onNavigate, setActivePage}) {
     const [activeTab, setActiveTab] = useState(0);
     const [showDownloadMenu, setShowDownloadMenu] = useState(false);
-    // डमी नेविगेशन और टोस्ट फंक्शन्स (आपके पुराने प्रोजेक्ट लॉजिक के हिसाब से बदलने के लिए)
     const kpiNav = (target, tabIndex) => {
         console.log(`Navigating to ${target}, tab: ${tabIndex}`);
-        // अगर आप इसी पेज के टैब बदलना चाहते हैं:
         if (target === 'site' || target === 'syshealth' || target === 'energy') {
             // लॉजिक के अनुसार टैब इंडेक्स सेट करें
         }
@@ -77,7 +75,24 @@ export default function CentralDashboardMain() {
 
     const navTo = (page, index) => console.log(`NavTo page: ${page}, index: ${index}`);
     const toast = (msg, type) => alert(`${type.toUpperCase()}: ${msg}`);
+    // Agar aap tab/sub-tab bhi pass karna chahte hain
+    
+    const navigate = useNavigate(); // 👈 2. Init navigate hook
 
+    const handleKpiClick = (pageId, tabIndex = 0) => {
+        // Condition 1: Parent se Pass kiya hua function
+        if (typeof onNavigate === 'function') {
+            onNavigate(pageId, tabIndex);
+        } 
+        // Condition 2: Alternative parent state setter
+        else if (typeof setActivePage === 'function') {
+            setActivePage(pageId);
+        } 
+        // Condition 3: React Router Navigation
+        else {
+            navigate(`/${pageId}`, { state: { tabIndex } });
+        }
+    };
     return (
         <div className="page active" id="pg-central">
 
@@ -180,7 +195,7 @@ export default function CentralDashboardMain() {
                         <div className="dash-dl-menu" style={{ display: showDownloadMenu ? "block" : "none" }}>
 
                             {/* Energy */}
-                            
+
                             <div className="dash-dl-h">Quick report downloads</div>
 
                             <div className="dash-dl-opt" data-i="0">
@@ -423,12 +438,70 @@ export default function CentralDashboardMain() {
                 <div className="tab-panel active">
                     {/* KPI रो */}
                     <div className="dash-kpi-row" style={{ gridTemplateColumns: 'repeat(6, 1fr)' }}>
-                        <DashKPI title="Go to Energy & Utilities" iconClass="ti ti-bolt" iconColor="var(--solar)" label="Portfolio Energy (MTD)" value="4.82" unit="MWh" detail="↘ 3.1% vs last month" trendClass="up" onClick={() => kpiNav('energy', 0)} />
-                        <DashKPI title="Go to Alerts" iconClass="ti ti-bell" iconColor="var(--bad)" label="Active Alarms" value="7" detail="3 critical · 4 warning" onClick={() => kpiNav('alerts', 0)} />
-                        <DashKPI title="Go to System Health" iconClass="ti ti-building" iconColor="var(--info)" label="Sites Online" value="5 / 6" detail="1 degraded — Chennai" onClick={() => kpiNav('syshealth', 0)} />
-                        <DashKPI title="Go to System Health" iconClass="ti ti-heart-rate-monitor" iconColor="var(--ok)" label="Avg System Health" value="93" unit="%" detail="↑ 2% vs last week" trendClass="up" onClick={() => kpiNav('syshealth', 0)} />
-                        <DashKPI title="Go to Site Dashboard CO₂" iconClass="ti ti-leaf" iconColor="var(--ok)" label="CO₂ Saved Today" value="1,932" unit="kg" detail="via solar generation" onClick={() => kpiNav('site', 1)} />
-                        <DashKPI title="Go to Logbooks — sign-off queue" iconClass="ti ti-notebook" iconColor="var(--gold)" label="Logbooks · Pending Sign-off" value="7" detail="CE / Property Head" onClick={() => navTo('logbooks', 2)} />
+                        <DashKPI
+                            title="Go to Energy & Utilities"
+                            iconClass="ti ti-bolt"
+                            iconColor="var(--solar)"
+                            label="Portfolio Energy (MTD)"
+                            value="4.82"
+                            unit="MWh"
+                            detail="↘ 3.1% vs last month"
+                            trendClass="up"
+                            onClick={() => handleKpiClick('energy')}
+                        />
+
+                        <DashKPI
+                            title="Go to Alerts"
+                            iconClass="ti ti-bell"
+                            iconColor="var(--bad)"
+                            label="Active Alarms"
+                            value="7"
+                            detail="3 critical · 4 warning"
+                            onClick={() => handleKpiClick('alerts')}
+                        />
+
+                        <DashKPI
+                            title="Go to System Health"
+                            iconClass="ti ti-building"
+                            iconColor="var(--info)"
+                            label="Sites Online"
+                            value="5 / 6"
+                            detail="1 degraded — Chennai"
+                            onClick={() => handleKpiClick('syshealth')}
+                        />
+
+                        <DashKPI
+                            title="Go to System Health"
+                            iconClass="ti ti-heart-rate-monitor"
+                            iconColor="var(--ok)"
+                            label="Avg System Health"
+                            value="93"
+                            unit="%"
+                            detail="↑ 2% vs last week"
+                            trendClass="up"
+                            onClick={() => handleKpiClick('syshealth')}
+                        />
+
+                        <DashKPI
+                            title="Go to Site Dashboard CO₂"
+                            iconClass="ti ti-leaf"
+                            iconColor="var(--ok)"
+                            label="CO₂ Saved Today"
+                            value="1,932"
+                            unit="kg"
+                            detail="via solar generation"
+                            onClick={() => handleKpiClick('site', 1)}
+                        />
+
+                        <DashKPI
+                            title="Go to Logbooks — sign-off queue"
+                            iconClass="ti ti-notebook"
+                            iconColor="var(--gold)"
+                            label="Logbooks · Pending Sign-off"
+                            value="7"
+                            detail="CE / Property Head"
+                            onClick={() => handleKpiClick('logbooks', 2)}
+                        />
                     </div>
 
                     {/* मिडिल सेक्शन: लोड डिस्ट्रीब्यूशन और डोनट चार्ट */}

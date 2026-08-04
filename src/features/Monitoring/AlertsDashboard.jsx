@@ -1,382 +1,500 @@
 import React, { useState } from 'react';
+import { showToast } from '../../utils/toast';
 
 export default function AlertsDashboard() {
   // Tab Management State (0: Active Feed, 1: Critical Details, 2: Warnings Active, 3: Resolved Today)
   const [activeTab, setActiveTab] = useState(0);
-    const [showDownloadMenu, setShowDownloadMenu] = useState(false);
+  const [showDownloadMenu, setShowDownloadMenu] = useState(false);
 
   // Tab 0 Active Feed Feed ke liye Severity Filter State ('all', 'Critical', 'Warning')
-  const [severityFilter, setSeverityFilter] = useState('all');
+  // const [severityFilter, setSeverityFilter] = useState('all');
 
   // Helper placeholder functions jo project ke main dashboard triggers ko handle karengi
-  const handleEquipmentClick = (equipmentType) => {
-    if (typeof window !== 'undefined' && typeof window.switchToEquipment === 'function') {
-      window.switchToEquipment(equipmentType);
-    } else {
-      console.log(`Switching to equipment view: ${equipmentType}`);
-    }
-  };
+  // const handleEquipmentClick = (equipmentType) => {
+  //   if (typeof window !== 'undefined' && typeof window.switchToEquipment === 'function') {
+  //     window.switchToEquipment(equipmentType);
+  //   } else {
+  //     console.log(`Switching to equipment view: ${equipmentType}`);
+  //   }
+  // };
 
   const handleAckAllWarnings = () => {
     if (typeof window !== 'undefined' && typeof window.alAckAllWarnings === 'function') {
       window.alAckAllWarnings();
     } else {
-      alert("Acknowledging all warnings...");
+      showToast("Acknowledging all warnings...");
     }
   };
 
   const handleRaiseTicket = (ticketInfo) => {
     if (typeof window !== 'undefined' && typeof window.toast === 'function') {
-      window.toast(`Raising ticket for: ${ticketInfo}`, 'info');
+      showToast(`Raising ticket for: ${ticketInfo}`, 'info');
     } else {
       console.log(`Raising ticket for: ${ticketInfo}`);
     }
   };
 
+
+
+  const [severityFilter, setSeverityFilter] = useState('all');
+
+  // === Drawer Control & Ticket Data State ===
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [ticketData, setTicketData] = useState({
+    id: 'TKT-1054',
+    source: 'From alert',
+    title: 'CH-01 Chiller — High Condenser Pressure',
+    priority: 'Critical',
+    priorityChipClass: 'chip-crit',
+    status: 'Acknowledged',
+    statusChipClass: 'chip-ack',
+    team: 'engineers', // 'engineers' | 'command' | 'site'
+    asset: 'CH-01 Chiller',
+    site: 'Vikhroli — Godrej One',
+    raised: 'Today · 12:12 PM',
+    category: 'equipment',
+    assignee: '',
+    noteInput: '',
+    activityHistory: [
+      { id: 1, type: 'ok', title: 'Acknowledged — response SLA met', meta: 'Ops Head · Today · 12:13 PM' },
+      { id: 2, type: 'mut', title: 'Ticket raised from alert', meta: 'Ops Head · Today · 12:12 PM' }
+    ]
+  });
+
+  // Handlers for Table Actions
+  const handleEquipmentClick = (equipmentId) => {
+    console.log(`Navigate to equipment: ${equipmentId}`);
+  };
+
+  const handleOpenTicketDetails = (ticketIdOrTitle) => {
+    if (ticketIdOrTitle.startsWith('TKT-')) {
+      // Existing Ticket View
+      setTicketData((prev) => ({
+        ...prev,
+        id: ticketIdOrTitle,
+        title: ticketIdOrTitle === 'TKT-1055'
+          ? 'AHU Zone C — HVAC Temp Breach Floor 7'
+          : 'CH-01 Chiller — High Condenser Pressure',
+        asset: ticketIdOrTitle === 'TKT-1055' ? 'AHU Zone C' : 'CH-01 Chiller'
+      }));
+    } else {
+      // New / Generated Ticket View from Alert
+      const randomId = `TKT-${Math.floor(1000 + Math.random() * 9000)}`;
+      setTicketData((prev) => ({
+        ...prev,
+        id: randomId,
+        source: 'From active alert',
+        title: ticketIdOrTitle,
+        asset: ticketIdOrTitle.split(' - ')[1] || 'Unknown System'
+      }));
+    }
+    setIsDrawerOpen(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setIsDrawerOpen(false);
+  };
+
+  // Reassign Team Handler
+  const handleReassignTeam = (teamKey) => {
+    setTicketData((prev) => ({ ...prev, team: teamKey }));
+  };
+
+  // Set Assignee Handler
+  const handleSetAssignee = (e) => {
+    setTicketData((prev) => ({ ...prev, assignee: e.target.value }));
+  };
+
+  // Post Note / Remark Handler
+  const handlePostNote = () => {
+    if (!ticketData.noteInput.trim()) return;
+
+    const newHistory = [
+      {
+        id: Date.now(),
+        type: 'mut',
+        title: `Note added: "${ticketData.noteInput}"`,
+        meta: `Current User · Today · ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+      },
+      ...ticketData.activityHistory
+    ];
+
+    setTicketData((prev) => ({
+      ...prev,
+      activityHistory: newHistory,
+      noteInput: ''
+    }));
+  };
+
+  // Action Buttons
+  const handleStartWork = () => {
+    showToast(`Work started for ticket ${ticketData.id}`);
+    setTicketData((prev) => ({
+      ...prev,
+      status: 'In Progress',
+      statusChipClass: 'chip-prog'
+    }));
+  };
+
+  const handleEscalate = () => {
+    showToast(`Ticket ${ticketData.id} escalated to Level 2!`);
+    setTicketData((prev) => ({
+      ...prev,
+      status: 'Escalated',
+      statusChipClass: 'chip-crit'
+    }));
+  };
+
+
+
+
+
+
+
   return (
     <div className="page active" id="pg-alerts">
 
 
- <div className="page-header" id="dash-page-header" style={{ marginBottom: "10px" }}>
-                <div className="ph-left">
-                    <div className="live-dot"></div>
+      <div className="page-header" id="dash-page-header" style={{ marginBottom: "10px" }}>
+        <div className="ph-left">
+          <div className="live-dot"></div>
 
-                    <div>
-                        <div className="ph-title" id="dash-page-title">
-                           Alerts
-                        </div>
-
-                        <div
-                            id="dash-page-sub"
-                            style={{ fontSize: "10px", color: "var(--ink-3)" }}
-                        >
-                            Real-time feed · Auto-refresh 30s
-                        </div>
-                    </div>
-                </div>
-
-                <div className="ph-tabs" id="dash-tab-bar">
-                    <div
-                        onClick={() => setActiveTab(0)}
-                        className={`ph-tab ${activeTab === 0 ? "active" : ""}`}
-                    >
-                        All (7)
-                    </div>
-
-                    <div
-                        onClick={() => setActiveTab(1)}
-                        className={`ph-tab ${activeTab === 1 ? "active" : ""}`}
-                    >
-                        Critical (3)
-                    </div>
-
-                    <div
-                        onClick={() => setActiveTab(2)}
-                        className={`ph-tab ${activeTab === 2 ? "active" : ""}`}
-                    >
-                        Warnings (4)
-                    </div>
-
-                    <div
-                        onClick={() => setActiveTab(3)}
-                        className={`ph-tab ${activeTab === 3 ? "active" : ""}`}
-                    >
-                        Resolved
-                    </div>
-                </div>
-
-                {/* Range Picker */}
-                <div className="range-picker" id="boRangePicker">
-                    <span className="rp-label">Range</span>
-
-                    <div className="rp-seg">
-                        <button data-range="today" className="active">
-                            Today
-                        </button>
-
-                        <button data-range="7d">7D</button>
-
-                        <button data-range="30d">30D</button>
-
-                        <button data-range="custom">
-                            <i className="ti ti-calendar" style={{ fontSize: "12px" }}></i>
-                            Custom
-                        </button>
-                    </div>
-
-                    <div className="rp-pop" id="rpPop">
-                        <label>From</label>
-                        <input type="date" id="rpFrom" />
-
-                        <label>To</label>
-                        <input type="date" id="rpTo" />
-
-                        <button className="rp-apply" id="rpApply">
-                            Apply range
-                        </button>
-                    </div>
-                </div>
-
-                {/* Download */}
-                <div className="dash-dl" id="dashDl">
-                    <button
-                        className="dash-dl-btn"
-                        id="dashDlBtn"
-                        onClick={() => setShowDownloadMenu(!showDownloadMenu)}
-                    >
-                        <i className="ti ti-download"></i>
-                        Download Reports
-                        <i
-                            className="ti ti-chevron-down"
-                            style={{ fontSize: "12px", opacity: 0.8 }}
-                        ></i>
-                    </button>
-                    {showDownloadMenu && (
-                        <div className="dash-dl-menu" style={{ display: showDownloadMenu ? "block" : "none" }}>
-
-                            {/* Energy */}
-                            
-                            <div className="dash-dl-h">Quick report downloads</div>
-
-                            <div className="dash-dl-opt" data-i="0">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--info)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-bolt"
-                                        style={{ color: "var(--info)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">Energy &amp; Utilities</div>
-                                    <div className="ds">Floor-wise · cost · EPI</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            {/* CO2 */}
-                            <div className="dash-dl-opt" data-i="1">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--ok)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-leaf"
-                                        style={{ color: "var(--ok)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">CO₂ &amp; ESG Summary</div>
-                                    <div className="ds">Scope 1/2/3 · offsets</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            {/* SLA */}
-                            <div className="dash-dl-opt" data-i="2">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--warn)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-clipboard-check"
-                                        style={{ color: "var(--warn)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">SLA &amp; Tickets</div>
-                                    <div className="ds">Live ticket + SLA export</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            {/* Asset */}
-                            <div className="dash-dl-opt" data-i="3">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--violet)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-tool"
-                                        style={{ color: "var(--violet)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">Asset PM</div>
-                                    <div className="ds">PM status · health</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            {/* Solar */}
-                            <div className="dash-dl-opt" data-i="4">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--solar)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-solar-panel"
-                                        style={{ color: "var(--solar)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">Solar &amp; ROI</div>
-                                    <div className="ds">Generation · savings</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            {/* Device */}
-                            <div className="dash-dl-opt" data-i="5">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--cool)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-router"
-                                        style={{ color: "var(--cool)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">Device Fleet</div>
-                                    <div className="ds">IoT health · connectivity</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            <div
-                                style={{
-                                    borderTop: "1px solid var(--line-1)",
-                                    marginTop: "5px",
-                                    paddingTop: "6px",
-                                }}
-                            >
-                                <div className="dash-dl-opt" id="dashDlAll">
-                                    <div
-                                        className="di"
-                                        style={{ background: "var(--info)", opacity: 0.16 }}
-                                    ></div>
-
-                                    <div
-                                        style={{
-                                            marginLeft: "-38px",
-                                            width: "28px",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                        }}
-                                    >
-                                        <i
-                                            className="ti ti-package"
-                                            style={{ color: "var(--info)", fontSize: "14px" }}
-                                        ></i>
-                                    </div>
-
-                                    <div>
-                                        <div className="dt2">All reports</div>
-                                        <div className="ds">Download every report (CSV)</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div style={{ padding: "7px 9px 3px" }}>
-                                <a
-                                    href="#"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        navTo("reports");
-                                    }}
-                                    style={{
-                                        fontSize: "10.5px",
-                                        color: "var(--info)",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    Open full Reports &amp; Bills library →
-                                </a>
-                            </div>
-                        </div>
-                    )}
-                </div>
+          <div>
+            <div className="ph-title" id="dash-page-title">
+              Alerts
             </div>
 
-      
+            <div
+              id="dash-page-sub"
+              style={{ fontSize: "10px", color: "var(--ink-3)" }}
+            >
+              Real-time feed · Auto-refresh 30s
+            </div>
+          </div>
+        </div>
+
+        <div className="ph-tabs" id="dash-tab-bar">
+          <div
+            onClick={() => setActiveTab(0)}
+            className={`ph-tab ${activeTab === 0 ? "active" : ""}`}
+          >
+            All (7)
+          </div>
+
+          <div
+            onClick={() => setActiveTab(1)}
+            className={`ph-tab ${activeTab === 1 ? "active" : ""}`}
+          >
+            Critical (3)
+          </div>
+
+          <div
+            onClick={() => setActiveTab(2)}
+            className={`ph-tab ${activeTab === 2 ? "active" : ""}`}
+          >
+            Warnings (4)
+          </div>
+
+          <div
+            onClick={() => setActiveTab(3)}
+            className={`ph-tab ${activeTab === 3 ? "active" : ""}`}
+          >
+            Resolved
+          </div>
+        </div>
+
+        {/* Range Picker */}
+        <div className="range-picker" id="boRangePicker">
+          <span className="rp-label">Range</span>
+
+          <div className="rp-seg">
+            <button data-range="today" className="active">
+              Today
+            </button>
+
+            <button data-range="7d">7D</button>
+
+            <button data-range="30d">30D</button>
+
+            <button data-range="custom">
+              <i className="ti ti-calendar" style={{ fontSize: "12px" }}></i>
+              Custom
+            </button>
+          </div>
+
+          <div className="rp-pop" id="rpPop">
+            <label>From</label>
+            <input type="date" id="rpFrom" />
+
+            <label>To</label>
+            <input type="date" id="rpTo" />
+
+            <button className="rp-apply" id="rpApply">
+              Apply range
+            </button>
+          </div>
+        </div>
+
+        {/* Download */}
+        <div className="dash-dl" id="dashDl">
+          <button
+            className="dash-dl-btn"
+            id="dashDlBtn"
+            onClick={() => setShowDownloadMenu(!showDownloadMenu)}
+          >
+            <i className="ti ti-download"></i>
+            Download Reports
+            <i
+              className="ti ti-chevron-down"
+              style={{ fontSize: "12px", opacity: 0.8 }}
+            ></i>
+          </button>
+          {showDownloadMenu && (
+            <div className="dash-dl-menu" style={{ display: showDownloadMenu ? "block" : "none" }}>
+
+              {/* Energy */}
+
+              <div className="dash-dl-h">Quick report downloads</div>
+
+              <div className="dash-dl-opt" data-i="0">
+                <div
+                  className="di"
+                  style={{ background: "var(--info)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-bolt"
+                    style={{ color: "var(--info)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">Energy &amp; Utilities</div>
+                  <div className="ds">Floor-wise · cost · EPI</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* CO2 */}
+              <div className="dash-dl-opt" data-i="1">
+                <div
+                  className="di"
+                  style={{ background: "var(--ok)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-leaf"
+                    style={{ color: "var(--ok)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">CO₂ &amp; ESG Summary</div>
+                  <div className="ds">Scope 1/2/3 · offsets</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* SLA */}
+              <div className="dash-dl-opt" data-i="2">
+                <div
+                  className="di"
+                  style={{ background: "var(--warn)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-clipboard-check"
+                    style={{ color: "var(--warn)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">SLA &amp; Tickets</div>
+                  <div className="ds">Live ticket + SLA export</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* Asset */}
+              <div className="dash-dl-opt" data-i="3">
+                <div
+                  className="di"
+                  style={{ background: "var(--violet)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-tool"
+                    style={{ color: "var(--violet)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">Asset PM</div>
+                  <div className="ds">PM status · health</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* Solar */}
+              <div className="dash-dl-opt" data-i="4">
+                <div
+                  className="di"
+                  style={{ background: "var(--solar)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-solar-panel"
+                    style={{ color: "var(--solar)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">Solar &amp; ROI</div>
+                  <div className="ds">Generation · savings</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* Device */}
+              <div className="dash-dl-opt" data-i="5">
+                <div
+                  className="di"
+                  style={{ background: "var(--cool)", opacity: 0.16 }}
+                ></div>
+
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-router"
+                    style={{ color: "var(--cool)", fontSize: "14px" }}
+                  ></i>
+                </div>
+
+                <div>
+                  <div className="dt2">Device Fleet</div>
+                  <div className="ds">IoT health · connectivity</div>
+                </div>
+
+                <span className="dx">CSV</span>
+              </div>
+
+              <div
+                style={{
+                  borderTop: "1px solid var(--line-1)",
+                  marginTop: "5px",
+                  paddingTop: "6px",
+                }}
+              >
+                <div className="dash-dl-opt" id="dashDlAll">
+                  <div
+                    className="di"
+                    style={{ background: "var(--info)", opacity: 0.16 }}
+                  ></div>
+
+                  <div
+                    style={{
+                      marginLeft: "-38px",
+                      width: "28px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <i
+                      className="ti ti-package"
+                      style={{ color: "var(--info)", fontSize: "14px" }}
+                    ></i>
+                  </div>
+
+                  <div>
+                    <div className="dt2">All reports</div>
+                    <div className="ds">Download every report (CSV)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ padding: "7px 9px 3px" }}>
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navTo("reports");
+                  }}
+                  style={{
+                    fontSize: "10.5px",
+                    color: "var(--info)",
+                    cursor: "pointer",
+                  }}
+                >
+                  Open full Reports &amp; Bills library →
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+
       {/* ================= TAB 0: ACTIVE FEED ================= */}
       <div className={`tab-panel ${activeTab === 0 ? 'active' : ''}`} data-page="alerts" data-tab="0" style={{ display: activeTab === 0 ? 'block' : 'none' }}>
-        
+
         {/* Top KPI Strip */}
         <div className="kpi-strip mb-14" style={{ gridTemplateColumns: 'repeat(4,1fr)' }}>
           <div className="kpi glow-bad clickable" title="View all active alerts" onClick={() => setActiveTab(0)}>
@@ -404,26 +522,26 @@ export default function AlertsDashboard() {
           <div className="ch">
             <div className="ct">Active Alert Feed</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              
+
               {/* Filter Chips Layer */}
               <div id="al-chips" style={{ display: 'flex', gap: '6px' }}>
-                <div 
-                  className="badge badge-cyan" 
-                  onClick={() => setSeverityFilter('all')} 
+                <div
+                  className="badge badge-cyan"
+                  onClick={() => setSeverityFilter('all')}
                   style={{ cursor: 'pointer', outline: severityFilter === 'all' ? '1.5px solid var(--info)' : 'none' }}
                 >
                   All
                 </div>
-                <div 
-                  className="badge badge-red" 
-                  onClick={() => setSeverityFilter('Critical')} 
+                <div
+                  className="badge badge-red"
+                  onClick={() => setSeverityFilter('Critical')}
                   style={{ cursor: 'pointer', outline: severityFilter === 'Critical' ? '1.5px solid var(--bad)' : 'none' }}
                 >
                   Critical
                 </div>
-                <div 
-                  className="badge badge-amber" 
-                  onClick={() => setSeverityFilter('Warning')} 
+                <div
+                  className="badge badge-amber"
+                  onClick={() => setSeverityFilter('Warning')}
                   style={{ cursor: 'pointer', outline: severityFilter === 'Warning' ? '1.5px solid var(--warn)' : 'none' }}
                 >
                   Warning
@@ -459,13 +577,13 @@ export default function AlertsDashboard() {
                     <td>10:21 AM</td>
                     <td className="al-st"><span className="badge badge-amber">Open</span></td>
                     <td style={{ whiteSpace: 'nowrap' }}>
-                      <button className="btn primary" style={{ padding: '3px 9px', fontSize: '10px' }} onClick={() => handleRaiseTicket('High Condenser Pressure - CH-01')}>
+                      <button className="btn primary" style={{ padding: '3px 9px', fontSize: '10px' }} onClick={() => handleOpenTicketDetails('High Condenser Pressure - CH-01')}>
                         <i className="ti ti-ticket"></i> Raise Ticket
                       </button>
                     </td>
                   </tr>
                 )}
-                
+
                 {/* Condition Row 2 */}
                 {(severityFilter === 'all' || severityFilter === 'Critical') && (
                   <tr className="al-row" data-sev="Critical" data-status="Escalated" id="al-r1">
@@ -475,7 +593,7 @@ export default function AlertsDashboard() {
                     <td>08:14 AM</td>
                     <td className="al-st"><span className="badge badge-red">Escalated</span></td>
                     <td style={{ whiteSpace: 'nowrap' }}>
-                      <button className="btn" style={{ padding: '3px 9px', fontSize: '10px' }} onClick={() => handleRaiseTicket('TKT-1055')}>
+                      <button className="btn" style={{ padding: '3px 9px', fontSize: '10px' }} onClick={() => handleOpenTicketDetails('TKT-1055')}>
                         <i className="ti ti-ticket"></i> TKT-1055
                       </button>
                     </td>
@@ -491,7 +609,7 @@ export default function AlertsDashboard() {
                     <td>10:18 AM</td>
                     <td className="al-st"><span className="badge badge-amber">Open</span></td>
                     <td style={{ whiteSpace: 'nowrap' }}>
-                      <button className="btn primary" style={{ padding: '3px 9px', fontSize: '10px' }} onClick={() => handleRaiseTicket('Door Sensor Fault - Lift-04')}>
+                      <button className="btn primary" style={{ padding: '3px 9px', fontSize: '10px' }} onClick={() => handleOpenTicketDetails('Door Sensor Fault - Lift-04')}>
                         <i className="ti ti-ticket"></i> Raise Ticket
                       </button>
                     </td>
@@ -507,7 +625,7 @@ export default function AlertsDashboard() {
                     <td>10:15 AM</td>
                     <td className="al-st"><span className="badge badge-cyan">Ack'd</span></td>
                     <td style={{ whiteSpace: 'nowrap' }}>
-                      <button className="btn" style={{ padding: '3px 9px', fontSize: '10px' }} onClick={() => handleRaiseTicket('TKT-1054')}>
+                      <button className="btn" style={{ padding: '3px 9px', fontSize: '10px' }} onClick={() => handleOpenTicketDetails('TKT-1054')}>
                         <i className="ti ti-ticket"></i> TKT-1054
                       </button>
                     </td>
@@ -523,7 +641,7 @@ export default function AlertsDashboard() {
                     <td>10:10 AM</td>
                     <td className="al-st"><span className="badge badge-cyan">Ack'd</span></td>
                     <td style={{ whiteSpace: 'nowrap' }}>
-                      <button className="btn primary" style={{ padding: '3px 9px', fontSize: '10px' }} onClick={() => handleRaiseTicket('High Water Temp - CT-01')}>
+                      <button className="btn primary" style={{ padding: '3px 9px', fontSize: '10px' }} onClick={() => handleOpenTicketDetails('High Water Temp - CT-01')}>
                         <i className="ti ti-ticket"></i> Raise Ticket
                       </button>
                     </td>
@@ -539,7 +657,7 @@ export default function AlertsDashboard() {
                     <td>09:55 AM</td>
                     <td className="al-st"><span className="badge badge-cyan">Ack'd</span></td>
                     <td style={{ whiteSpace: 'nowrap' }}>
-                      <button className="btn primary" style={{ padding: '3px 9px', fontSize: '10px' }} onClick={() => handleRaiseTicket('High Vibration - PMP-01')}>
+                      <button className="btn primary" style={{ padding: '3px 9px', fontSize: '10px' }} onClick={() => handleOpenTicketDetails('High Vibration - PMP-01')}>
                         <i className="ti ti-ticket"></i> Raise Ticket
                       </button>
                     </td>
@@ -555,7 +673,7 @@ export default function AlertsDashboard() {
                     <td>10:22 AM</td>
                     <td className="al-st"><span className="badge badge-cyan">Ack'd</span></td>
                     <td style={{ whiteSpace: 'nowrap' }}>
-                      <button className="btn primary" style={{ padding: '3px 9px', fontSize: '10px' }} onClick={() => handleRaiseTicket('Unauthorized Access - CAM-08')}>
+                      <button className="btn primary" style={{ padding: '3px 9px', fontSize: '10px' }} onClick={() => handleOpenTicketDetails('Unauthorized Access - CAM-08')}>
                         <i className="ti ti-ticket"></i> Raise Ticket
                       </button>
                     </td>
@@ -564,6 +682,8 @@ export default function AlertsDashboard() {
               </tbody>
             </table>
           </div>
+
+
         </div>
       </div>
 
@@ -574,7 +694,7 @@ export default function AlertsDashboard() {
           <div className="kpi glow-ok"><div className="kpi-l">Critical Resolved Today</div><div className="kpi-v ok">2</div></div>
           <div className="kpi glow-warn"><div className="kpi-l">Avg Resolution Time</div><div className="kpi-v warn">2.4<span className="kpi-u">hrs</span></div></div>
         </div>
-        
+
         <div className="card">
           <div className="ch"><div className="ct">Critical Alerts — Detail</div></div>
           <div className="cb">
@@ -590,7 +710,7 @@ export default function AlertsDashboard() {
                 <span className="at">10:21 AM</span>
               </div>
             </div>
-            
+
             <div className="mb-14" style={{ marginBottom: '10px' }}>
               <div className="alert-strip crit">
                 <i className="ti ti-thermometer" style={{ color: 'var(--bad)' }}></i>
@@ -603,7 +723,7 @@ export default function AlertsDashboard() {
                 <span className="at">08:14 AM</span>
               </div>
             </div>
-            
+
             <div>
               <div className="alert-strip crit">
                 <i className="ti ti-elevator" style={{ color: 'var(--bad)' }}></i>
@@ -683,7 +803,7 @@ export default function AlertsDashboard() {
           <div className="kpi glow-ok"><div className="kpi-l">Auto-Resolved</div><div className="kpi-v ok">4</div></div>
           <div className="kpi"><div className="kpi-l">Manual Close</div><div className="kpi-v">5</div></div>
         </div>
-        
+
         <div className="card">
           <div className="ch"><div className="ct">Resolved Alerts — Today</div></div>
           <div className="cb" style={{ padding: 0 }}>
@@ -736,6 +856,177 @@ export default function AlertsDashboard() {
           </div>
         </div>
       </div>
+
+
+      {isDrawerOpen && (
+        <>
+          <div className="sd-drawer-backdrop open" id="sdBackdrop"></div>
+
+          <div className="sd-drawer open" id="sdDrawer" role="dialog" aria-modal="true">
+
+            {/* Drawer Header */}
+            <div className="sd-dr-head">
+              <div className="sd-dr-top">
+                <div>
+                  <div className="sd-dr-id">{ticketData.id} · {ticketData.source}</div>
+                  <div className="sd-dr-title">{ticketData.title}</div>
+                </div>
+                <button className="sd-dr-close" onClick={handleCloseDrawer} aria-label="Close" type="button">
+                  <i className="ti ti-x"></i>
+                </button>
+              </div>
+              <div className="sd-dr-chips">
+                <span className={`sd-chip ${ticketData.priorityChipClass}`}>{ticketData.priority}</span>
+                <span className={`sd-chip ${ticketData.statusChipClass}`}>{ticketData.status}</span>
+                <span className="sd-chip chip-team">
+                  <i className="ti ti-tools" style={{ color: 'var(--hot)' }}></i>
+                  {ticketData.team === 'engineers' ? 'Engineers' : ticketData.team === 'command' ? 'Command Centre' : 'Site Team'}
+                </span>
+              </div>
+            </div>
+
+            {/* Drawer Body */}
+            <div className="sd-dr-body">
+
+              {/* Description */}
+              <div className="sd-sec">
+                <div className="sd-sec-l"><i className="ti ti-file-description"></i>Description</div>
+                <div className="sd-desc">Raised from active alert on {ticketData.asset}. {ticketData.title}.</div>
+              </div>
+
+              {/* Asset Fields Grid */}
+              <div className="sd-sec">
+                <div className="sd-grid2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div className="sd-field">
+                    <div className="fl">Asset / System</div>
+                    <div className="fv link" onClick={() => handleEquipmentClick(ticketData.asset)}>
+                      {ticketData.asset}
+                    </div>
+                  </div>
+                  <div className="sd-field">
+                    <div className="fl">Site</div>
+                    <div className="fv">{ticketData.site}</div>
+                  </div>
+                  <div className="sd-field">
+                    <div className="fl">Raised</div>
+                    <div className="fv">{ticketData.raised}</div>
+                  </div>
+                  <div className="sd-field">
+                    <div className="fl">Category</div>
+                    <div className="fv" style={{ textTransform: 'capitalize' }}>{ticketData.category}</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* SLA Tracking */}
+              <div className="sd-sec">
+                <div className="sd-sec-l"><i className="ti ti-clock-hour-4"></i>SLA Tracking</div>
+                <div className="sd-sla-card">
+                  <div className="sd-sla-row">
+                    <span className="sd-sla-lab">Response · target 15m</span>
+                    <span className="sd-sla-val ok">Met in 1m</span>
+                  </div>
+                  <div className="sla-track" style={{ marginBottom: '11px' }}>
+                    <div className="sla-fill ok" style={{ width: '4.13%' }}></div>
+                  </div>
+                  <div className="sd-sla-row">
+                    <span className="sd-sla-lab">Resolution · target 4h</span>
+                    <span className="sd-sla-val ok">3h 59m left</span>
+                  </div>
+                  <div className="sla-track">
+                    <div className="sla-fill ok" style={{ width: '0.25%' }}></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Ownership & Assignment */}
+              <div className="sd-sec">
+                <div className="sd-sec-l"><i className="ti ti-users"></i>Ownership &amp; Assignment</div>
+                <div className="sd-assign">
+                  <div className="sd-team-opts" style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
+                    <div
+                      className={`sd-team-opt ${ticketData.team === 'engineers' ? 'active' : ''}`}
+                      onClick={() => handleReassignTeam('engineers')}
+                    >
+                      <i className="ti ti-tools" style={{ color: 'var(--hot)' }}></i>
+                      <div className="tt">Engineers</div>
+                    </div>
+                    <div
+                      className={`sd-team-opt ${ticketData.team === 'command' ? 'active' : ''}`}
+                      onClick={() => handleReassignTeam('command')}
+                    >
+                      <i className="ti ti-broadcast" style={{ color: 'var(--info)' }}></i>
+                      <div className="tt">Command Centre</div>
+                    </div>
+                    <div
+                      className={`sd-team-opt ${ticketData.team === 'site' ? 'active' : ''}`}
+                      onClick={() => handleReassignTeam('site')}
+                    >
+                      <i className="ti ti-building" style={{ color: 'var(--violet)' }}></i>
+                      <div className="tt">Site Team</div>
+                    </div>
+                  </div>
+
+                  <select className="sd-sel" value={ticketData.assignee} onChange={handleSetAssignee}>
+                    <option value="">— Unassigned —</option>
+                    <option value="Rajesh Sharma">Rajesh Sharma</option>
+                    <option value="Vikram Patel">Vikram Patel</option>
+                    <option value="HVAC Team B">HVAC Team B</option>
+                    <option value="Amit Deshpande">Amit Deshpande</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Add Note / Remark */}
+              <div className="sd-sec">
+                <div className="sd-sec-l"><i className="ti ti-message-plus"></i>Add Note / Remark</div>
+                <textarea
+                  className="sd-textarea"
+                  value={ticketData.noteInput}
+                  onChange={(e) => setTicketData((prev) => ({ ...prev, noteInput: e.target.value }))}
+                  placeholder="Add an update, diagnosis or remark…"
+                />
+                <button
+                  className="btn"
+                  style={{ marginTop: '8px', padding: '7px 14px' }}
+                  onClick={handlePostNote}
+                  type="button"
+                >
+                  <i className="ti ti-send"></i> Post note
+                </button>
+              </div>
+
+              {/* Activity History */}
+              <div className="sd-sec">
+                <div className="sd-sec-l">
+                  <i className="ti ti-history"></i>Activity History ({ticketData.activityHistory.length})
+                </div>
+                <div className="sd-tl">
+                  {ticketData.activityHistory.map((item) => (
+                    <div className="sd-tl-item" key={item.id}>
+                      <div className={`sd-tl-dot ${item.type}`}></div>
+                      <div className="sd-tl-act">{item.title}</div>
+                      <div className="sd-tl-meta">{item.meta}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+            {/* Drawer Footer */}
+            <div className="sd-dr-foot">
+              <button className="btn primary wide" onClick={handleStartWork} type="button">
+                <i className="ti ti-progress"></i> Start Work
+              </button>
+              <button className="btn danger" onClick={handleEscalate} type="button">
+                <i className="ti ti-arrow-up-circle"></i> Escalate
+              </button>
+            </div>
+
+          </div>
+        </>
+      )}
 
     </div>
   );

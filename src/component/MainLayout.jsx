@@ -45,6 +45,7 @@ import RootCauseComp from '../features/Ai_Intelligence/RootCause';
 import SrmSiteCommissioningDashboard from '../features/Site_Commissioning/SrmSiteCommissioningDashboard';
 import '../App.css';
 import Energy_Utilities from '../features/Operations/Energy_Utilities';
+import ServiceDesk from '../features/Maintenance/ServiceDesk';
 
 
 export default function MainLayout() {
@@ -62,14 +63,22 @@ export default function MainLayout() {
   const toggleGroup = (groupKey) => {
     setOpenGroups((prev) => ({ ...prev, [groupKey]: !prev[groupKey] }));
   };
-
+const handleNavigate = (page, tabIndex = 0) => {
+  setActivePage(page);
+  if (tabIndex !== undefined) {
+    setActiveTab(tabIndex);
+  }
+};
   // Render active route dynamically
   const renderActiveComponent = () => {
     switch (activePage) {
       // --- Dashboard Routes ---
-      case 'central': return <CentralDashboardMain />;
-      case 'command': return <CommandDashboard />;
-      case 'site': return <SiteDashboard />;
+case 'central': 
+      return <CentralDashboardMain onNavigate={handleNavigate} setActivePage={setActivePage} />;      
+// MainLayout.js
+
+case 'command': 
+  return <CommandDashboard onNavigate={handleNavigate} setActivePage={setActivePage} />;      case 'site': return <SiteDashboard />;
 
       // --- AI Intelligence Routes ---
       case 'ai-summary': return <AISummaryComp activePage={activePage} />;
@@ -84,6 +93,7 @@ export default function MainLayout() {
       case 'space': return <SpaceUtilisation />;
       case 'complaints': return <ComplaintsDashboard />;
       case 'sla': return <SlaDashboard />;
+       case 'servicedesk': return <ServiceDesk />;
       case 'vendor': return <VendorDashboard />;
       case 'energy': return <Energy_Utilities />;
 

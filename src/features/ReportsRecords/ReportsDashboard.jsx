@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ReportsDashboard = () => {
+const ReportsDashboard = ({ viewDailyReport }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [reportType, setReportType] = useState('dmr'); // 'hlp' or 'dmr'
 
@@ -70,8 +70,19 @@ const ReportsDashboard = () => {
   };
 
 
+  // Smooth scroll function
+  const handleReportClick = (reportType) => {
+    // 1. Existing report loading logic
+    if (viewDailyReport) {
+      viewDailyReport(reportType);
+    }
 
-
+    // 2. Screen ko 300px UPAR scroll karne ke liye
+    window.scrollBy({
+      top: -300, // Negative value (-) screen ko upar scroll karti hai
+      behavior: 'smooth'
+    });
+  };
   return (
     <div className="page active" id="pg-reports">
 
@@ -434,16 +445,17 @@ const ReportsDashboard = () => {
             <div
               className="kpi glow-info clickable"
               title="Open today's DMR"
-              onClick={() => viewDailyReport && viewDailyReport('dmr')}
+              onClick={() => handleReportClick('dmr')}
             >
               <div className="kpi-l">Today's DMR</div>
               <div className="kpi-v">Ready</div>
               <div className="kpi-s">auto-built 06:00</div>
             </div>
+
             <div
               className="kpi glow-ok clickable"
               title="Open today's HLP"
-              onClick={() => viewDailyReport && viewDailyReport('hlp')}
+              onClick={() => handleReportClick('hlp')}
             >
               <div className="kpi-l">Today's HLP</div>
               <div className="kpi-v ok">Ready</div>

@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 export default function SystemHealthDashboard() {
   // Tab Management State (0: Live Status, 1: Heatmap, 2: PM Schedule, 3: Fault Log)
   const [activeTab, setActiveTab] = useState(0);
-    const [showDownloadMenu, setShowDownloadMenu] = useState(false);
+  const [showDownloadMenu, setShowDownloadMenu] = useState(false);
+
   // Uptime Heatmap Raw Dataset
   const daysData = [
     99.9, 99.8, 100, 99.9, 99.7, 100, 100, 99.8, 99.9, 100,
@@ -30,352 +31,319 @@ export default function SystemHealthDashboard() {
 
   return (
     <div className="page active" id="pg-syshealth">
-
-
-<div className="page-header" id="dash-page-header" style={{ marginBottom: "10px" }}>
-                <div className="ph-left">
-                    <div className="live-dot"></div>
-
-                    <div>
-                        <div className="ph-title" id="dash-page-title">
-                          System Health 
-                        </div>
-
-                        <div
-                            id="dash-page-sub"
-                            style={{ fontSize: "10px", color: "var(--ink-3)" }}
-                        >
-                           Live Status — All Systems
-
-                        </div>
-                    </div>
-                </div>
-
-                <div className="ph-tabs" id="dash-tab-bar">
-                    <div
-                        onClick={() => setActiveTab(0)}
-                        className={`ph-tab ${activeTab === 0 ? "active" : ""}`}
-                    >
-                      Live Status
-                    </div>
-
-                    <div
-                        onClick={() => setActiveTab(1)}
-                        className={`ph-tab ${activeTab === 1 ? "active" : ""}`}
-                    >
-                     Uptime
-                    </div>
-
-                    <div
-                        onClick={() => setActiveTab(2)}
-                        className={`ph-tab ${activeTab === 2 ? "active" : ""}`}
-                    >
-                       PM Schedule
-                    </div>
-
-                    <div
-                        onClick={() => setActiveTab(3)}
-                        className={`ph-tab ${activeTab === 3 ? "active" : ""}`}
-                    >
-                       Faults
-                    </div>
-                </div>
-
-                {/* Range Picker */}
-                <div className="range-picker" id="boRangePicker">
-                    <span className="rp-label">Range</span>
-
-                    <div className="rp-seg">
-                        <button data-range="today" className="active">
-                            Today
-                        </button>
-
-                        <button data-range="7d">7D</button>
-
-                        <button data-range="30d">30D</button>
-
-                        <button data-range="custom">
-                            <i className="ti ti-calendar" style={{ fontSize: "12px" }}></i>
-                            Custom
-                        </button>
-                    </div>
-
-                    <div className="rp-pop" id="rpPop">
-                        <label>From</label>
-                        <input type="date" id="rpFrom" />
-
-                        <label>To</label>
-                        <input type="date" id="rpTo" />
-
-                        <button className="rp-apply" id="rpApply">
-                            Apply range
-                        </button>
-                    </div>
-                </div>
-
-                {/* Download */}
-                <div className="dash-dl" id="dashDl">
-                    <button
-                        className="dash-dl-btn"
-                        id="dashDlBtn"
-                        onClick={() => setShowDownloadMenu(!showDownloadMenu)}
-                    >
-                        <i className="ti ti-download"></i>
-                        Download Reports
-                        <i
-                            className="ti ti-chevron-down"
-                            style={{ fontSize: "12px", opacity: 0.8 }}
-                        ></i>
-                    </button>
-                    {showDownloadMenu && (
-                        <div className="dash-dl-menu" style={{ display: showDownloadMenu ? "block" : "none" }}>
-
-                            {/* Energy */}
-                            
-                            <div className="dash-dl-h">Quick report downloads</div>
-
-                            <div className="dash-dl-opt" data-i="0">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--info)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-bolt"
-                                        style={{ color: "var(--info)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">Energy &amp; Utilities</div>
-                                    <div className="ds">Floor-wise · cost · EPI</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            {/* CO2 */}
-                            <div className="dash-dl-opt" data-i="1">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--ok)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-leaf"
-                                        style={{ color: "var(--ok)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">CO₂ &amp; ESG Summary</div>
-                                    <div className="ds">Scope 1/2/3 · offsets</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            {/* SLA */}
-                            <div className="dash-dl-opt" data-i="2">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--warn)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-clipboard-check"
-                                        style={{ color: "var(--warn)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">SLA &amp; Tickets</div>
-                                    <div className="ds">Live ticket + SLA export</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            {/* Asset */}
-                            <div className="dash-dl-opt" data-i="3">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--violet)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-tool"
-                                        style={{ color: "var(--violet)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">Asset PM</div>
-                                    <div className="ds">PM status · health</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            {/* Solar */}
-                            <div className="dash-dl-opt" data-i="4">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--solar)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-solar-panel"
-                                        style={{ color: "var(--solar)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">Solar &amp; ROI</div>
-                                    <div className="ds">Generation · savings</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            {/* Device */}
-                            <div className="dash-dl-opt" data-i="5">
-                                <div
-                                    className="di"
-                                    style={{ background: "var(--cool)", opacity: 0.16 }}
-                                ></div>
-
-                                <div
-                                    style={{
-                                        marginLeft: "-38px",
-                                        width: "28px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <i
-                                        className="ti ti-router"
-                                        style={{ color: "var(--cool)", fontSize: "14px" }}
-                                    ></i>
-                                </div>
-
-                                <div>
-                                    <div className="dt2">Device Fleet</div>
-                                    <div className="ds">IoT health · connectivity</div>
-                                </div>
-
-                                <span className="dx">CSV</span>
-                            </div>
-
-                            <div
-                                style={{
-                                    borderTop: "1px solid var(--line-1)",
-                                    marginTop: "5px",
-                                    paddingTop: "6px",
-                                }}
-                            >
-                                <div className="dash-dl-opt" id="dashDlAll">
-                                    <div
-                                        className="di"
-                                        style={{ background: "var(--info)", opacity: 0.16 }}
-                                    ></div>
-
-                                    <div
-                                        style={{
-                                            marginLeft: "-38px",
-                                            width: "28px",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                        }}
-                                    >
-                                        <i
-                                            className="ti ti-package"
-                                            style={{ color: "var(--info)", fontSize: "14px" }}
-                                        ></i>
-                                    </div>
-
-                                    <div>
-                                        <div className="dt2">All reports</div>
-                                        <div className="ds">Download every report (CSV)</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div style={{ padding: "7px 9px 3px" }}>
-                                <a
-                                    href="#"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        navTo("reports");
-                                    }}
-                                    style={{
-                                        fontSize: "10.5px",
-                                        color: "var(--info)",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    Open full Reports &amp; Bills library →
-                                </a>
-                            </div>
-                        </div>
-                    )}
-                </div>
+      <div className="page-header" id="dash-page-header" style={{ marginBottom: "10px" }}>
+        <div className="ph-left">
+          <div className="live-dot"></div>
+          <div>
+            <div className="ph-title" id="dash-page-title">
+              System Health
             </div>
+            <div
+              id="dash-page-sub"
+              style={{ fontSize: "10px", color: "var(--ink-3)" }}
+            >
+              Live Status — All Systems
+            </div>
+          </div>
+        </div>
 
+        <div className="ph-tabs" id="dash-tab-bar">
+          <div
+            onClick={() => setActiveTab(0)}
+            className={`ph-tab ${activeTab === 0 ? "active" : ""}`}
+          >
+            Live Status
+          </div>
 
-      
+          <div
+            onClick={() => setActiveTab(1)}
+            className={`ph-tab ${activeTab === 1 ? "active" : ""}`}
+          >
+            Uptime
+          </div>
+
+          <div
+            onClick={() => setActiveTab(2)}
+            className={`ph-tab ${activeTab === 2 ? "active" : ""}`}
+          >
+            PM Schedule
+          </div>
+
+          <div
+            onClick={() => setActiveTab(3)}
+            className={`ph-tab ${activeTab === 3 ? "active" : ""}`}
+          >
+            Faults
+          </div>
+        </div>
+
+        {/* Range Picker */}
+        <div className="range-picker" id="boRangePicker">
+          <span className="rp-label">Range</span>
+          <div className="rp-seg">
+            <button data-range="today" className="active">
+              Today
+            </button>
+            <button data-range="7d">7D</button>
+            <button data-range="30d">30D</button>
+            <button data-range="custom">
+              <i className="ti ti-calendar" style={{ fontSize: "12px" }}></i>
+              Custom
+            </button>
+          </div>
+
+          <div className="rp-pop" id="rpPop">
+            <label>From</label>
+            <input type="date" id="rpFrom" />
+
+            <label>To</label>
+            <input type="date" id="rpTo" />
+
+            <button className="rp-apply" id="rpApply">
+              Apply range
+            </button>
+          </div>
+        </div>
+
+        {/* Download */}
+        <div className="dash-dl" id="dashDl">
+          <button
+            className="dash-dl-btn"
+            id="dashDlBtn"
+            onClick={() => setShowDownloadMenu(!showDownloadMenu)}
+          >
+            <i className="ti ti-download"></i>
+            Download Reports
+            <i
+              className="ti ti-chevron-down"
+              style={{ fontSize: "12px", opacity: 0.8 }}
+            ></i>
+          </button>
+          {showDownloadMenu && (
+            <div className="dash-dl-menu" style={{ display: showDownloadMenu ? "block" : "none" }}>
+              <div className="dash-dl-h">Quick report downloads</div>
+
+              {/* Energy */}
+              <div className="dash-dl-opt" data-i="0">
+                <div
+                  className="di"
+                  style={{ background: "var(--info)", opacity: 0.16 }}
+                ></div>
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-bolt"
+                    style={{ color: "var(--info)", fontSize: "14px" }}
+                  ></i>
+                </div>
+                <div>
+                  <div className="dt2">Energy &amp; Utilities</div>
+                  <div className="ds">Floor-wise · cost · EPI</div>
+                </div>
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* CO2 */}
+              <div className="dash-dl-opt" data-i="1">
+                <div
+                  className="di"
+                  style={{ background: "var(--ok)", opacity: 0.16 }}
+                ></div>
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-leaf"
+                    style={{ color: "var(--ok)", fontSize: "14px" }}
+                  ></i>
+                </div>
+                <div>
+                  <div className="dt2">CO₂ &amp; ESG Summary</div>
+                  <div className="ds">Scope 1/2/3 · offsets</div>
+                </div>
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* SLA */}
+              <div className="dash-dl-opt" data-i="2">
+                <div
+                  className="di"
+                  style={{ background: "var(--warn)", opacity: 0.16 }}
+                ></div>
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-clipboard-check"
+                    style={{ color: "var(--warn)", fontSize: "14px" }}
+                  ></i>
+                </div>
+                <div>
+                  <div className="dt2">SLA &amp; Tickets</div>
+                  <div className="ds">Live ticket + SLA export</div>
+                </div>
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* Asset */}
+              <div className="dash-dl-opt" data-i="3">
+                <div
+                  className="di"
+                  style={{ background: "var(--violet)", opacity: 0.16 }}
+                ></div>
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-tool"
+                    style={{ color: "var(--violet)", fontSize: "14px" }}
+                  ></i>
+                </div>
+                <div>
+                  <div className="dt2">Asset PM</div>
+                  <div className="ds">PM status · health</div>
+                </div>
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* Solar */}
+              <div className="dash-dl-opt" data-i="4">
+                <div
+                  className="di"
+                  style={{ background: "var(--solar)", opacity: 0.16 }}
+                ></div>
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-solar-panel"
+                    style={{ color: "var(--solar)", fontSize: "14px" }}
+                  ></i>
+                </div>
+                <div>
+                  <div className="dt2">Solar &amp; ROI</div>
+                  <div className="ds">Generation · savings</div>
+                </div>
+                <span className="dx">CSV</span>
+              </div>
+
+              {/* Device */}
+              <div className="dash-dl-opt" data-i="5">
+                <div
+                  className="di"
+                  style={{ background: "var(--cool)", opacity: 0.16 }}
+                ></div>
+                <div
+                  style={{
+                    marginLeft: "-38px",
+                    width: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <i
+                    className="ti ti-router"
+                    style={{ color: "var(--cool)", fontSize: "14px" }}
+                  ></i>
+                </div>
+                <div>
+                  <div className="dt2">Device Fleet</div>
+                  <div className="ds">IoT health · connectivity</div>
+                </div>
+                <span className="dx">CSV</span>
+              </div>
+
+              <div
+                style={{
+                  borderTop: "1px solid var(--line-1)",
+                  marginTop: "5px",
+                  paddingTop: "6px",
+                }}
+              >
+                <div className="dash-dl-opt" id="dashDlAll">
+                  <div
+                    className="di"
+                    style={{ background: "var(--info)", opacity: 0.16 }}
+                  ></div>
+                  <div
+                    style={{
+                      marginLeft: "-38px",
+                      width: "28px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <i
+                      className="ti ti-package"
+                      style={{ color: "var(--info)", fontSize: "14px" }}
+                    ></i>
+                  </div>
+                  <div>
+                    <div className="dt2">All reports</div>
+                    <div className="ds">Download every report (CSV)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ padding: "7px 9px 3px" }}>
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (typeof window.navTo === 'function') {
+                      window.navTo("reports");
+                    }
+                  }}
+                  style={{
+                    fontSize: "10.5px",
+                    color: "var(--info)",
+                    cursor: "pointer",
+                  }}
+                >
+                  Open full Reports &amp; Bills library →
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* ================= TAB 0: LIVE STATUS & OVERVIEW ================= */}
-      <div 
-        className={`tab-panel ${activeTab === 0 ? 'active' : ''}`} 
-        data-page="syshealth" 
-        data-tab="0"
+      <div
+        className={`tab-panel ${activeTab === 0 ? 'active' : ''}`}
         style={{ display: activeTab === 0 ? 'block' : 'none' }}
       >
         <div className="kpi-strip mb-14" style={{ gridTemplateColumns: 'repeat(4,1fr)' }}>
@@ -417,21 +385,19 @@ export default function SystemHealthDashboard() {
           <div className="card">
             <div className="ch"><div className="ct">30-Day Uptime by System</div></div>
             <div className="cb">
-              <div className="prog"><div className="prog-hd"><span class="prog-lbl">HVAC</span><span className="prog-val">99.2%</span></div><div className="prog-track"><div className="prog-fill" style={{ width: '99.2%', background: 'var(--ok)' }}></div></div></div>
-              <div className="prog"><div className="prog-hd"><span class="prog-lbl">Fire Safety</span><span className="prog-val">100%</span></div><div className="prog-track"><div className="prog-fill" style={{ width: '100%', background: 'var(--ok)' }}></div></div></div>
-              <div className="prog"><div className="prog-hd"><span class="prog-lbl">Electrical</span><span className="prog-val">99.8%</span></div><div className="prog-track"><div className="prog-fill" style={{ width: '99.8%', background: 'var(--ok)' }}></div></div></div>
-              <div className="prog"><div className="prog-hd"><span class="prog-lbl">Lifts</span><span className="prog-val">98.1%</span></div><div className="prog-track"><div className="prog-fill" style={{ width: '98.1%', background: 'var(--warn)' }}></div></div></div>
-              <div className="prog"><div className="prog-hd"><span class="prog-lbl">CCTV</span><span className="prog-val">100%</span></div><div className="prog-track"><div className="prog-fill" style={{ width: '100%', background: 'var(--ok)' }}></div></div></div>
+              <div className="prog"><div className="prog-hd"><span className="prog-lbl">HVAC</span><span className="prog-val">99.2%</span></div><div className="prog-track"><div className="prog-fill" style={{ width: '99.2%', background: 'var(--ok)' }}></div></div></div>
+              <div className="prog"><div className="prog-hd"><span className="prog-lbl">Fire Safety</span><span className="prog-val">100%</span></div><div className="prog-track"><div className="prog-fill" style={{ width: '100%', background: 'var(--ok)' }}></div></div></div>
+              <div className="prog"><div className="prog-hd"><span className="prog-lbl">Electrical</span><span className="prog-val">99.8%</span></div><div className="prog-track"><div className="prog-fill" style={{ width: '99.8%', background: 'var(--ok)' }}></div></div></div>
+              <div className="prog"><div className="prog-hd"><span className="prog-lbl">Lifts</span><span className="prog-val">98.1%</span></div><div className="prog-track"><div className="prog-fill" style={{ width: '98.1%', background: 'var(--warn)' }}></div></div></div>
+              <div className="prog"><div className="prog-hd"><span className="prog-lbl">CCTV</span><span className="prog-val">100%</span></div><div className="prog-track"><div className="prog-fill" style={{ width: '100%', background: 'var(--ok)' }}></div></div></div>
             </div>
           </div>
         </div>
       </div>
 
       {/* ================= TAB 1: UPTIME HEATMAP ================= */}
-      <div 
-        className={`tab-panel ${activeTab === 1 ? 'active' : ''}`} 
-        data-page="syshealth" 
-        data-tab="1"
+      <div
+        className={`tab-panel ${activeTab === 1 ? 'active' : ''}`}
         style={{ display: activeTab === 1 ? 'block' : 'none' }}
       >
         <div className="kpi-strip mb-14" style={{ gridTemplateColumns: 'repeat(4,1fr)' }}>
@@ -451,10 +417,10 @@ export default function SystemHealthDashboard() {
           <div className="cb">
             <div className="hm-wrap" style={{ gridTemplateColumns: 'repeat(31,1fr)' }}>
               {daysData.map((val, index) => (
-                <div 
+                <div
                   key={index}
-                  className="hm-cell" 
-                  style={{ background: getHeatmapColor(val), opacity: 0.7 }} 
+                  className="hm-cell"
+                  style={{ background: getHeatmapColor(val), opacity: 0.7 }}
                   title={`Day ${index + 1}: ${val}%`}
                 />
               ))}
@@ -470,10 +436,8 @@ export default function SystemHealthDashboard() {
       </div>
 
       {/* ================= TAB 2: PREVENTIVE MAINTENANCE SCHEDULE ================= */}
-      <div 
-        className={`tab-panel ${activeTab === 2 ? 'active' : ''}`} 
-        data-page="syshealth" 
-        data-tab="2"
+      <div
+        className={`tab-panel ${activeTab === 2 ? 'active' : ''}`}
         style={{ display: activeTab === 2 ? 'block' : 'none' }}
       >
         <div className="card">
@@ -493,7 +457,7 @@ export default function SystemHealthDashboard() {
               <tbody>
                 <tr><td>CH-01 Chiller</td><td>Quarterly service + water treatment</td><td style={{ color: 'var(--warn)' }}>22 May 2026</td><td>Quarterly</td><td>HVAC Team A</td><td><span className="badge badge-cyan">Scheduled</span></td></tr>
                 <tr><td>BMS Controllers</td><td>Firmware update + calibration</td><td>25 May 2026</td><td>Half-yearly</td><td>BMS Engineer</td><td><span className="badge badge-cyan">Scheduled</span></td></tr>
-                <tr><td>IoT Gateways (×8)</td><td>Network health check + reboot</td><td>28 May 2026</td><td>Monthly</td><td>IT / BMS</td><td><span class="badge badge-cyan">Scheduled</span></td></tr>
+                <tr><td>IoT Gateways (×8)</td><td>Network health check + reboot</td><td>28 May 2026</td><td>Monthly</td><td>IT / BMS</td><td><span className="badge badge-cyan">Scheduled</span></td></tr>
                 <tr><td>SCADA Server</td><td>DB backup + OS patches</td><td>31 May 2026</td><td>Monthly</td><td>IT Team</td><td><span className="badge badge-cyan">Scheduled</span></td></tr>
                 <tr><td>UPS — Server Room</td><td>Battery test + load transfer test</td><td>05 Jun 2026</td><td>Quarterly</td><td>Electrical Team</td><td><span className="badge" style={{ background: 'var(--surface-2)', color: 'var(--ink-2)' }}>Pending</span></td></tr>
               </tbody>
@@ -503,10 +467,8 @@ export default function SystemHealthDashboard() {
       </div>
 
       {/* ================= TAB 3: ACTIVE FAULT LOG ================= */}
-      <div 
-        className={`tab-panel ${activeTab === 3 ? 'active' : ''}`} 
-        data-page="syshealth" 
-        data-tab="3"
+      <div
+        className={`tab-panel ${activeTab === 3 ? 'active' : ''}`}
         style={{ display: activeTab === 3 ? 'block' : 'none' }}
       >
         <div className="card">
@@ -557,7 +519,6 @@ export default function SystemHealthDashboard() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }
