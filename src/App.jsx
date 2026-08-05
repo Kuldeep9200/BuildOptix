@@ -10,6 +10,7 @@ import TopBar from './component/TopBar';
 import MainLayout from './component/MainLayout';
 import StatusBar from './component/StatusBar';
 import AiAssistantPanel from './component/AiAssistantPanel';
+import EquipmentView from './component/EquipmentView';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginGate />} />
         <Route path="/dashboard" element={<MainLayout />} />
+        <Route path="/equipment" element={<EquipmentView />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
