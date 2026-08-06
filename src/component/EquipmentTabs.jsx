@@ -1,0 +1,38 @@
+import React from 'react';
+
+// Props में activeTab लें ताकि parent component state handle करे
+const EquipmentTabs = ({ activeTab, onTabChange,onShowSummary, onNavigateDashboard }) => {
+  const handleTabClick = (tabId) => {
+    if (onTabChange) {
+      onTabChange(tabId);
+    }
+  };
+
+  return (
+
+    <>
+    <div className="eqtabs" id="eqTopTabs">
+      <button
+        id="eqtab-summary"
+        className={`eqtab ${activeTab === 'summary' ? 'sel' : ''}`}
+        onClick={() => handleTabClick('summary')}
+      >
+        <i className="ti ti-layout-grid" />
+        Equipment Summary
+      </button>
+
+      <button
+        id="eqtab-detail"
+        className={`eqtab ${activeTab === 'detail' ? 'sel' : ''}`}
+        onClick={() => handleTabClick('detail')}
+      >
+        <i className="ti ti-list-details" />
+        Equipment Detail
+      </button>
+
+    </div>
+    </>
+  );
+};
+
+export default EquipmentTabs;
