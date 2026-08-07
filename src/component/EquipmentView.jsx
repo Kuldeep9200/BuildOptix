@@ -3,17 +3,35 @@ import TopBar from './TopBar';
 import EquipmentRail from '../component/EquipmentSidebar';
 import EquipmentTabs from '../component/EquipmentTabs';
 import EquipmentSummaryView from '../features/Equipment/EquipmentSummaryView';
+import ChillerPlantDashboard from '../features/Equipment/ChillerPlantDashboard';
+import CentrifugalChiller from '../features/Equipment/CentrifugalChiller';
+import AhuDashboardInline from '../features/Equipment/AhuDashboardInline';
 
-// Example Summary Page Component
+// Detail Components Import karein
 
 export default function EquipmentLayout() {
-  // --- States ---
   const [isNightMode, setIsNightMode] = useState(true);
   const [activeTab, setActiveTab] = useState('detail'); // 'summary' | 'detail'
   const [selectedScreen, setSelectedScreen] = useState('chiller');
 
   const handleSelectScreen = (screenId) => {
     setSelectedScreen(screenId);
+  };
+
+  // 🎯 Dynamic Component Renderer (ID ke aadhar par component decide karega)
+  const renderDetailComponent = () => {
+    switch (selectedScreen) {
+
+      case 'chillermgmt': return < ChillerPlantDashboard />;
+      case 'chiller': return < CentrifugalChiller />;
+      case 'ahuv1': return < AhuDashboardInline />;
+
+
+      // Aap baaki IDs ke liye cases jod sakte hain:
+      // case 'dg': return <DGSetDetail />;
+      // case 'ups': return <UPSDetail />;
+      // case 'cctv': return <CCTVDetail />;
+    }
   };
 
   return (
@@ -43,22 +61,20 @@ export default function EquipmentLayout() {
 
       {/* 3. Main Workspace Area */}
       <div style={{ display: 'flex', flex: 1, height: 'calc(100vh - 120px)', width: '100%', overflow: 'hidden' }}>
-        
+
         {activeTab === 'summary' ? (
-          /* SUMMARY TAB ACTIVE: Sidebar छुप जाएगा और Full Summary Page दिखेगा */
+          /* SUMMARY TAB ACTIVE */
           <main
             style={{
               flex: 1,
               overflowY: 'auto',
-              padding: '20px',
               background: isNightMode ? '#040911' : '#F0F4FA',
             }}
           >
-            {/* यहाँ अपना पूरा Summary View कंपोनेंट रखें */}
             <EquipmentSummaryView isNightMode={isNightMode} />
           </main>
         ) : (
-          /* DETAIL TAB ACTIVE: Sidebar (Rail) + Specific Detail View दिखेगा */
+          /* DETAIL TAB ACTIVE */
           <>
             {/* Left Side: Rail Sidebar */}
             <EquipmentRail onSelectScreen={handleSelectScreen} />
@@ -68,15 +84,11 @@ export default function EquipmentLayout() {
               style={{
                 flex: 1,
                 overflowY: 'auto',
-                padding: '20px',
                 background: isNightMode ? '#040911' : '#F0F4FA',
               }}
             >
-              {/* यहाँ selectedScreen के हिसाब से Equipment Detail View दिखाएं */}
-              <div style={{ color: isNightMode ? '#fff' : '#000' }}>
-                <h2>Equipment Detail View ({selectedScreen})</h2>
-                {/* <ChillerDetailView selectedScreen={selectedScreen} /> */}
-              </div>
+              {/* 🎯 dynamic view yahan render hoga */}
+              {renderDetailComponent()}
             </main>
           </>
         )}
