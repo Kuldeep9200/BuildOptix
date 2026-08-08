@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import logoDark from '../assets/logo.png'; import '../App.css';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 export default function TopBar({ isNightMode, setIsNightMode, openMobileSidebar, toggleWeather,
   startTour,
@@ -214,6 +214,7 @@ const handleLogout = () => {
 
       {/* Navigation Modules */}
       <div className="tb-nav">
+         <NavLink to="/dashboard">
         <div
           className={`tb-nav-item ${activeModule === 'dashboard' ? 'active' : ''}`}
           onClick={(e) => { setActiveModule('dashboard'); switchModule && switchModule('dashboard', e.currentTarget); }}
@@ -223,15 +224,21 @@ const handleLogout = () => {
         >
           <i className="ti ti-layout-dashboard"></i>Dashboard
         </div>
+        </NavLink>
+       
         <div
+        
           className={`tb-nav-item ${activeModule === 'equipment' ? 'active' : ''}`}
           onClick={(e) => { setActiveModule('equipment'); switchModule && switchModule('equipment', e.currentTarget); }}
           tabIndex={0}
           role="button"
           aria-label="Equipment"
         >
+           <NavLink to="/equipment">
           <i className="ti ti-cpu"></i>Equipment
+          </NavLink>
         </div>
+       
         <div
           className={`tb-nav-item ${activeModule === 'goc' ? 'active' : ''}`}
           onClick={(e) => { setActiveModule('goc'); switchModule && switchModule('goc', e.currentTarget); }}

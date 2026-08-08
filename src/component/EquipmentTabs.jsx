@@ -1,7 +1,12 @@
 import React from 'react';
 
-// Props में activeTab लें ताकि parent component state handle करे
-const EquipmentTabs = ({ activeTab, onTabChange,onShowSummary, onNavigateDashboard }) => {
+// activeTab ki default value 'summary' set kar di hai
+const EquipmentTabs = ({ 
+  activeTab = 'summary', 
+  onTabChange, 
+  onShowSummary, 
+  onNavigateDashboard 
+}) => {
   const handleTabClick = (tabId) => {
     if (onTabChange) {
       onTabChange(tabId);
@@ -9,8 +14,6 @@ const EquipmentTabs = ({ activeTab, onTabChange,onShowSummary, onNavigateDashboa
   };
 
   return (
-
-    <>
     <div className="eqtabs" id="eqTopTabs">
       <button
         id="eqtab-summary"
@@ -29,9 +32,7 @@ const EquipmentTabs = ({ activeTab, onTabChange,onShowSummary, onNavigateDashboa
         <i className="ti ti-list-details" />
         Equipment Detail
       </button>
-
     </div>
-    </>
   );
 };
 
